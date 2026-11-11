@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>EXPERIMENT_LOG.md｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>EXPERIMENT_LOG.md</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/v14/EXPERIMENT_LOG.md</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/v14/EXPERIMENT_LOG.md</code></li>
+<li>sha1：<code>bf1120a72d138cb7ecd971502fc0025e1efa6b2c</code></li>
+<li>快照時間：2026-11-12 05:02（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<h1>v14 實驗紀錄（網頁用）</h1>
+<p>只附加、不改舊條目。繁體中文。所有結果皆為探索性、非獨立盲測。文獻只列本檔寫入前已用 WebFetch 打開過的出處。</p>
+<h2>E001 計畫凍結與文獻出處</h2>
+<p>時間：2026-11-11 22:53:15 +0800（台北時間 Asia/Taipei）<br>
+目的：把 v14 長跑的格點、試驗數與規則寫死，並說明用了哪些已核對的方法。<br>
+白話說明：先講清楚這次要搜什麼、搜多少，再開始跑，避免邊跑邊改規則。<br>
+方案規模：頻率 2（D1、M15）× 單一頻率 338,034 筆試驗，合計 676,068 筆；54 格。累計 ML 試驗若全部跑完為 10,440+676,068=686,508。主訊號 3,743（P2B 99、P4TA 108、L2CROSS 68×52=3,536）。RAW 模型格點含 logistic 56、histgb 1,152、hmm 72。<br>
+使用的方法與文獻出處（只列本次已用 WebFetch 打開並讀到題名／摘要的網址）：<br>
+- 回測過擬合機率 PBO 與 CPCV：Bailey, Borwein, López de Prado, Zhu，《The Probability of Backtest Overfitting》，https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf<br>
+- 緊縮夏普比率 DSR（依實際試驗數校正）：Bailey &amp; López de Prado，《The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality》，https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf<br>
+- 馬可夫轉換／狀態機率：Hamilton (1989)，〈A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle〉，https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and<br>
+- PPO（本輪因環境無 torch／stable_baselines3，速度實測後不納入凍結格點，僅備查）：Schulman 等，《Proximal Policy Optimization Algorithms》，https://export.arxiv.org/abs/1707.06347<br>
+未在本條引用（WebFetch 當時打不開或未完成驗證，故不寫）：López de Prado 著書頁、Corsi HAR-RV 期刊頁、Gao 等人日內動量、Barndorff-Nielsen &amp; Shephard。PLAN_v14 裡對 triple-barrier／HAR-RV 的設計說明仍在，但本實驗紀錄不把未驗證網址當出處。<br>
+預估耗時：本條為寫計畫，沒有運算預估。總長跑天數必須等 SPEED_v14 實測。<br>
+過程：PLAN_v14.md 已存在（sha1 a4d90478821d04e0a0f6766d1631abd34329b422），screen_rules_v14.json sha1 2acd16440624c16264e24bef049ebf7871b5daca。窗口只讀 freeze/windows_v2.json（sha1 6672824bd0fb5ec953d95957fbed6425555a44da）。前期盤點 sha1 08c4c78bf6bfcd1a5682ab283a1ac61681c6c512。不改舊檔。<br>
+成功或失敗：計畫與格點已凍結，運算尚未開始，尚無 A／B／Fail。</p>
+<p>摘要：trial_count=676068 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=plan status=done plan_sha1=a4d90478821d04e0a0f6766d1631abd34329b422 rules_sha1=2acd16440624c16264e24bef049ebf7871b5daca cells=54 trials_per_frame=338034<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E001 D1 特徵建構第一次失敗，改用 asof 型別修正</h2>
+<p>時間：2026-11-11 22:55:28 +0800（台北時間 Asia/Taipei）<br>
+目的：建立日頻特徵與 3,743 個主訊號快取。<br>
+白話說明：第一次跑因為日期型別一個是奈秒、一個是微秒，合併時直接失敗。<br>
+方案規模：預設 D1、主訊號 3,743、特徵集 G1–G5。<br>
+過程中遇到的問題與替代嘗試：原腳本 build_features_v14.py 呼叫 v14_lib.attach_macro_pcr，在 pandas merge_asof 丟出 MergeError（datetime64[ns] 對 datetime64[us]）。規則是不覆蓋舊檔，所以另寫 v14_asof_fix.py 與 run_build_features_v14_fixasof.py，把兩邊鍵都轉成 datetime64[ns] 再合併。<br>
+成功或失敗：第一次失敗（工程錯誤，不是策略 Fail）。接著改走替代腳本。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=1 elapsed_sec=59 stage=build_features_d1 status=failed error=MergeError datetime64[ns] vs datetime64[us] alternative=run_build_features_v14_fixasof.py<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E001 D1 特徵建構第二次失敗，改複製後再寫入 ADX</h2>
+<p>時間：2026-11-11 22:57:59 +0800（台北時間 Asia/Taipei）<br>
+目的：建立日頻特徵與主訊號。<br>
+白話說明：第二次已經過了日期合併，但算濾網 ADX 時程式要改陣列開頭，而 pandas 給的是不能改的視圖。<br>
+方案規模：仍是 D1、3,743 個主訊號。<br>
+過程中遇到的問題與替代嘗試：v14_signals._adx 對 _wild 的回傳值做 r[:2n]=nan，觸發 ValueError: assignment destination is read-only。不改原檔，另寫 v14_signals_patch.py（先複製成可寫陣列）與 build_features_v14d.py。<br>
+成功或失敗：第二次失敗（工程錯誤）。接著改走 v14d。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=1 elapsed_sec= stage=build_features_d1 status=failed error=ValueError read-only _adx alternative=build_features_v14d.py<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E001 想法落實清單與失敗升級流程（補篇，不覆蓋 PLAN_v14）</h2>
+<p>時間：2026-11-11 22:58:39 +0800（台北時間 Asia/Taipei）<br>
+目的：把已提出的 14 項想法逐條標明落實方式，並寫死失敗後怎麼升級。<br>
+白話說明：Charles 22:55 要求想法不可遺漏；計畫正文已凍結所以不改 PLAN_v14.md，另寫補篇。<br>
+方案規模：凍結格點仍是 676,068 筆。附加試驗每頻率 4,116 筆（規則表 216、單調 GBDT 2,160、正式 fractional Kelly 1,680、堆疊 60）。<br>
+使用的方法與文獻出處（僅列已 WebFetch 打開者）：PBO https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf ；DSR https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf ；Hamilton 1989 https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and ；PPO（不納入格點，只備查原因）https://export.arxiv.org/abs/1707.06347 。<br>
+預估耗時：補篇本身無運算。附加 4,116 筆的時間等 SPEED 實測後再估。<br>
+過程：PLAN_v14.md sha1 仍為 a4d90478821d04e0a0f6766d1631abd34329b422。補篇 v14/PLAN_v14_ADDENDUM.md，附加規則 v14/freeze/screen_rules_v14_addon.json。<br>
+成功或失敗：文件已寫入，運算仍在重試特徵建構，尚無 A/B。</p>
+<p>摘要：trial_count=4116 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=plan_addendum status=done plan_sha1=a4d90478821d04e0a0f6766d1631abd34329b422 addendum_sha1=35a9345a57ccb86a2611ecbd452f434b6b4fdb42 addon_rules_sha1=17a852232afaca35ea4b28ccb096d7aeb44496f4 addon_trials_per_frame=4116<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E005 D1 特徵建構第三次失敗，改修 front_mask 的 pandas 3 回傳型別</h2>
+<p>時間：2026-11-11 23:02:45 +0800（台北時間 Asia/Taipei）<br>
+目的：建立日頻特徵與 3,743 個主訊號快取。<br>
+白話說明：第三次已過日期合併與 ADX 可寫入，但切前七年樣本時，新版 pandas 比較日期得到的是陣列，原函式對它呼叫 to_numpy() 失敗。<br>
+方案規模：仍是 D1、主訊號預期 3,743。<br>
+過程中遇到的問題與替代嘗試：v14_lib.front_mask 在 pandas 3.1.1 對 DatetimeIndex 與 Timestamp 做比較會得到 numpy.ndarray，沒有 to_numpy()，觸發 AttributeError。不改原檔，另寫 v14_front_mask_fix.py（改用 np.asarray）與 build_features_v14e.py。v14d 約自 22:57:59 跑到 22:58:40（台北時間 Asia/Taipei），約 41 秒。另外原實驗紀錄編號函式用錯切片，四條都標成 E001，已另寫 v14_progress_fix.py，本條起依條目數續編，不改舊條目標題。<br>
+成功或失敗：第三次失敗（工程錯誤）。接著改走 v14e。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=1 elapsed_sec=41 stage=build_features_d1 status=failed error=AttributeError front_mask ndarray has no to_numpy alternative=build_features_v14e.py pandas_version=3.1.1<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E006 D1 特徵建構成功（build_features_v14e）</h2>
+<p>時間：2026-11-11 23:04:50 +0800（台北時間 Asia/Taipei）<br>
+目的：建立日頻特徵與 3,743 個主訊號快取，供後續前視檢驗、速度實測與篩選使用。<br>
+白話說明：第三次工程失敗後，改用新入口同時套用 asof 型別、訊號陣列可寫入、以及 front_mask 的 pandas 3 修正，這次有跑完。<br>
+方案規模：D1，會期 2,605，前七年 1,808，主訊號 3,743（與預期相同）。G1 欄位數 18，G5 182。標籤 TB1/TB2/TB3 與 FH1/FH2/FH5。SPX PCR 無錯誤。主訊號全為零的支數：371（個別骨幹失敗時填 0；非全數失敗）。<br>
+預估耗時：未事前單項估這次重跑；實際 54.12 秒（其中預載 47.06 秒）。<br>
+過程：腳本 v14/scripts/build_features_v14e.py（sha1 f3e69799d98fda5a4f6bbaa6aa06e01d2d20d589）。產物目錄 v14/data/d1/。manifest.json sha1 8aa8df17dc6fda9af3c490185fe92cf5d41bebec，daily_frame.parquet sha1 73f5c46d7bc8d35b921424224ae94653289b398f，primary_dirs.npy sha1 5ce3a6cede53e0d26f34ebcdae21757eaa299afc。窗口 sha1 6672824bd0fb5ec953d95957fbed6425555a44da。建成於 2026-11-11 23:03:45 +0800（台北時間 Asia/Taipei）。<br>
+成功或失敗：成功寫入快取。尚未做前視檢驗或篩選，尚無 A/B。結果為探索性。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=54.12 stage=build_features_d1 status=done n_sessions=2605 n_front7=1808 n_primaries=3743 preload_sec=47.06 all_zero_primaries=371 manifest_sha1=8aa8df17dc6fda9af3c490185fe92cf5d41bebec daily_sha1=73f5c46d7bc8d35b921424224ae94653289b398f primary_dirs_sha1=5ce3a6cede53e0d26f34ebcdae21757eaa299afc builder=build_features_v14e.py builder_sha1=f3e69799d98fda5a4f6bbaa6aa06e01d2d20d589<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E007 前視測試（v14b 入口）</h2>
+<p>時間：2026-11-11 23:07:50 +0800（台北時間 Asia/Taipei）<br>
+目的：確認截斷後重算，截斷日以前特徵不變。<br>
+白話說明：把資料剪到某天再算一次，剪斷前的數字必須一模一樣。<br>
+方案規模：3 個截斷日，31 個欄位。<br>
+實際耗時：160.8 秒。結果：通過（工程檢查，不是策略 A/B）。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=160.83 stage=lookahead status=done ok=True report_sha1=657cbe66e061889030ed96f91fde17aedc97fca0<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E008 速度實測</h2>
+<p>時間：2026-11-11 23:09:01 +0800（台北時間 Asia/Taipei）<br>
+目的：用實測單試驗時間估計長跑天數，避免再口頭亂估。<br>
+白話說明：先跑少數幾筆 logistic／GBDT／HMM，再推算 33 萬筆要多久。<br>
+方案規模：D1 試驗 338,034；D1+M15 676,068。抽樣 logistic 8、histgb 4、hmm 3、meta_logistic 6。<br>
+使用方法：前七年 purged 5 折快篩（與正式長跑同一套 <code>run_trial</code>）。<br>
+預估耗時（本測本身）與實際：實際 6.9 秒。長跑預估見上文。<br>
+過程：特徵包載入 0.01 秒。RL 套件不可用，PPO 不進格點。<br>
+成功或失敗：實測完成。尚未有策略 A/B 分級。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=6.86 stage=speed status=done d1_days_est=0.16547023584752651 both_days_est=0.33094047169505303 sec_per_trial=0.18862209949091552 speed_md_sha1=a80dd0feb21a1d6e88f23c8b180fad6041d1f3fd speed_json_sha1=fc3424fbdef6d2cd93d0036c4823b9c07031f8dc<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E009 小規模 pilot</h2>
+<p>時間：2026-11-11 23:09:55 +0800（台北時間 Asia/Taipei）<br>
+目的：在長跑前確認單一試驗管線、日誌與分數寫得出來。<br>
+白話說明：先用十幾筆不同模型試跑，確定不會一開跑就整批失敗。<br>
+方案規模：14 筆（RAW logistic/histgb/hmm 與 meta 各取樣）。<br>
+使用方法：與正式快篩相同的 purged 5 折與 <code>run_trial</code>。<br>
+實際耗時：4.8 秒。<br>
+過程：日誌 /workspace/ml_meta/v14/trials/TRIAL_LOG_v14_pilot.csv。不寫入正式長跑 TRIAL_LOG，以免和 676,068 筆混在一起。<br>
+成功或失敗：有分數 10 筆、失敗 0 筆。此階段沒有後三年 A/B 分級。目前最佳前七年 CV Trim PF（探索性）為 1.577713213797597。</p>
+<p>摘要：trial_count=14 trade_count=3879 n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=4.81 stage=pilot status=done n_with_score=10 best_cv_trim_pf=1.577713213797597 report_sha1=c32a6bb27d28dd3204bdd0451827bce5075c9a41<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E010 速度低於 2 天，依第 8 節寫入格點調整（擴張，不覆蓋 PLAN）</h2>
+<p>時間：2026-11-11 23:13:05 +0800（台北時間 Asia/Taipei）<br>
+目的：把實測後的擴張決定與試驗數寫死，再開全速。<br>
+白話說明：算下來 D1 大約四小時、兩頻率加起來不到一天，按計畫要擴張，但不能用空轉把時間湊到 20 天。<br>
+方案規模：凍結格點不變（D1 338,034，兩頻率 676,068）。附加 4,116／頻率。擴張 G2K 7,248／頻率（特徵尚未建，先不跑）。P2B 加密新增 15,444 筆 meta／頻率（快取尚未建，先不跑）。M5 因估計單進程約 3.95 GiB、6 worker 約 23.7 GiB，超過約 15 GiB 記憶體，本輪不啟動。<br>
+使用的方法與文獻：本條沒有新的文獻檢索；速度數字來自 SPEED_v14（sha1 a80dd0feb21a1d6e88f23c8b180fad6041d1f3fd）。<br>
+預估耗時：附加約 0.002 天；G2K 約 0.005 天；P2B 加密約 0.007 天。即使加上兩頻率凍結與這些擴張（不含 M5），外推仍小於 2 天。<br>
+過程：調整檔 v14/freeze/grid_adjustment_v14.md。已鎖 4 對副本 v14/freeze/g2k_pairs_v14.json（sha1 5977a4ea08d84f3b5f4c70c7bf8d94bad5073a8d）。長跑改走 supervisor_v14_run2.py，避免舊入口重跑失敗的原特徵腳本。<br>
+成功或失敗：調整檔已寫入。尚未開始凍結格點長跑。</p>
+<p>摘要：trial_count=4116 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=grid_adjustment status=done d1_days_est=0.16547 both_days_est=0.33094 g2k_trials=7248 p2b_expand_trials=15444 m5=skipped_memory grid_adjustment_sha1=793cae97c65db877cc882241f45e5c3971e88e72 g2k_pairs_sha1=5977a4ea08d84f3b5f4c70c7bf8d94bad5073a8d supervisor_entry=supervisor_v14_run2.py<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E011 D1 凍結格點長跑已穩定啟動（supervisor_v14_run3）</h2>
+<p>時間：2026-11-11 23:14:41 +0800（台北時間 Asia/Taipei）<br>
+目的：開始前七年快篩長跑，6 個 worker 加 1 個監督，可續跑、崩潰只重啟自己的程序。<br>
+白話說明：計畫、速度、前視、pilot 都過了，現在正式開搜。分數都是前七年交叉驗證，不是後三年 A/B，也不是獨立盲測。<br>
+方案規模：本波先跑凍結 D1 338,034 筆，接著同一監督再跑附加 4,116 筆。兩頻率凍結合計 676,068；加上附加（若只 D1）為 342,150。先前 ML 10,440 筆會記入 DSR 累計分母。<br>
+使用方法：purged 5 折＋embargo 快篩，與 SPEED／pilot 同一套 run_trial。文獻出處仍只引用本檔先前已 WebFetch 打開者，本條無新文獻。<br>
+預估耗時：SPEED 估 D1 約 0.17 天（範圍 0.10–0.33 天，約 4 小時，範圍約 2.3–8 小時）。啟動後約 28 秒已寫入 471 筆且 CSV 可解析、試驗號不重複，與估計同數量級。附加約 0.002 天。G2K／P2B 加密尚未建特徵，本波不跑。M5 因記憶體不足本輪不跑（見調整檔）。<br>
+過程：監督 PID 654824，於 2026-11-11 23:13:48 +0800（台北時間 Asia/Taipei）啟動。啟動指令：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/supervisor_v14_run3.py &gt;&gt; /workspace/ml_meta/v14/logs/supervisor_v14_run3.log 2&gt;&amp;1 &amp;<br>
+續跑：再執行同一指令；TRIAL_LOG_v14.csv 裡 status=done/failed 的 trial_id 會跳過。不要用 supervisor_v14_run.py（會呼叫已失敗的原特徵腳本）。<br>
+心跳時已見探索性最佳前七年 CV Trim PF（啟動當下）會隨後更新；本條寫入時日誌約 746 筆、有分數 691、當時最佳 10.38652082077589。此數字不是後三年 A/B。<br>
+成功或失敗：監督與 6 個 worker 已穩定運行（PID 654839、654842、654845、654863、654866、654869）。尚未做凍結、CPCV／PBO／DSR、M15、tick 或官方分級。</p>
+<p>摘要：trial_count=746 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=29 stage=screen_d1 status=running supervisor_pid=654824 n_workers=6 n_with_score=691 best_cv_trim_pf=10.38652082077589 start_command=nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/supervisor_v14_run3.py &gt;&gt; /workspace/ml_meta/v14/logs/supervisor_v14_run3.log 2&gt;&amp;1 &amp; d1_days_est=0.16547 addon_after_frozen=4116<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E012 凍結腳本試算（D1，非正式凍結）</h2>
+<p>時間：2026-11-11 23:17:48 +0800（台北時間 Asia/Taipei）<br>
+目的：在長跑尚未跑完時，先用現有日誌檢查凍結程式能不能正確讀檔與排序。<br>
+白話說明：這不是正式凍結，只是先試跑程序。<br>
+讀取 2884 列，格數 3，輸出 /workspace/ml_meta/v14/reports/freeze_dryrun_d1_v14.json。</p>
+<p>摘要：trial_count=2884 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=freeze_prep status=dry_run n_cells=3 out_sha1=9f4186c371977052af976b690efc217fb5744053<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E013 CPCV／PBO／DSR 程式自檢（非正式）</h2>
+<p>時間：2026-11-11 23:21:29 +0800（台北時間 Asia/Taipei）<br>
+目的：在長跑期間確認組合交叉驗證、回測過擬合機率與緊縮夏普的程式能跑通。<br>
+白話說明：先用少數幾組已完成試驗走兩條路徑，不是正式的每格前 100 名計算。<br>
+過程：輸出 /workspace/ml_meta/v14/reports/cpcv_selftest_v14.json。PBO 自檢值 0.5。DSR 此處用代理序列，不是後三年官方 DSR。<br>
+文獻：PBO https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf ；DSR https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf （皆先前已 WebFetch 打開）。</p>
+<p>摘要：trial_count=5661 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0.9 stage=cpcv_prep status=self_test out_sha1=0eab624352c9f8005ccf543e41a3c9226daadbae pbo=0.5<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E014 長跑期間備妥下一階段腳本並完成自檢（未動監督程序）</h2>
+<p>時間：2026-11-11 23:23:52 +0800（台北時間 Asia/Taipei）<br>
+目的：在 D1 快篩仍在跑時，先寫好並自檢凍結、CPCV／PBO／DSR、tick 評估、M15／G2K／P2B 加密的新腳本與規則檔。<br>
+白話說明：長跑的 7 個程序沒有被改或重啟；只是把下一步要用的工具準備好，並用小規模自檢確認算式與讀檔沒有明顯錯誤。<br>
+方案規模：凍結試算讀到當時日誌；CPCV 自檢 3 筆 logistic、2 條路徑；tick 模擬自檢只走開頭一段，確認 799,822,729 筆與記憶體映射。G2K 規則 7,248／頻率，P2B 加密新增 meta 15,444／頻率，規則已寫死。M15 建置腳本已編譯，尚未跑全量（避免與長跑搶 CPU／記憶體）。<br>
+使用的方法與文獻：PBO https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf ；DSR https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf （先前已 WebFetch 打開）。CPCV 預設 6 組每次測 2 組、15 條路徑。DSR 分母用實際完成試驗數，並另報 10,440+v14。<br>
+過程中的自檢：凍結 dry-run 寫入 reports/freeze_dryrun_d1_v14.json；v14_cpcv 單元測試通過（獨立序列 PBO 約 0.55、完全對齊為 0；DSR 在 N=1 高於 N=100000）；G2K 濾波器因果自檢通過；tick 模擬自檢通過；CPCV 程式自檢 PBO=0.5（僅 2 路徑示範，非正式）。擴張格點計數核對 G2K=7248、P2B meta=15444。<br>
+成功或失敗：腳本已寫入且自檢通過。尚未做正式凍結、正式 CPCV、tick 後三年或 M15 全量建置。長跑監督 PID 654824 未觸動。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=prep_next status=done sha1_freeze_cells=9914eb5c23933fc1cc8f83cb03b7e743c4ccb85b sha1_cpcv_lib=cd9a02aa8c761d4eabd960f20c7c6572cddd6e5e sha1_cpcv_score=55ca07d7af28fa033e97adae6a6f31486ec54f96 sha1_cpcv_run=6d8b7139e77b85e11a53aa442ae6028910a48f4b sha1_tick_sim=679bc2d71f09049638d8175b601fca206e1cb4a5 sha1_tick_eval=a3ccab12fd96a18fef18f793a54f7da46fb35f19 sha1_predict=4090d87659374b3162d25fa404292893f78b0d9c sha1_m15=a0a21906dc06992298891b8d191201ada984929e sha1_g2k=16cad607178f7ca329b695f66b070cfe58db31b0 sha1_g2k_build=0bc66cd44d868b29bfdd475850e52272a1c368fa sha1_p2b_build=832235b7ef4bc740201a8e62c40234c097ac647c sha1_rules_g2k=64fc790d12575fd5a41fb57fe1ead1fbeabeb3e4 sha1_rules_p2b=263ef5edad3bd825f3ed1773fb8200aad06de45f sha1_grid_expand=995546dd45eb9fee5faba3996c45a70e6d080cb0<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E015 已啟動監看程序（不觸動長跑 PID），崩潰時用既有指令續跑，達標後接後續流程</h2>
+<p>時間：2026-11-12 00:02:00 +0800（台北時間 Asia/Taipei）<br>
+目的：避免本對話中斷後，D1 跑完卻沒人接著做凍結與 tick。監看每 10 分鐘讀日誌，不輪詢過密。<br>
+白話說明：長跑那 7 個程序完全沒動。另外加了 1 個監看（PID 677677），程序總數 8，未超過 14。<br>
+若監督不在且尚未跑完 338,034，只用既有指令續跑 supervisor_v14_run3.py。若日誌已達 342,150 且監督已退出，才啟動 run_after_screen_d1_v14.py（凍結→tick→CPCV→擴張特徵）。<br>
+成功或失敗：監看已啟動並在 2026-11-12 00:01:49 +0800 觀察到監督仍為 654824、當時已完成約 19,810 筆。</p>
+<p>摘要：trial_count=19810 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=screen_d1 status=running supervisor_pid=654824 watcher_pid=677677 watcher_sha1=2cbeb481760d492a2814d31ceffcbad63187e684<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E016 調查探索性最佳 trial 92d848607d831989 的 front7_cv_mean_trim_pf=552.72 為何偏高</h2>
+<p>時間：2026-11-12 02:48:07 +0800（台北時間 Asia/Taipei）<br>
+目的：查證目前快篩榜首分數為何遠高於中位數（約 0.84），檢查折數、折內樣本數、交易筆數與是否無虧損單。不改長跑程序、不加 worker、不寫入 TRIAL_LOG。<br>
+白話說明：這個 552 不是五折都穩贏，而是三個有效折的 Trim PF 算術平均被其中一折的極端值拉上去。那一折幾乎全贏，只因為留下一筆 3 美元的極小虧損，分數才沒被判成無效。<br>
+方案規模：只用已寫入的 TRIAL_LOG_v14.csv 一列，加上 D1 快取重跑同一組參數一次（單一程序）。官方計分函式 <code>v14_fit.run_trial</code> 重現分數 552.7207264600796，與日誌完全一致。<br>
+試驗身分（日誌，完成於 2026-11-11 23:38:51 +0800）：trial_id=92d848607d831989，cell=D1|RAW|G2|histgb，label=FH1，size_gate=flat，params={max_depth:2, learning_rate:0.03, max_iter:100, min_samples_leaf:100, l2_regularization:1, threshold:0.65}，n_valid_folds=3，n_trades_cv=34，elapsed_sec=0.3061。<br>
+計分規則（既有、未改）：purged 5 折；每折對驗證段交易算 Trim PF（先去掉最大 ceil(N×5%) 筆淨獲利，再以去頂後贏利合計／虧損合計絕對值）；去頂後若無虧損單則該折回傳 None、不編造 inf、不計入平均；至少 3 個有效折才給分數，分數＝有效折 Trim PF 的算術平均。<br>
+折內樣本數（並非樣本過少）：設計為 5 折。折 0 訓練 1,442／驗證 361；折 1 為 1,434／362；折 2 為 1,435／361；折 3 為 1,434／362；折 4 為 1,439／362。各折訓練有標籤且兩類皆有，約 1,430–1,438 筆；驗證有標籤約 359–362 筆。前七年共 1,808 個會期。異常不來自訓練集太小。<br>
+各折實測（門檻 0.65，全部只出多方、空方訊號為 0）：<br>
+- 折 0（驗證 2016-09-29..2018-02-22）：訊號 10、成交 9（8 勝 1 負）。唯一虧損是 2017-08-23 多方，變動 0.25 點，損益 −3 美元（點值 20、來回成本 8：0.25×20−8=−3）。未去頂 PF=2,737；去掉最大贏利 3,247 後，贏利 4,964／虧損 3，Trim PF=1,654.6666666666667。此折不是「無虧損單」，而是虧損極小所以被計入。<br>
+- 折 1（驗證 2018-02-23..2019-07-19）：成交 14（11 勝 3 負），真實虧損 −2,918、−4,893、−2,033。未去頂 PF=2.3325883787078423，Trim PF=1.780272247054043。<br>
+- 折 2（驗證 2019-07-22..2020-12-10）：成交 10（8 勝 2 負），真實虧損 −6,678、−953。未去頂 PF=2.2409906958458916，Trim PF=1.7152404665181495。<br>
+- 折 3（驗證 2020-12-11..2022-05-06）：無效。僅 1 筆交易、1 勝 0 負（2021-08-27，+3,467 美元）。去頂後無剩餘也無虧損，trim_pf=None。此折確實無虧損單，因此不進平均。<br>
+- 折 4（驗證 2022-05-09..2023-09-28）：無效。0 筆訊號、0 筆交易（p 最大值 0.6497，略低於門檻 0.65）。<br>
+有效折 3 個，Trim PF 為 1654.6666666666667、1.780272247054043、1.7152404665181495，平均正好 552.7207264600796。日誌的 n_trades_cv=34 含無效折 3 的 1 筆；有效折合計 33 筆。<br>
+結論：552.72 被折 0 的 1,654.67 主導；若只看另兩個有效折，Trim PF 約 1.75。高門檻導致交易稀疏，折 0 只靠一筆 −3 美元的近乎打平虧損才成為有效折。此分數是前七年交叉驗證的探索性指標，不是後三年 A/B，也不是獨立盲測。長跑監督與 worker 未被改動。<br>
+成功或失敗：調查完成並重現原分數。無需重啟程序，也無需 Charles 立刻決定；凍結與官方分級仍等 screen_d1 跑完後依既定流程處理。</p>
+<p>摘要：trial_id=92d848607d831989 score=552.7207264600796 n_valid_folds=3 n_folds_designed=5 n_trades_cv=34 n_trades_valid_folds=33 fold0_trim_pf=1654.6666666666667 fold0_n_trades=9 fold0_n_loss=1 fold0_gross_loss=3 fold1_trim_pf=1.780272247054043 fold2_trim_pf=1.7152404665181495 fold3=invalid_no_loss_after_trim fold4=invalid_no_trades all_long=1 n_short=0 reproduced=1<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E017 監督與 worker 在虛擬機 fork 後全部消失，重建 .venv 並用既有指令續跑</h2>
+<p>時間：2026-11-12 03:17:42 +0800（台北時間 Asia/Taipei）<br>
+目的：長跑程序全部不在後，先確認舊 PID 已不存在，再用既定指令續跑 supervisor_v14_run3.py，並恢復監看，使 D1 快篩與後續凍結／tick／CPCV 銜接不中斷。<br>
+白話說明：箱體在約 03:13–03:14 發生虛擬機 fork／不乾淨關機，原本的監督、6 個 worker 與監看都沒了；連原來的虛擬環境目錄也不見了。先依本箱既有紀錄把套件裝回同一路徑，再按原指令續跑，沒有加 worker、沒有刪檔、沒有改用舊入口 supervisor_v14_run.py。<br>
+過程與證據：<br>
+- 2026-11-12 03:00:15 巡檢時監督 654824、監看 677677、worker 654839/654842/654845/654863/654866/654869 仍在，日誌 55,577 列，可用記憶體約 11,083 MB。<br>
+- TRIAL_LOG 最後一筆完成於 2026-11-12 03:00:32 +0800；日誌當時 56,998 筆（含表頭 56,999 列），檔案 mtime 03:03:31。監督最後心跳 02:58:58，finished=49,664/338,034（心跳落後於日誌）。<br>
+- 03:14:35 巡檢時上述 8 個 PID 全不在，venv python 程序數為 0。dmesg：03:13:06 systemd-journald 記錄 journal 損毀或不乾淨關機並重建；03:14:30 <code>random: crng reseeded due to virtual machine fork</code>。監督日誌沒有自行寫入的崩潰堆疊，最後一筆仍是 02:58:58 心跳。<br>
+- 續跑前再次確認無殘留 supervisor_v14_run3／run_screen_worker_v14／watch_and_continue_v14。第一次用既定指令啟動失敗：<code>nohup: failed to run command '/workspace/ml_meta/.venv/bin/python': No such file or directory</code>。整份 <code>/workspace/ml_meta/.venv</code> 目錄在恢復後不存在，系統 Python 亦無 sklearn／hmmlearn。<br>
+- 依本箱既有書面紀錄重建同一路徑虛擬環境：pandas==3.1.1（E005 實測）、scikit-learn==1.9.1（STEP2_REPORT，同一 .venv 路徑）、hmmlearn==0.3.3（screen_rules_v3／ROUND2 SUMMARY）。一併裝上相依套件 numpy==2.5.4、scipy==1.18.1、pyarrow==26.0.1、joblib==1.6.0 等；numpy／scipy／pyarrow 的前次精確版本未在報告中找到。Python 3.13.5。<code>import v14_fit</code> 通過。<br>
+- 2026-11-12 03:16:58 +0800 執行既定指令：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/supervisor_v14_run3.py &gt;&gt; /workspace/ml_meta/v14/logs/supervisor_v14_run3.log 2&gt;&amp;1 &amp;<br>
+- 新監督 PID 10221；worker PID 10242、10250、10253、10257、10260、10268。03:17:01 心跳 finished=56999/338034，best 仍為 552.7207264600796。日誌隨即續寫（03:17:13 已 57,888 列）。<br>
+- 同時間以同一解譯器重啟監看（screen_d1 完成後要接凍結／tick／CPCV）：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/watch_and_continue_v14.py &gt;&gt; /workspace/ml_meta/v14/logs/watch_and_continue_v14.log 2&gt;&amp;1 &amp; ；新監看 PID 10565，03:17:13 觀察 finished=57742、supervisor_pids=[10221]。運算相關 python 程序共 8，未超過 14。<br>
+成功或失敗：已續跑並恢復監看，快篩分數繼續寫入。此為工程中斷後的續跑，不是策略 Fail。凍結與官方分級仍未開始。探索性最佳分數尚未被後續試驗取代。</p>
+<p>摘要：trial_count=56999 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=screen_d1 status=resumed old_supervisor_pid=654824 old_watcher_pid=677677 new_supervisor_pid=10221 new_watcher_pid=10565 new_worker_pids=10242,10250,10253,10257,10260,10268 venv_recreated=1 sklearn=1.9.1 pandas=3.1.1 hmmlearn=0.3.3 numpy=2.5.4 cause=vm_fork_and_missing_venv last_trial_before_gap=2026-11-12 03:00:32 +0800<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E018 screen_d1 階段 worker 退出</h2>
+<p>時間：2026-11-12 04:20:24 +0800（台北時間 Asia/Taipei）<br>
+目的：screen_d1 快篩。<br>
+白話說明：這一波 worker 已結束或監督退出。<br>
+方案規模：本波目標約 342150。日誌累計完成 342150，失敗 0，有分數 160804。<br>
+目前最佳前七年 CV Trim PF（探索性）=552.7207264600796。此數字不是後三年 A/B。</p>
+<p>摘要：trial_count=342150 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=404.22 stage=screen_d1 status=done best_cv_trim_pf=552.7207264600796<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E019 D1 凍結格點與附加試驗監督回合結束（擴張批次尚未開跑）</h2>
+<p>時間：2026-11-12 04:20:25 +0800（台北時間 Asia/Taipei）<br>
+目的：先跑已凍結的 338,034 筆與已宣告的 4,116 筆附加試驗。<br>
+白話說明：主搜尋與補篇想法先跑完；第 8 節擴張（G2K、P2B 加密、M5）要等新規則檔與特徵，不在本波假裝完成。<br>
+日誌累計完成 342150。最佳前七年 CV Trim PF（探索性）=552.7207264600796。非後三年 A/B。</p>
+<p>摘要：trial_count=342150 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec= stage=screen_d1 status=pending_expand<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E020 D1 凍結格點與附加試驗已達標，開始後續流程</h2>
+<p>時間：2026-11-12 04:27:23 +0800（台北時間 Asia/Taipei）<br>
+目的：確認 TRIAL_LOG 已有 342150 筆完成（含失敗），達到 338,034+4,116。<br>
+白話說明：搜尋這一段跑完了，接著做凍結、tick 驗收與 CPCV。<br>
+失敗試驗 0。結果仍是探索性。</p>
+<p>摘要：trial_count=342150 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=screen_d1 status=done n_cumulative=352590<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E021 凍結每格前 100 名（D1）</h2>
+<p>時間：2026-11-12 04:27:25 +0800（台北時間 Asia/Taipei）<br>
+目的：只用前七年內部交叉驗證分數，把每格前 100 名寫死，後三年不參與排序。<br>
+白話說明：先在訓練那段期間比出每格最前面的一百組，之後才拿去驗後三年。<br>
+方案規模：讀取 342150 列，得到 44 格，其中有第一名的格 44。<br>
+過程：輸出 /workspace/ml_meta/v14/freeze/frozen_top100_d1.json。有效折少於 3 或沒有分數者不得入榜（略過 {'not_done': 0, 'few_folds': 181346, 'no_score': 0, 'wrong_frame': 0}）。<br>
+成功或失敗：本檔只做排序凍結，不是後三年 A/B。</p>
+<p>摘要：trial_count=342150 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=freeze_d1 status=done n_cells=44 n_rank1=44 out_sha1=0e8e375bc23e2010bf91a7f5d12d5171ab5ec911<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E022 tick_eval 因帳本時間字串格式失敗，改走混格式修正後續跑（不覆蓋原檔）</h2>
+<p>時間：2026-11-12 04:35:46 +0800（台北時間 Asia/Taipei）<br>
+目的：診斷並補正 tick 後三年／十年評估的工程錯誤，使凍結完成後的流程能從 tick 續跑到 CPCV 與擴張特徵，不重跑、不覆蓋已完成的凍結檔。<br>
+白話說明：監看在 04:27 已接著跑凍結，44 格都寫好了；但做 tick 帳本評分時，有的出場時間有小數秒、有的剛好整秒，新版 pandas 認錯格式就中斷。原程式與凍結結果都不改，另寫修正後再跑。<br>
+過程與證據：<br>
+- 監看 PID 10565 於 2026-11-12 04:27:20 +0800 見 finished=342150、監督已退出，啟動 run_after_screen_d1_v14.py。凍結 04:27:23–04:27:26 成功，rc=0，輸出 /workspace/ml_meta/v14/freeze/frozen_top100_d1.json，sha1 仍為 0e8e375bc23e2010bf91a7f5d12d5171ab5ec911（44 格、44 個第一名）。見 E021。<br>
+- tick 於 04:27:26 啟動 run_tick_eval_v14.py --also-ranks 1，04:28:10 以 rc=1 失敗。堆疊：metrics_v2._as_trades 內 pd.to_datetime(t["exit_dt"])；ValueError: time data "2019-06-30 18:00:00" doesn't match format "%Y-%m-%d %H:%M:%S.%f"。帳本時間來自 str(Timestamp)，整秒沒有小數、有小數秒則帶 .%f。pandas 3.1.1 會用前幾筆鎖定格式。此為工程錯誤，不是策略 Fail。尚未寫入 TICK_EVAL_LOG_v14.csv，tick_eval 目錄無產出檔。<br>
+- 監看記錄 after-screen rc=1 後寫 after_screen_d1_failed.flag 並退出。未啟動 CPCV、M15／G2K／P2B 特徵。不重啟監看（已有 started／failed 旗標，重啟可能被當成已交接而跳過）。<br>
+- 依補篇階段 1 與既有「不改原檔、另寫入口」慣例：自測確認 format='mixed' 與 format='ISO8601' 皆可解析上述混用字串。新檔 v14_metrics_datetime_fix.py（sha1 f74a1f700e6d78a25a9ba57c3a8cd51641be287d）只替換 metrics_v2._as_trades 的解析；run_tick_eval_v14b.py（sha1 0eb39310f244972b2fa20e737bbb03b02d3db8af）套用後呼叫原 main；run_after_screen_d1_v14b.py（sha1 aec1d19d81bad185e4a0980f545091b3aceb9ee5）從 tick 續跑，不重跑凍結、不覆蓋 frozen json。原檔 sha1 未變：metrics_v2.py 22c147fed17b16109017d2f8f2b8df6f2463c25e、run_tick_eval_v14.py a3ccab12fd96a18fef18f793a54f7da46fb35f19、run_after_screen_d1_v14.py 2e56a819b5db472c2e9c4ff307a74fc620c700ca。<br>
+預估耗時：第一次失敗牆鐘 44 秒（04:27:26 至 04:28:10），含載入 tick 記憶體映射與第一筆模擬。候選 44 個第一名。估載入一次 30–45 秒，其餘每筆若 5–45 秒，全程約 5–35 分鐘。先用 --limit 1 實測再跑滿 44 筆，再接 CPCV 與特徵建置。<br>
+成功或失敗：調查與自測通過，凍結檔未改。tick 尚未重跑成功。結果仍是探索性。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=1 elapsed_sec=44 stage=tick_eval status=failed_then_patched error=ValueError_exit_dt_format pandas=3.1.1 n_rank1=44 frozen_sha1=0e8e375bc23e2010bf91a7f5d12d5171ab5ec911 patch_sha1=f74a1f700e6d78a25a9ba57c3a8cd51641be287d tick_entry=run_tick_eval_v14b.py resume=run_after_screen_d1_v14b.py eta_min=5-35<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E023 Tick 後三年／十年評估（每凍結組態一次）</h2>
+<p>時間：2026-11-12 04:37:03 +0800（台北時間 Asia/Taipei）<br>
+目的：用 tick 記憶體映射，對每格第一名做一次後三年與十年帳本，並嘗試組出 check.py 所需 evidence。<br>
+白話說明：進場用訊號之後第一筆成交價，出場用三重障礙或固定天數；沒做完的單子不算。<br>
+方案規模：候選 1 組。A=0 B=0 Fail=0 紅線4=1。<br>
+官方接受必須另存新 evidence、唯讀 check.py；本輪結果仍是探索性，不得稱獨立盲測。<br>
+缺值時不呼叫 evaluate，記紅線 4 停止判定／ValueError，不寫 BLOCKED。</p>
+<p>摘要：trial_count=1 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=1 elapsed_sec=56.04 stage=tick_eval status=done tick_log=/workspace/ml_meta/v14/trials/TICK_EVAL_LOG_v14.csv<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E024 tick_eval 在 check.py 值域檢查拋錯而中斷，改記紅線 4 後續跑（不覆蓋原檔）</h2>
+<p>時間：2026-11-12 04:50:25 +0800（台北時間 Asia/Taipei）<br>
+目的：讓每格第一名的 tick 評估在遇到官方 check.py 的指標值域錯誤時，依原設計記「紅線 4 停止判定／ValueError」、不寫 BLOCKED，並把剩餘候選跑完，再接 CPCV 與擴張特徵。<br>
+白話說明：時間格式修好之後，已成功評了 7 組（含 2 個探索性 A、3 個 Fail、2 個紅線 4）。下一組呼叫唯讀 check.py 時，因為指標不在允許範圍（例如 PSR p 不在 0 到 1、或回撤 ≤0）整批被中斷。這是工程中斷，不是策略 Fail。官方閘門檔不改，改在外層攔截後繼續。<br>
+過程與證據：<br>
+- 先用 --limit 1 實測：牆鐘 58 秒、腳本 elapsed 56.04 秒，其中該筆評估 6.57 秒（載入約 50 秒）。該筆 c27022960694e65b（D1|RAW|G1|logistic）為紅線 4（後三年 Trim PF 或 MC95 非有限值），帳本 240 筆，已寫入 TICK_EVAL_LOG 與 E023（該條只反映探速 1 組，不是 44 組全部完成）。<br>
+- 接著 run_after_screen_d1_v14b 跑滿格：04:37:21 至 04:38:32，又完成 6 組後在約第 8 組（日誌已有 7 列，下一候選為 D1|RAW|G3|histgb d7bf39ff4461c6a8）於 check.evaluate 拋出 ValueError: invalid metric domain（check.py 第 14 行：original_oos_psr_p 須在 [0,1]、original_oos_daily_mdd&gt;0、second_*_mdd≥0）。已完成 7 筆：4fc42377162838ac A 1.312；a1078968e3901773 Fail 0.793；40aa36f7ca19b09f Fail 0.403；92d848607d831989 紅線 4；407c1b4e502a584b Fail 0.840；d33a8a70a388a864 A 1.211；加上探速那 1 筆紅線 4。失敗當下未寫入該筆日誌，重跑會跳過已完成的 7 筆。<br>
+- 不改 /workspace/ml_meta/spec/admission_v1/check.py（唯讀官方閘門）。新入口 run_tick_eval_v14c.py（sha1 98ef52a9e0dd483970783fc9e3273552d41db90a）在 v14b 時間修正之上攔截 ValueError，改記紅線 4。run_after_screen_d1_v14c.py（sha1 eb612ce2a3ed3ea59c3fb5fdcf4557dbb31abf85）從剩餘 tick 續跑。凍結檔 sha1 仍為 0e8e375bc23e2010bf91a7f5d12d5171ab5ec911。<br>
+預估耗時：已實測載入約 50 秒、單筆約 1–22 秒（中位約數秒）。剩餘 37 筆，估再 5–15 分鐘完成 tick，其後才是 CPCV 與特徵建置。<br>
+成功或失敗：7 筆已落盤且可續跑；整批尚未跑完。結果仍是探索性，不得稱獨立盲測。</p>
+<p>摘要：trial_count=7 trade_count= n_A=2 n_B=0 n_Fail=3 n_ValueError=2 elapsed_sec=71 stage=tick_eval status=failed_then_patched error=ValueError_invalid_metric_domain remaining=37 tick_entry=run_tick_eval_v14c.py resume=run_after_screen_d1_v14c.py frozen_sha1=0e8e375bc23e2010bf91a7f5d12d5171ab5ec911<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E025 Tick 後三年／十年評估（每凍結組態一次）</h2>
+<p>時間：2026-11-12 04:52:40 +0800（台北時間 Asia/Taipei）<br>
+目的：用 tick 記憶體映射，對每格第一名做一次後三年與十年帳本，並嘗試組出 check.py 所需 evidence。<br>
+白話說明：進場用訊號之後第一筆成交價，出場用三重障礙或固定天數；沒做完的單子不算。<br>
+方案規模：候選 44 組。A=1 B=4 Fail=28 紅線4=4。<br>
+官方接受必須另存新 evidence、唯讀 check.py；本輪結果仍是探索性，不得稱獨立盲測。<br>
+缺值時不呼叫 evaluate，記紅線 4 停止判定／ValueError，不寫 BLOCKED。</p>
+<p>摘要：trial_count=44 trade_count= n_A=1 n_B=4 n_Fail=28 n_ValueError=4 elapsed_sec=128.97 stage=tick_eval status=done tick_log=/workspace/ml_meta/v14/trials/TICK_EVAL_LOG_v14.csv<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>
