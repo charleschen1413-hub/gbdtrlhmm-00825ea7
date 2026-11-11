@@ -16,7 +16,7 @@
       <p class="sub">嘗試、規模、耗時、成敗與改善思路。文不如表、表不如圖。探索性、非獨立盲測；非官方驗收</p>
     </header>
 
-    <section class='card' id='status'><h2>目前狀態</h2><p class='status-lead'>目前階段「screen_d1」（完成）。日誌完成 342150（含先前階段），本波 worker 已退出，失敗試驗 0。v14 已做試驗 342,150，累計目前 352,590。來源更新於 2026-11-12 04:20:25 +0800。</p><p class="fn">來源：progress.json · 298e5ec8</p><details class='old-status-pack'><summary>先前狀態（保留，不刪）</summary><ul class='old-status-list'><li>2026-11-12 03:47:13 +0800　screen_d1　0f49f287</li><li>2026-11-12 01:48:39 +0800　screen_d1　25f8a14f</li><li>2026-11-11 23:49:00 +0800　screen_d1　bfa5afc2</li><li>2026-11-11 23:09:01 +0800　speed　9ff565a3</li><li>2026-11-11 23:07:06 +0800　lookahead　3ef96bfd</li><li>2026-11-11 23:06:27 +0800　lookahead　b3001afd</li><li>2026-11-11 23:02:51 +0800　build_features_d1　200b8b8b</li><li>2026-11-11 22:58:39 +0800　build_features_d1　d3c4439d</li><li>2026-11-11 22:57:59 +0800　build_features_d1　add554a8</li><li>2026-11-11 22:56:49 +0800　build_features_d1　eae08320</li><li>2026-11-11 22:41:12 +0800（來源 updated_at_taipei）　writing_plan　70b7da31</li></ul></details></section>
+    <section class='card' id='status'><h2>目前狀態</h2><p class='status-lead'>目前階段「screen_d1」（完成）。tick 後三年／十年，每凍結組態一次。v14 已做試驗 342,150，累計目前 352,590。來源更新於 2026-11-12 04:27:28 +0800。</p><p class="fn">來源：progress.json · c6baa3c9</p><details class='old-status-pack'><summary>先前狀態（保留，不刪）</summary><ul class='old-status-list'><li>2026-11-12 04:20:25 +0800　screen_d1　298e5ec8</li><li>2026-11-12 03:47:13 +0800　screen_d1　0f49f287</li><li>2026-11-12 01:48:39 +0800　screen_d1　25f8a14f</li><li>2026-11-11 23:49:00 +0800　screen_d1　bfa5afc2</li><li>2026-11-11 23:09:01 +0800　speed　9ff565a3</li><li>2026-11-11 23:07:06 +0800　lookahead　3ef96bfd</li><li>2026-11-11 23:06:27 +0800　lookahead　b3001afd</li><li>2026-11-11 23:02:51 +0800　build_features_d1　200b8b8b</li><li>2026-11-11 22:58:39 +0800　build_features_d1　d3c4439d</li><li>2026-11-11 22:57:59 +0800　build_features_d1　add554a8</li><li>2026-11-11 22:56:49 +0800　build_features_d1　eae08320</li><li>2026-11-11 22:41:12 +0800（來源 updated_at_taipei）　writing_plan　70b7da31</li></ul></details></section>
 
     <section class="charts" id="charts">
       <h2 class="section-h">圖表</h2>
@@ -30,7 +30,7 @@
     <article class="card record" id="E001">
       <h2>E001　計畫凍結與文獻出處</h2>
       <p class="one-liner">先講清楚這次要搜什麼、搜多少，再開始跑，避免邊跑邊改規則。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -47,7 +47,7 @@
     <article class="card record" id="E001-2">
       <h2>E001-2　D1 特徵建構第一次失敗，改用 asof 型別修正</h2>
       <p class="one-liner">第一次跑因為日期型別一個是奈秒、一個是微秒，合併時直接失敗。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -60,7 +60,7 @@
     <article class="card record" id="E001-3">
       <h2>E001-3　D1 特徵建構第二次失敗，改複製後再寫入 ADX</h2>
       <p class="one-liner">第二次已經過了日期合併，但算濾網 ADX 時程式要改陣列開頭，而 pandas 給的是不能改的視圖。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -73,7 +73,7 @@
     <article class="card record" id="E001-4">
       <h2>E001-4　想法落實清單與失敗升級流程（補篇，不覆蓋 PLAN_v14）</h2>
       <p class="one-liner">Charles 22:55 要求想法不可遺漏；計畫正文已凍結所以不改 PLAN_v14.md，另寫補篇。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -86,7 +86,7 @@
     <article class="card record" id="E005">
       <h2>E005　D1 特徵建構第三次失敗，改修 front_mask 的 pandas 3 回傳型別</h2>
       <p class="one-liner">第三次已過日期合併與 ADX 可寫入，但切前七年樣本時，新版 pandas 比較日期得到的是陣列，原函式對它呼叫 to_numpy() 失敗。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -99,7 +99,7 @@
     <article class="card record" id="E006">
       <h2>E006　D1 特徵建構成功（build_features_v14e）</h2>
       <p class="one-liner">第三次工程失敗後，改用新入口同時套用 asof 型別、訊號陣列可寫入、以及 front_mask 的 pandas 3 修正，這次有跑完。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -112,7 +112,7 @@
     <article class="card record" id="E007">
       <h2>E007　前視測試（v14b 入口）</h2>
       <p class="one-liner">把資料剪到某天再算一次，剪斷前的數字必須一模一樣。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -126,7 +126,7 @@
     <article class="card record" id="E008">
       <h2>E008　速度實測</h2>
       <p class="one-liner">先跑少數幾筆 logistic／GBDT／HMM，再推算 33 萬筆要多久。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -141,7 +141,7 @@
     <article class="card record" id="E009">
       <h2>E009　小規模 pilot</h2>
       <p class="one-liner">先用十幾筆不同模型試跑，確定不會一開跑就整批失敗。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -156,7 +156,7 @@
     <article class="card record" id="E010">
       <h2>E010　速度低於 2 天，依第 8 節寫入格點調整（擴張，不覆蓋 PLAN）</h2>
       <p class="one-liner">算下來 D1 大約四小時、兩頻率加起來不到一天，按計畫要擴張，但不能用空轉把時間湊到 20 天。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -170,7 +170,7 @@
     <article class="card record" id="E011">
       <h2>E011　D1 凍結格點長跑已穩定啟動（supervisor_v14_run3）</h2>
       <p class="one-liner">計畫、速度、前視、pilot 都過了，現在正式開搜。分數都是前七年交叉驗證，不是後三年 A/B，也不是獨立盲測。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -187,7 +187,7 @@
       <h2>E012　凍結腳本試算（D1，非正式凍結）</h2>
       <p class="one-liner">這不是正式凍結，只是先試跑程序。
 讀取 2884 列，格數 3，輸出 /workspace/ml_meta/v14/reports/freeze_dryrun_d1_v14.json。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -200,7 +200,7 @@
     <article class="card record" id="E013">
       <h2>E013　CPCV／PBO／DSR 程式自檢（非正式）</h2>
       <p class="one-liner">先用少數幾組已完成試驗走兩條路徑，不是正式的每格前 100 名計算。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -214,7 +214,7 @@
     <article class="card record" id="E014">
       <h2>E014　長跑期間備妥下一階段腳本並完成自檢（未動監督程序）</h2>
       <p class="one-liner">長跑的 7 個程序沒有被改或重啟；只是把下一步要用的工具準備好，並用小規模自檢確認算式與讀檔沒有明顯錯誤。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -230,7 +230,7 @@
       <h2>E015　已啟動監看程序（不觸動長跑 PID），崩潰時用既有指令續跑，達標後接後續流程</h2>
       <p class="one-liner">長跑那 7 個程序完全沒動。另外加了 1 個監看（PID 677677），程序總數 8，未超過 14。
 若監督不在且尚未跑完 338,034，只用既有指令續跑 supervisor_v14_run3.py。若日誌已達 342,150 且監督已退出，才啟動 run_after_screen_d1_v14.py（凍結→tick→CPCV→擴張特徵）。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -243,7 +243,7 @@
     <article class="card record" id="E016">
       <h2>E016　調查探索性最佳 trial 92d848607d831989 的 front7_cv_mean_trim_pf=552.72 為何偏高</h2>
       <p class="one-liner">這個 552 不是五折都穩贏，而是三個有效折的 Trim PF 算術平均被其中一折的極端值拉上去。那一折幾乎全贏，只因為留下一筆 3 美元的極小虧損，分數才沒被判成無效。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -276,7 +276,7 @@
 - 2026-11-12 03:16:58 +0800 執行既定指令：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/supervisor_v14_run3.py &gt;&gt; /workspace/ml_meta/v14/logs/supervisor_v14_run3.log 2&gt;&amp;1 &amp;
 - 新監督 PID 10221；worker PID 10242、10250、10253、10257、10260、10268。03:17:01 心跳 finished=56999/338034，best 仍為 552.7207264600796。日誌隨即續寫（03:17:13 已 57,888 列）。
 - 同時間以同一解譯器重啟監看（screen_d1 完成後要接凍結／tick／CPCV）：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/watch_and_continue_v14.py &gt;&gt; /workspace/ml_meta/v14/logs/watch_and_continue_v14.log 2&gt;&amp;1 &amp; ；新監看 PID 10565，03:17:13 觀察 finished=57742、supervisor_pids=[10221]。運算相關 python 程序共 8，未超過 14。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -289,7 +289,7 @@
     <article class="card record" id="E018">
       <h2>E018　screen_d1 階段 worker 退出</h2>
       <p class="one-liner">這一波 worker 已結束或監督退出。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
@@ -304,11 +304,56 @@
       <h2>E019　D1 凍結格點與附加試驗監督回合結束（擴張批次尚未開跑）</h2>
       <p class="one-liner">主搜尋與補篇想法先跑完；第 8 節擴張（G2K、P2B 加密、M5）要等新規則檔與特徵，不在本波假裝完成。
 日誌累計完成 342150。最佳前七年 CV Trim PF（探索性）=552.7207264600796。非後三年 A/B。</p>
-      <p class="fn">來源：EXPERIMENT_LOG.md · 2a7d7aa2</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
       <details class="expand">
         <summary>展開</summary>
         <div class="kv-wrap">
           <table class="kv"><tr><th>時間</th><td>2026-11-12 04:20:25 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>先跑已凍結的 338,034 筆與已宣告的 4,116 筆附加試驗。</td></tr><tr><th>規模</th><td>未取得</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>trial_count=342150 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec= stage=screen_d1 status=pending_expand</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E020">
+      <h2>E020　D1 凍結格點與附加試驗已達標，開始後續流程</h2>
+      <p class="one-liner">搜尋這一段跑完了，接著做凍結、tick 驗收與 CPCV。
+失敗試驗 0。結果仍是探索性。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-12 04:27:23 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>確認 TRIAL_LOG 已有 342150 筆完成（含失敗），達到 338,034+4,116。</td></tr><tr><th>規模</th><td>未取得</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>trial_count=342150 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=screen_d1 status=done n_cumulative=352590</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E021">
+      <h2>E021　凍結每格前 100 名（D1）</h2>
+      <p class="one-liner">先在訓練那段期間比出每格最前面的一百組，之後才拿去驗後三年。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-12 04:27:25 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>只用前七年內部交叉驗證分數，把每格前 100 名寫死，後三年不參與排序。</td></tr><tr><th>規模</th><td>讀取 342150 列，得到 44 格，其中有第一名的格 44。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>輸出 /workspace/ml_meta/v14/freeze/frozen_top100_d1.json。有效折少於 3 或沒有分數者不得入榜（略過 {&#x27;not_done&#x27;: 0, &#x27;few_folds&#x27;: 181346, &#x27;no_score&#x27;: 0, &#x27;wrong_frame&#x27;: 0}）。</td></tr><tr><th>成敗</th><td>本檔只做排序凍結，不是後三年 A/B。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E022">
+      <h2>E022　tick_eval 因帳本時間字串格式失敗，改走混格式修正後續跑（不覆蓋原檔）</h2>
+      <p class="one-liner">監看在 04:27 已接著跑凍結，44 格都寫好了；但做 tick 帳本評分時，有的出場時間有小數秒、有的剛好整秒，新版 pandas 認錯格式就中斷。原程式與凍結結果都不改，另寫修正後再跑。
+過程與證據：
+- 監看 PID 10565 於 2026-11-12 04:27:20 +0800 見 finished=342150、監督已退出，啟動 run_after_screen_d1_v14.py。凍結 04:27:23–04:27:26 成功，rc=0，輸出 /workspace/ml_meta/v14/freeze/frozen_top100_d1.json，sha1 仍為 0e8e375bc23e2010bf91a7f5d12d5171ab5ec911（44 格、44 個第一名）。見 E021。
+- tick 於 04:27:26 啟動 run_tick_eval_v14.py --also-ranks 1，04:28:10 以 rc=1 失敗。堆疊：metrics_v2._as_trades 內 pd.to_datetime(t[&quot;exit_dt&quot;])；ValueError: time data &quot;2019-06-30 18:00:00&quot; doesn&#x27;t match format &quot;%Y-%m-%d %H:%M:%S.%f&quot;。帳本時間來自 str(Timestamp)，整秒沒有小數、有小數秒則帶 .%f。pandas 3.1.1 會用前幾筆鎖定格式。此為工程錯誤，不是策略 Fail。尚未寫入 TICK_EVAL_LOG_v14.csv，tick_eval 目錄無產出檔。
+- 監看記錄 after-screen rc=1 後寫 after_screen_d1_failed.flag 並退出。未啟動 CPCV、M15／G2K／P2B 特徵。不重啟監看（已有 started／failed 旗標，重啟可能被當成已交接而跳過）。
+- 依補篇階段 1 與既有「不改原檔、另寫入口」慣例：自測確認 format=&#x27;mixed&#x27; 與 format=&#x27;ISO8601&#x27; 皆可解析上述混用字串。新檔 v14_metrics_datetime_fix.py（sha1 f74a1f700e6d78a25a9ba57c3a8cd51641be287d）只替換 metrics_v2._as_trades 的解析；run_tick_eval_v14b.py（sha1 0eb39310f244972b2fa20e737bbb03b02d3db8af）套用後呼叫原 main；run_after_screen_d1_v14b.py（sha1 aec1d19d81bad185e4a0980f545091b3aceb9ee5）從 tick 續跑，不重跑凍結、不覆蓋 frozen json。原檔 sha1 未變：metrics_v2.py 22c147fed17b16109017d2f8f2b8df6f2463c25e、run_tick_eval_v14.py a3ccab12fd96a18fef18f793a54f7da46fb35f19、run_after_screen_d1_v14.py 2e56a819b5db472c2e9c4ff307a74fc620c700ca。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 05ffab93</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-12 04:35:46 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>診斷並補正 tick 後三年／十年評估的工程錯誤，使凍結完成後的流程能從 tick 續跑到 CPCV 與擴張特徵，不重跑、不覆蓋已完成的凍結檔。</td></tr><tr><th>規模</th><td>未取得</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>第一次失敗牆鐘 44 秒（04:27:26 至 04:28:10），含載入 tick 記憶體映射與第一筆模擬。候選 44 個第一名。估載入一次 30–45 秒，其餘每筆若 5–45 秒，全程約 5–35 分鐘。先用 --limit 1 實測再跑滿 44 筆，再接 CPCV 與特徵建置。</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>調查與自測通過，凍結檔未改。tick 尚未重跑成功。結果仍是探索性。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
         </div>
         
       </details>
@@ -357,7 +402,7 @@
     
     <footer>
       <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。缺資料標「未取得／未開始」，不編時間、不猜數字。</p>
-      <p class="footer-links"><a href="sources.html">完整來源清單</a>　舊版首頁：<a href="archive/index_20261112_0420.html">index_20261112_0420.html</a>　<a href="archive/index_20261112_0348.html">index_20261112_0348.html</a>　<a href="archive/index_20261112_0148.html">index_20261112_0148.html</a>　<a href="archive/index_20261111_2351.html">index_20261111_2351.html</a>　<a href="archive/index_20261111_2309.html">index_20261111_2309.html</a>　<a href="archive/index_20261111_2307.html">index_20261111_2307.html</a>　<a href="archive/index_20261111_2306.html">index_20261111_2306.html</a></p>
+      <p class="footer-links"><a href="sources.html">完整來源清單</a>　舊版首頁：<a href="archive/index_20261112_0435.html">index_20261112_0435.html</a>　<a href="archive/index_20261112_0420.html">index_20261112_0420.html</a>　<a href="archive/index_20261112_0348.html">index_20261112_0348.html</a>　<a href="archive/index_20261112_0148.html">index_20261112_0148.html</a>　<a href="archive/index_20261111_2351.html">index_20261111_2351.html</a>　<a href="archive/index_20261111_2309.html">index_20261111_2309.html</a>　<a href="archive/index_20261111_2307.html">index_20261111_2307.html</a>　<a href="archive/index_20261111_2306.html">index_20261111_2306.html</a></p>
     </footer>
   </div>
 </body>

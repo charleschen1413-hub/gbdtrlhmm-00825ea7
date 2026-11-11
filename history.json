@@ -374,5 +374,21 @@
     "filename": "entries/20261112_0420_v14_progress.json.md",
     "html": "entries/20261112_0420_v14_progress.json.html",
     "bytes": 4620
+  },
+  {
+    "time_taipei": "2026-11-12 04:35（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/EXPERIMENT_LOG.md",
+    "sha1": "05ffab9316314e3dfe07f3a6df955b4abd3438b9",
+    "filename": "entries/20261112_0435_v14_EXPERIMENT_LOG.md",
+    "html": "entries/20261112_0435_v14_EXPERIMENT_LOG.html",
+    "bytes": 36333
+  },
+  {
+    "time_taipei": "2026-11-12 04:35（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/progress.json",
+    "sha1": "c6baa3c9e17dfe6f6d35bc95177ca7b9e8d31ff3",
+    "filename": "entries/20261112_0435_v14_progress.json.md",
+    "html": "entries/20261112_0435_v14_progress.json.html",
+    "bytes": 4637
   }
 ]
