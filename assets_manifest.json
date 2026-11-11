@@ -89,5 +89,96 @@
     "dest": "assets/imported/20261111_2259_v14_progress_card_v1.svg",
     "sha1": "29e3380a51aab8532f15d4e0e1ae6e6964447c98",
     "name": "v14_progress_card_v1.svg"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/funnel_v1.html",
+    "dest": "assets/imported/20261111_2301_funnel_v1.html",
+    "sha1": "d25a59690579fd032a7431532fbb4c8fbc675118",
+    "name": "funnel_v1.html"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/funnel_v1.svg",
+    "dest": "assets/imported/20261111_2301_funnel_v1.svg",
+    "sha1": "7a78ae09b8f2611c29dc16906ad12812b4dd0dea",
+    "name": "funnel_v1.svg"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/gantt_v1.html",
+    "dest": "assets/imported/20261111_2301_gantt_v1.html",
+    "sha1": "d7e51fe2cee186de12473027ee4fd0183b4190d7",
+    "name": "gantt_v1.html"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/gantt_v1.svg",
+    "dest": "assets/imported/20261111_2301_gantt_v1.svg",
+    "sha1": "b3b30a0b537f4dd8ae3886099465851a8364ad7b",
+    "name": "gantt_v1.svg"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/index_preview.html",
+    "dest": "assets/imported/20261111_2301_index_preview.html",
+    "sha1": "4354e7727868e4b5d7eef31ef9863b3a85aedddf",
+    "name": "index_preview.html"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/method_flow_v1.html",
+    "dest": "assets/imported/20261111_2301_method_flow_v1.html",
+    "sha1": "be9c901d2959a0acf82edb60a48be9a90ebc1ca0",
+    "name": "method_flow_v1.html"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/method_flow_v1.svg",
+    "dest": "assets/imported/20261111_2301_method_flow_v1.svg",
+    "sha1": "d3cd77a0a298a412f6a94701ac7614836862365d",
+    "name": "method_flow_v1.svg"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/outcome_blocks_v1.html",
+    "dest": "assets/imported/20261111_2301_outcome_blocks_v1.html",
+    "sha1": "40f00664275773975484a0d84966f0d0771c7d85",
+    "name": "outcome_blocks_v1.html"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/outcome_blocks_v1.svg",
+    "dest": "assets/imported/20261111_2301_outcome_blocks_v1.svg",
+    "sha1": "324ebfd12e98ce6e58f969e1a6c5f3756704eb53",
+    "name": "outcome_blocks_v1.svg"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/timing_bars_v1.html",
+    "dest": "assets/imported/20261111_2301_timing_bars_v1.html",
+    "sha1": "a8cf81f8bbddd45ad25b4475a3bbaa3ce5ccd5a5",
+    "name": "timing_bars_v1.html"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/timing_bars_v1.svg",
+    "dest": "assets/imported/20261111_2301_timing_bars_v1.svg",
+    "sha1": "a2db484bc6309d1df1639c9d0a2ba0fb43fc6b94",
+    "name": "timing_bars_v1.svg"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/v14_progress_card_v1.html",
+    "dest": "assets/imported/20261111_2301_v14_progress_card_v1.html",
+    "sha1": "72dd38af0d61a0d92327bcb12f4eaa9e514875f0",
+    "name": "v14_progress_card_v1.html"
+  },
+  {
+    "time": "20261111_2301",
+    "src": "/workspace/ml_meta/web_assets/v14_progress_card_v1.svg",
+    "dest": "assets/imported/20261111_2301_v14_progress_card_v1.svg",
+    "sha1": "fd3a59533be630171ce8381a795ff92c028b7b8a",
+    "name": "v14_progress_card_v1.svg"
   }
 ]

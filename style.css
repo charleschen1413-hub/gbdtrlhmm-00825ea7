@@ -160,3 +160,5 @@ details.old-status-pack, details.old-status {
 details summary { cursor: pointer; font-weight: 650; }
 details.old-status { margin-top: 8px; background: #fffdf8; }
 .imported svg { width: 100%; height: auto; display: block; }
+.asset-img { width: 100%; height: auto; display: block; background: #fffdf8; border: 1px solid var(--line); border-radius: 12px; }
+.asset-frame { width: 100%; min-height: 420px; border: 1px solid var(--line); border-radius: 12px; background: #fffdf8; }

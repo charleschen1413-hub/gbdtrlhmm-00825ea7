@@ -484,8 +484,8 @@ KIND_KEYS = {
     "funnel": ["funnel"],
     "gantt": ["gantt", "progress", "stages"],
     "flow": ["flow", "pipeline"],
-    "time_r2": ["time", "elapsed", "duration", "耗時"],
-    "official_grid": ["official", "pass_fail", "color_official"],
+    "time_r2": ["timing_bars", "timing", "time", "elapsed", "duration", "耗時"],
+    "official_grid": ["official", "pass_fail", "color_official", "outcome_blocks"],
     "research_grid": ["research_grid", "tier", "research"],
     "diag_trades": ["diag", "trade_count", "threshold", "漏斗交易"],
 }
@@ -557,9 +557,13 @@ def check_asset_numbers(rec: dict, facts: dict) -> list[str]:
         for m in re.finditer(r"PASS[^\d]{0,8}(\d+)", text, re.I):
             if int(m.group(1)) != 0:
                 issues.append(f"{rec['dest']}: 圖中 PASS 附近寫 {m.group(1)}，來源 official SUMMARY 為 0")
-    r2_trials = facts["r2c"].get("n_trials")
+    name = (rec.get("name") or rec.get("dest") or "").lower()
+    if any(k in name for k in ("timing", "time_bar", "elapsed", "gantt")):
+        r2_trials = None  # duration charts are not trial-count charts
+    else:
+        r2_trials = facts["r2c"].get("n_trials")
     if r2_trials:
-        for m in re.finditer(r"(第二輪|round\s*2)[^\d]{0,16}(\d[\d,]*)", text):
+        for m in re.finditer(r"(第二輪試驗|第二輪候選|round\s*2 trials)[^\d]{0,16}(\d[\d,]*)", text, re.I):
             got = int(m.group(2).replace(",", ""))
             if got not in (int(r2_trials), 540, 1080, 536, 40, 60, 20, 66, 2, 15, 23, 10440, 8820) and got > 20:
                 issues.append(f"{rec['dest']}: 圖中「{m.group(1)}」附近寫 {m.group(2)}，來源 cell_summary 試驗合計為 {r2_trials}")
@@ -576,11 +580,33 @@ def pick_chart(kind: str, placeholders: dict[str, str], imported: dict[str, dict
         path = ROOT / rec["dest"]
         if path.is_file():
             mismatches.extend(check_asset_numbers(rec, facts))
+            # Prefer the sibling .svg and reference it by path (do not inline huge matplotlib docs).
+            svg = path.with_suffix(".svg") if path.suffix.lower() != ".svg" else path
+            if not svg.is_file() and path.suffix.lower() == ".svg":
+                svg = path
+            # If dest is html, a same-stem svg may live next to it.
+            if path.suffix.lower() != ".svg":
+                cand = path.with_suffix(".svg")
+                if cand.is_file():
+                    svg = cand
+            if svg.is_file():
+                rel = svg.relative_to(ROOT).as_posix()
+                sha = sha1_file(svg)
+                inner = (
+                    f'<img class="asset-img" src="{esc(rel)}" '
+                    f'alt="{esc(kind)}" />'
+                )
+                cap = (
+                    f'<p class="fn">美編圖（唯讀複製自 <code>{esc(rec.get("src"))}</code>，'
+                    f'發布檔 <code>{esc(rel)}</code> sha1 <code>{esc(sha[:8])}</code>…）。'
+                    f'不一致處見建置報告，不改原圖。</p>'
+                )
+                return f'<figure class="fig imported">{inner}{cap}</figure>', "web_assets"
             content = path.read_text(encoding="utf-8", errors="replace")
-            # If full HTML document, extract body; if svg/fragment, wrap
             if re.search(r"<html", content, re.I):
-                m = re.search(r"<body[^>]*>(.*)</body>", content, re.I | re.S)
-                inner = m.group(1) if m else content
+                # last resort: iframe the imported html, do not paste the whole document
+                rel = path.relative_to(ROOT).as_posix()
+                inner = f'<iframe class="asset-frame" src="{esc(rel)}" title="{esc(kind)}"></iframe>'
             else:
                 inner = content
             cap = f'<p class="fn">美編圖（唯讀複製自 <code>{esc(rec.get("src"))}</code>，sha1 <code>{esc(rec["sha1"][:8])}</code>…）。不一致處見建置報告，不改原圖。</p>'
