@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>GBDTRLHMM 實驗紀錄（探索性、非獨立盲測；非官方驗收）</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    
+    <header class="site">
+      <h1>GBDTRLHMM 新制度變形｜實驗紀錄</h1>
+      <p class="sub">嘗試、規模、耗時、成敗與改善思路。文不如表、表不如圖。探索性、非獨立盲測；非官方驗收</p>
+    </header>
+
+    <section class='card' id='status'><h2>目前狀態</h2><p class='status-lead'>目前階段「screen_d1」（進行中）。screen_d1 續跑，已完成 56998。v14 已做試驗 229,295，累計目前 239,735。來源更新於 2026-11-12 03:47:13 +0800。</p><p class="fn">來源：progress.json · 0f49f287</p><details class='old-status-pack'><summary>先前狀態（保留，不刪）</summary><ul class='old-status-list'><li>2026-11-12 01:48:39 +0800　screen_d1　25f8a14f</li><li>2026-11-11 23:49:00 +0800　screen_d1　bfa5afc2</li><li>2026-11-11 23:09:01 +0800　speed　9ff565a3</li><li>2026-11-11 23:07:06 +0800　lookahead　3ef96bfd</li><li>2026-11-11 23:06:27 +0800　lookahead　b3001afd</li><li>2026-11-11 23:02:51 +0800　build_features_d1　200b8b8b</li><li>2026-11-11 22:58:39 +0800　build_features_d1　d3c4439d</li><li>2026-11-11 22:57:59 +0800　build_features_d1　add554a8</li><li>2026-11-11 22:56:49 +0800　build_features_d1　eae08320</li><li>2026-11-11 22:41:12 +0800（來源 updated_at_taipei）　writing_plan　70b7da31</li></ul></details></section>
+
+    <section class="charts" id="charts">
+      <h2 class="section-h">圖表</h2>
+      <figure class="fig imported"><img class="asset-img" src="../assets/imported/20261111_2259_funnel_v1.svg" alt="funnel_r1" /><p class="fn">美編圖 · funnel_v1.html · 20261111_2259_funnel_v1.svg · d9cfc5ef</p></figure><figure class="fig imported"><img class="asset-img" src="../assets/imported/20261111_2259_funnel_v1.svg" alt="funnel_r2" /><p class="fn">美編圖 · funnel_v1.html · 20261111_2259_funnel_v1.svg · d9cfc5ef</p></figure><figure class="fig imported"><img class="asset-img" src="../assets/imported/20261111_2259_outcome_blocks_v1.svg" alt="official_grid" /><p class="fn">美編圖 · outcome_blocks_v1.html · 20261111_2259_outcome_blocks_v1.svg · d6842546</p></figure><figure class="fig imported"><img class="asset-img" src="../assets/imported/20261111_2259_timing_bars_v1.svg" alt="time_r2" /><p class="fn">美編圖 · timing_bars_v1.html · 20261111_2259_timing_bars_v1.svg · b9a844e4</p></figure><figure class="fig imported"><img class="asset-img" src="../assets/imported/20261111_2259_gantt_v1.svg" alt="gantt" /><p class="fn">美編圖 · gantt_v1.html · 20261111_2259_gantt_v1.svg · 4775e2b9</p></figure>
+    </section>
+
+    <section>
+      <h2 class="section-h">實驗紀錄</h2>
+      
+      
+    <article class="card record" id="E001">
+      <h2>E001　計畫凍結與文獻出處</h2>
+      <p class="one-liner">先講清楚這次要搜什麼、搜多少，再開始跑，避免邊跑邊改規則。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 22:53:15 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>把 v14 長跑的格點、試驗數與規則寫死，並說明用了哪些已核對的方法。</td></tr><tr><th>規模</th><td>頻率 2（D1、M15）× 單一頻率 338,034 筆試驗，合計 676,068 筆；54 格。累計 ML 試驗若全部跑完為 10,440+676,068=686,508。主訊號 3,743（P2B 99、P4TA 108、L2CROSS 68×52=3,536）。RAW 模型格點含 logistic 56、histgb 1,152、hmm 72。</td></tr><tr><th>方法與出處</th><td>- 回測過擬合機率 PBO 與 CPCV：Bailey, Borwein, López de Prado, Zhu，《The Probability of Backtest Overfitting》，<a href="https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf" rel="nofollow noopener noreferrer">https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf</a>
+- 緊縮夏普比率 DSR（依實際試驗數校正）：Bailey &amp; López de Prado，《The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality》，<a href="https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf" rel="nofollow noopener noreferrer">https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf</a>
+- 馬可夫轉換／狀態機率：Hamilton (1989)，〈A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle〉，<a href="https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and" rel="nofollow noopener noreferrer">https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and</a>
+- PPO（本輪因環境無 torch／stable_baselines3，速度實測後不納入凍結格點，僅備查）：Schulman 等，《Proximal Policy Optimization Algorithms》，<a href="https://export.arxiv.org/abs/1707.06347" rel="nofollow noopener noreferrer">https://export.arxiv.org/abs/1707.06347</a>
+未在本條引用（WebFetch 當時打不開或未完成驗證，故不寫）：López de Prado 著書頁、Corsi HAR-RV 期刊頁、Gao 等人日內動量、Barndorff-Nielsen &amp; Shephard。PLAN_v14 裡對 triple-barrier／HAR-RV 的設計說明仍在，但本實驗紀錄不把未驗證網址當出處。</td></tr><tr><th>預估與實際耗時</th><td>本條為寫計畫，沒有運算預估。總長跑天數必須等 SPEED_v14 實測。</td></tr><tr><th>問題與替代嘗試</th><td>PLAN_v14.md 已存在（sha1 a4d90478821d04e0a0f6766d1631abd34329b422），screen_rules_v14.json sha1 2acd16440624c16264e24bef049ebf7871b5daca。窗口只讀 freeze/windows_v2.json（sha1 6672824bd0fb5ec953d95957fbed6425555a44da）。前期盤點 sha1 08c4c78bf6bfcd1a5682ab283a1ac61681c6c512。不改舊檔。</td></tr><tr><th>成敗</th><td>計畫與格點已凍結，運算尚未開始，尚無 A／B／Fail。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E001-2">
+      <h2>E001-2　D1 特徵建構第一次失敗，改用 asof 型別修正</h2>
+      <p class="one-liner">第一次跑因為日期型別一個是奈秒、一個是微秒，合併時直接失敗。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 22:55:28 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>建立日頻特徵與 3,743 個主訊號快取。</td></tr><tr><th>規模</th><td>預設 D1、主訊號 3,743、特徵集 G1–G5。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>原腳本 build_features_v14.py 呼叫 v14_lib.attach_macro_pcr，在 pandas merge_asof 丟出 MergeError（datetime64[ns] 對 datetime64[us]）。規則是不覆蓋舊檔，所以另寫 v14_asof_fix.py 與 run_build_features_v14_fixasof.py，把兩邊鍵都轉成 datetime64[ns] 再合併。</td></tr><tr><th>成敗</th><td>第一次失敗（工程錯誤，不是策略 Fail）。接著改走替代腳本。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E001-3">
+      <h2>E001-3　D1 特徵建構第二次失敗，改複製後再寫入 ADX</h2>
+      <p class="one-liner">第二次已經過了日期合併，但算濾網 ADX 時程式要改陣列開頭，而 pandas 給的是不能改的視圖。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 22:57:59 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>建立日頻特徵與主訊號。</td></tr><tr><th>規模</th><td>仍是 D1、3,743 個主訊號。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>v14_signals._adx 對 _wild 的回傳值做 r[:2n]=nan，觸發 ValueError: assignment destination is read-only。不改原檔，另寫 v14_signals_patch.py（先複製成可寫陣列）與 build_features_v14d.py。</td></tr><tr><th>成敗</th><td>第二次失敗（工程錯誤）。接著改走 v14d。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E001-4">
+      <h2>E001-4　想法落實清單與失敗升級流程（補篇，不覆蓋 PLAN_v14）</h2>
+      <p class="one-liner">Charles 22:55 要求想法不可遺漏；計畫正文已凍結所以不改 PLAN_v14.md，另寫補篇。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 22:58:39 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>把已提出的 14 項想法逐條標明落實方式，並寫死失敗後怎麼升級。</td></tr><tr><th>規模</th><td>凍結格點仍是 676,068 筆。附加試驗每頻率 4,116 筆（規則表 216、單調 GBDT 2,160、正式 fractional Kelly 1,680、堆疊 60）。</td></tr><tr><th>方法與出處</th><td>PBO <a href="https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf" rel="nofollow noopener noreferrer">https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf</a> ；DSR <a href="https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf" rel="nofollow noopener noreferrer">https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf</a> ；Hamilton 1989 <a href="https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and" rel="nofollow noopener noreferrer">https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and</a> ；PPO（不納入格點，只備查原因）<a href="https://export.arxiv.org/abs/1707.06347" rel="nofollow noopener noreferrer">https://export.arxiv.org/abs/1707.06347</a> 。</td></tr><tr><th>預估與實際耗時</th><td>補篇本身無運算。附加 4,116 筆的時間等 SPEED 實測後再估。</td></tr><tr><th>問題與替代嘗試</th><td>PLAN_v14.md sha1 仍為 a4d90478821d04e0a0f6766d1631abd34329b422。補篇 v14/PLAN_v14_ADDENDUM.md，附加規則 v14/freeze/screen_rules_v14_addon.json。</td></tr><tr><th>成敗</th><td>文件已寫入，運算仍在重試特徵建構，尚無 A/B。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E005">
+      <h2>E005　D1 特徵建構第三次失敗，改修 front_mask 的 pandas 3 回傳型別</h2>
+      <p class="one-liner">第三次已過日期合併與 ADX 可寫入，但切前七年樣本時，新版 pandas 比較日期得到的是陣列，原函式對它呼叫 to_numpy() 失敗。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:02:45 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>建立日頻特徵與 3,743 個主訊號快取。</td></tr><tr><th>規模</th><td>仍是 D1、主訊號預期 3,743。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>v14_lib.front_mask 在 pandas 3.1.1 對 DatetimeIndex 與 Timestamp 做比較會得到 numpy.ndarray，沒有 to_numpy()，觸發 AttributeError。不改原檔，另寫 v14_front_mask_fix.py（改用 np.asarray）與 build_features_v14e.py。v14d 約自 22:57:59 跑到 22:58:40（台北時間 Asia/Taipei），約 41 秒。另外原實驗紀錄編號函式用錯切片，四條都標成 E001，已另寫 v14_progress_fix.py，本條起依條目數續編，不改舊條目標題。</td></tr><tr><th>成敗</th><td>第三次失敗（工程錯誤）。接著改走 v14e。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E006">
+      <h2>E006　D1 特徵建構成功（build_features_v14e）</h2>
+      <p class="one-liner">第三次工程失敗後，改用新入口同時套用 asof 型別、訊號陣列可寫入、以及 front_mask 的 pandas 3 修正，這次有跑完。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:04:50 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>建立日頻特徵與 3,743 個主訊號快取，供後續前視檢驗、速度實測與篩選使用。</td></tr><tr><th>規模</th><td>D1，會期 2,605，前七年 1,808，主訊號 3,743（與預期相同）。G1 欄位數 18，G5 182。標籤 TB1/TB2/TB3 與 FH1/FH2/FH5。SPX PCR 無錯誤。主訊號全為零的支數：371（個別骨幹失敗時填 0；非全數失敗）。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未事前單項估這次重跑；實際 54.12 秒（其中預載 47.06 秒）。</td></tr><tr><th>問題與替代嘗試</th><td>腳本 v14/scripts/build_features_v14e.py（sha1 f3e69799d98fda5a4f6bbaa6aa06e01d2d20d589）。產物目錄 v14/data/d1/。manifest.json sha1 8aa8df17dc6fda9af3c490185fe92cf5d41bebec，daily_frame.parquet sha1 73f5c46d7bc8d35b921424224ae94653289b398f，primary_dirs.npy sha1 5ce3a6cede53e0d26f34ebcdae21757eaa299afc。窗口 sha1 6672824bd0fb5ec953d95957fbed6425555a44da。建成於 2026-11-11 23:03:45 +0800（台北時間 Asia/Taipei）。</td></tr><tr><th>成敗</th><td>成功寫入快取。尚未做前視檢驗或篩選，尚無 A/B。結果為探索性。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E007">
+      <h2>E007　前視測試（v14b 入口）</h2>
+      <p class="one-liner">把資料剪到某天再算一次，剪斷前的數字必須一模一樣。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:07:50 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>確認截斷後重算，截斷日以前特徵不變。</td></tr><tr><th>規模</th><td>3 個截斷日，31 個欄位。
+實際耗時：160.8 秒。結果：通過（工程檢查，不是策略 A/B）。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=160.83 stage=lookahead status=done ok=True report_sha1=657cbe66e061889030ed96f91fde17aedc97fca0</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E008">
+      <h2>E008　速度實測</h2>
+      <p class="one-liner">先跑少數幾筆 logistic／GBDT／HMM，再推算 33 萬筆要多久。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:09:01 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>用實測單試驗時間估計長跑天數，避免再口頭亂估。</td></tr><tr><th>規模</th><td>D1 試驗 338,034；D1+M15 676,068。抽樣 logistic 8、histgb 4、hmm 3、meta_logistic 6。
+使用方法：前七年 purged 5 折快篩（與正式長跑同一套 `run_trial`）。
+預估耗時（本測本身）與實際：實際 6.9 秒。長跑預估見上文。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>特徵包載入 0.01 秒。RL 套件不可用，PPO 不進格點。</td></tr><tr><th>成敗</th><td>實測完成。尚未有策略 A/B 分級。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E009">
+      <h2>E009　小規模 pilot</h2>
+      <p class="one-liner">先用十幾筆不同模型試跑，確定不會一開跑就整批失敗。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:09:55 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>在長跑前確認單一試驗管線、日誌與分數寫得出來。</td></tr><tr><th>規模</th><td>14 筆（RAW logistic/histgb/hmm 與 meta 各取樣）。
+使用方法：與正式快篩相同的 purged 5 折與 `run_trial`。
+實際耗時：4.8 秒。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>日誌 /workspace/ml_meta/v14/trials/TRIAL_LOG_v14_pilot.csv。不寫入正式長跑 TRIAL_LOG，以免和 676,068 筆混在一起。</td></tr><tr><th>成敗</th><td>有分數 10 筆、失敗 0 筆。此階段沒有後三年 A/B 分級。目前最佳前七年 CV Trim PF（探索性）為 1.577713213797597。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E010">
+      <h2>E010　速度低於 2 天，依第 8 節寫入格點調整（擴張，不覆蓋 PLAN）</h2>
+      <p class="one-liner">算下來 D1 大約四小時、兩頻率加起來不到一天，按計畫要擴張，但不能用空轉把時間湊到 20 天。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:13:05 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>把實測後的擴張決定與試驗數寫死，再開全速。</td></tr><tr><th>規模</th><td>凍結格點不變（D1 338,034，兩頻率 676,068）。附加 4,116／頻率。擴張 G2K 7,248／頻率（特徵尚未建，先不跑）。P2B 加密新增 15,444 筆 meta／頻率（快取尚未建，先不跑）。M5 因估計單進程約 3.95 GiB、6 worker 約 23.7 GiB，超過約 15 GiB 記憶體，本輪不啟動。
+使用的方法與文獻：本條沒有新的文獻檢索；速度數字來自 SPEED_v14（sha1 a80dd0feb21a1d6e88f23c8b180fad6041d1f3fd）。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>附加約 0.002 天；G2K 約 0.005 天；P2B 加密約 0.007 天。即使加上兩頻率凍結與這些擴張（不含 M5），外推仍小於 2 天。</td></tr><tr><th>問題與替代嘗試</th><td>調整檔 v14/freeze/grid_adjustment_v14.md。已鎖 4 對副本 v14/freeze/g2k_pairs_v14.json（sha1 5977a4ea08d84f3b5f4c70c7bf8d94bad5073a8d）。長跑改走 supervisor_v14_run2.py，避免舊入口重跑失敗的原特徵腳本。</td></tr><tr><th>成敗</th><td>調整檔已寫入。尚未開始凍結格點長跑。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E011">
+      <h2>E011　D1 凍結格點長跑已穩定啟動（supervisor_v14_run3）</h2>
+      <p class="one-liner">計畫、速度、前視、pilot 都過了，現在正式開搜。分數都是前七年交叉驗證，不是後三年 A/B，也不是獨立盲測。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:14:41 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>開始前七年快篩長跑，6 個 worker 加 1 個監督，可續跑、崩潰只重啟自己的程序。</td></tr><tr><th>規模</th><td>本波先跑凍結 D1 338,034 筆，接著同一監督再跑附加 4,116 筆。兩頻率凍結合計 676,068；加上附加（若只 D1）為 342,150。先前 ML 10,440 筆會記入 DSR 累計分母。
+使用方法：purged 5 折＋embargo 快篩，與 SPEED／pilot 同一套 run_trial。文獻出處仍只引用本檔先前已 WebFetch 打開者，本條無新文獻。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>SPEED 估 D1 約 0.17 天（範圍 0.10–0.33 天，約 4 小時，範圍約 2.3–8 小時）。啟動後約 28 秒已寫入 471 筆且 CSV 可解析、試驗號不重複，與估計同數量級。附加約 0.002 天。G2K／P2B 加密尚未建特徵，本波不跑。M5 因記憶體不足本輪不跑（見調整檔）。</td></tr><tr><th>問題與替代嘗試</th><td>監督 PID 654824，於 2026-11-11 23:13:48 +0800（台北時間 Asia/Taipei）啟動。啟動指令：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/supervisor_v14_run3.py &gt;&gt; /workspace/ml_meta/v14/logs/supervisor_v14_run3.log 2&gt;&amp;1 &amp;
+續跑：再執行同一指令；TRIAL_LOG_v14.csv 裡 status=done/failed 的 trial_id 會跳過。不要用 supervisor_v14_run.py（會呼叫已失敗的原特徵腳本）。
+心跳時已見探索性最佳前七年 CV Trim PF（啟動當下）會隨後更新；本條寫入時日誌約 746 筆、有分數 691、當時最佳 10.38652082077589。此數字不是後三年 A/B。</td></tr><tr><th>成敗</th><td>監督與 6 個 worker 已穩定運行（PID 654839、654842、654845、654863、654866、654869）。尚未做凍結、CPCV／PBO／DSR、M15、tick 或官方分級。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E012">
+      <h2>E012　凍結腳本試算（D1，非正式凍結）</h2>
+      <p class="one-liner">這不是正式凍結，只是先試跑程序。
+讀取 2884 列，格數 3，輸出 /workspace/ml_meta/v14/reports/freeze_dryrun_d1_v14.json。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:17:48 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>在長跑尚未跑完時，先用現有日誌檢查凍結程式能不能正確讀檔與排序。</td></tr><tr><th>規模</th><td>未取得</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>trial_count=2884 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=freeze_prep status=dry_run n_cells=3 out_sha1=9f4186c371977052af976b690efc217fb5744053</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E013">
+      <h2>E013　CPCV／PBO／DSR 程式自檢（非正式）</h2>
+      <p class="one-liner">先用少數幾組已完成試驗走兩條路徑，不是正式的每格前 100 名計算。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:21:29 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>在長跑期間確認組合交叉驗證、回測過擬合機率與緊縮夏普的程式能跑通。</td></tr><tr><th>規模</th><td>未取得</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>輸出 /workspace/ml_meta/v14/reports/cpcv_selftest_v14.json。PBO 自檢值 0.5。DSR 此處用代理序列，不是後三年官方 DSR。
+文獻：PBO https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf ；DSR https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf （皆先前已 WebFetch 打開）。</td></tr><tr><th>成敗</th><td>trial_count=5661 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0.9 stage=cpcv_prep status=self_test out_sha1=0eab624352c9f8005ccf543e41a3c9226daadbae pbo=0.5</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E014">
+      <h2>E014　長跑期間備妥下一階段腳本並完成自檢（未動監督程序）</h2>
+      <p class="one-liner">長跑的 7 個程序沒有被改或重啟；只是把下一步要用的工具準備好，並用小規模自檢確認算式與讀檔沒有明顯錯誤。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 23:23:52 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>在 D1 快篩仍在跑時，先寫好並自檢凍結、CPCV／PBO／DSR、tick 評估、M15／G2K／P2B 加密的新腳本與規則檔。</td></tr><tr><th>規模</th><td>凍結試算讀到當時日誌；CPCV 自檢 3 筆 logistic、2 條路徑；tick 模擬自檢只走開頭一段，確認 799,822,729 筆與記憶體映射。G2K 規則 7,248／頻率，P2B 加密新增 meta 15,444／頻率，規則已寫死。M15 建置腳本已編譯，尚未跑全量（避免與長跑搶 CPU／記憶體）。
+使用的方法與文獻：PBO https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf ；DSR https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf （先前已 WebFetch 打開）。CPCV 預設 6 組每次測 2 組、15 條路徑。DSR 分母用實際完成試驗數，並另報 10,440+v14。
+過程中的自檢：凍結 dry-run 寫入 reports/freeze_dryrun_d1_v14.json；v14_cpcv 單元測試通過（獨立序列 PBO 約 0.55、完全對齊為 0；DSR 在 N=1 高於 N=100000）；G2K 濾波器因果自檢通過；tick 模擬自檢通過；CPCV 程式自檢 PBO=0.5（僅 2 路徑示範，非正式）。擴張格點計數核對 G2K=7248、P2B meta=15444。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>腳本已寫入且自檢通過。尚未做正式凍結、正式 CPCV、tick 後三年或 M15 全量建置。長跑監督 PID 654824 未觸動。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E015">
+      <h2>E015　已啟動監看程序（不觸動長跑 PID），崩潰時用既有指令續跑，達標後接後續流程</h2>
+      <p class="one-liner">長跑那 7 個程序完全沒動。另外加了 1 個監看（PID 677677），程序總數 8，未超過 14。
+若監督不在且尚未跑完 338,034，只用既有指令續跑 supervisor_v14_run3.py。若日誌已達 342,150 且監督已退出，才啟動 run_after_screen_d1_v14.py（凍結→tick→CPCV→擴張特徵）。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-12 00:02:00 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>避免本對話中斷後，D1 跑完卻沒人接著做凍結與 tick。監看每 10 分鐘讀日誌，不輪詢過密。</td></tr><tr><th>規模</th><td>未取得</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>監看已啟動並在 2026-11-12 00:01:49 +0800 觀察到監督仍為 654824、當時已完成約 19,810 筆。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E016">
+      <h2>E016　調查探索性最佳 trial 92d848607d831989 的 front7_cv_mean_trim_pf=552.72 為何偏高</h2>
+      <p class="one-liner">這個 552 不是五折都穩贏，而是三個有效折的 Trim PF 算術平均被其中一折的極端值拉上去。那一折幾乎全贏，只因為留下一筆 3 美元的極小虧損，分數才沒被判成無效。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-12 02:48:07 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>查證目前快篩榜首分數為何遠高於中位數（約 0.84），檢查折數、折內樣本數、交易筆數與是否無虧損單。不改長跑程序、不加 worker、不寫入 TRIAL_LOG。</td></tr><tr><th>規模</th><td>只用已寫入的 TRIAL_LOG_v14.csv 一列，加上 D1 快取重跑同一組參數一次（單一程序）。官方計分函式 `v14_fit.run_trial` 重現分數 552.7207264600796，與日誌完全一致。
+試驗身分（日誌，完成於 2026-11-11 23:38:51 +0800）：trial_id=92d848607d831989，cell=D1|RAW|G2|histgb，label=FH1，size_gate=flat，params={max_depth:2, learning_rate:0.03, max_iter:100, min_samples_leaf:100, l2_regularization:1, threshold:0.65}，n_valid_folds=3，n_trades_cv=34，elapsed_sec=0.3061。
+計分規則（既有、未改）：purged 5 折；每折對驗證段交易算 Trim PF（先去掉最大 ceil(N×5%) 筆淨獲利，再以去頂後贏利合計／虧損合計絕對值）；去頂後若無虧損單則該折回傳 None、不編造 inf、不計入平均；至少 3 個有效折才給分數，分數＝有效折 Trim PF 的算術平均。
+折內樣本數（並非樣本過少）：設計為 5 折。折 0 訓練 1,442／驗證 361；折 1 為 1,434／362；折 2 為 1,435／361；折 3 為 1,434／362；折 4 為 1,439／362。各折訓練有標籤且兩類皆有，約 1,430–1,438 筆；驗證有標籤約 359–362 筆。前七年共 1,808 個會期。異常不來自訓練集太小。
+各折實測（門檻 0.65，全部只出多方、空方訊號為 0）：
+- 折 0（驗證 2016-09-29..2018-02-22）：訊號 10、成交 9（8 勝 1 負）。唯一虧損是 2017-08-23 多方，變動 0.25 點，損益 −3 美元（點值 20、來回成本 8：0.25×20−8=−3）。未去頂 PF=2,737；去掉最大贏利 3,247 後，贏利 4,964／虧損 3，Trim PF=1,654.6666666666667。此折不是「無虧損單」，而是虧損極小所以被計入。
+- 折 1（驗證 2018-02-23..2019-07-19）：成交 14（11 勝 3 負），真實虧損 −2,918、−4,893、−2,033。未去頂 PF=2.3325883787078423，Trim PF=1.780272247054043。
+- 折 2（驗證 2019-07-22..2020-12-10）：成交 10（8 勝 2 負），真實虧損 −6,678、−953。未去頂 PF=2.2409906958458916，Trim PF=1.7152404665181495。
+- 折 3（驗證 2020-12-11..2022-05-06）：無效。僅 1 筆交易、1 勝 0 負（2021-08-27，+3,467 美元）。去頂後無剩餘也無虧損，trim_pf=None。此折確實無虧損單，因此不進平均。
+- 折 4（驗證 2022-05-09..2023-09-28）：無效。0 筆訊號、0 筆交易（p 最大值 0.6497，略低於門檻 0.65）。
+有效折 3 個，Trim PF 為 1654.6666666666667、1.780272247054043、1.7152404665181495，平均正好 552.7207264600796。日誌的 n_trades_cv=34 含無效折 3 的 1 筆；有效折合計 33 筆。
+結論：552.72 被折 0 的 1,654.67 主導；若只看另兩個有效折，Trim PF 約 1.75。高門檻導致交易稀疏，折 0 只靠一筆 −3 美元的近乎打平虧損才成為有效折。此分數是前七年交叉驗證的探索性指標，不是後三年 A/B，也不是獨立盲測。長跑監督與 worker 未被改動。</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>調查完成並重現原分數。無需重啟程序，也無需 Charles 立刻決定；凍結與官方分級仍等 screen_d1 跑完後依既定流程處理。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="E017">
+      <h2>E017　監督與 worker 在虛擬機 fork 後全部消失，重建 .venv 並用既有指令續跑</h2>
+      <p class="one-liner">箱體在約 03:13–03:14 發生虛擬機 fork／不乾淨關機，原本的監督、6 個 worker 與監看都沒了；連原來的虛擬環境目錄也不見了。先依本箱既有紀錄把套件裝回同一路徑，再按原指令續跑，沒有加 worker、沒有刪檔、沒有改用舊入口 supervisor_v14_run.py。
+過程與證據：
+- 2026-11-12 03:00:15 巡檢時監督 654824、監看 677677、worker 654839/654842/654845/654863/654866/654869 仍在，日誌 55,577 列，可用記憶體約 11,083 MB。
+- TRIAL_LOG 最後一筆完成於 2026-11-12 03:00:32 +0800；日誌當時 56,998 筆（含表頭 56,999 列），檔案 mtime 03:03:31。監督最後心跳 02:58:58，finished=49,664/338,034（心跳落後於日誌）。
+- 03:14:35 巡檢時上述 8 個 PID 全不在，venv python 程序數為 0。dmesg：03:13:06 systemd-journald 記錄 journal 損毀或不乾淨關機並重建；03:14:30 `random: crng reseeded due to virtual machine fork`。監督日誌沒有自行寫入的崩潰堆疊，最後一筆仍是 02:58:58 心跳。
+- 續跑前再次確認無殘留 supervisor_v14_run3／run_screen_worker_v14／watch_and_continue_v14。第一次用既定指令啟動失敗：`nohup: failed to run command &#x27;/workspace/ml_meta/.venv/bin/python&#x27;: No such file or directory`。整份 `/workspace/ml_meta/.venv` 目錄在恢復後不存在，系統 Python 亦無 sklearn／hmmlearn。
+- 依本箱既有書面紀錄重建同一路徑虛擬環境：pandas==3.1.1（E005 實測）、scikit-learn==1.9.1（STEP2_REPORT，同一 .venv 路徑）、hmmlearn==0.3.3（screen_rules_v3／ROUND2 SUMMARY）。一併裝上相依套件 numpy==2.5.4、scipy==1.18.1、pyarrow==26.0.1、joblib==1.6.0 等；numpy／scipy／pyarrow 的前次精確版本未在報告中找到。Python 3.13.5。`import v14_fit` 通過。
+- 2026-11-12 03:16:58 +0800 執行既定指令：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/supervisor_v14_run3.py &gt;&gt; /workspace/ml_meta/v14/logs/supervisor_v14_run3.log 2&gt;&amp;1 &amp;
+- 新監督 PID 10221；worker PID 10242、10250、10253、10257、10260、10268。03:17:01 心跳 finished=56999/338034，best 仍為 552.7207264600796。日誌隨即續寫（03:17:13 已 57,888 列）。
+- 同時間以同一解譯器重啟監看（screen_d1 完成後要接凍結／tick／CPCV）：nohup /workspace/ml_meta/.venv/bin/python -u /workspace/ml_meta/v14/scripts/watch_and_continue_v14.py &gt;&gt; /workspace/ml_meta/v14/logs/watch_and_continue_v14.log 2&gt;&amp;1 &amp; ；新監看 PID 10565，03:17:13 觀察 finished=57742、supervisor_pids=[10221]。運算相關 python 程序共 8，未超過 14。</p>
+      <p class="fn">來源：EXPERIMENT_LOG.md · 669d578c</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-12 03:17:42 +0800（台北時間 Asia/Taipei）</td></tr><tr><th>目的</th><td>長跑程序全部不在後，先確認舊 PID 已不存在，再用既定指令續跑 supervisor_v14_run3.py，並恢復監看，使 D1 快篩與後續凍結／tick／CPCV 銜接不中斷。</td></tr><tr><th>規模</th><td>未取得</td></tr><tr><th>方法與出處</th><td>出處待補</td></tr><tr><th>預估與實際耗時</th><td>未取得</td></tr><tr><th>問題與替代嘗試</th><td>未取得</td></tr><tr><th>成敗</th><td>已續跑並恢復監看，快篩分數繼續寫入。此為工程中斷後的續跑，不是策略 Fail。凍結與官方分級仍未開始。探索性最佳分數尚未被後續試驗取代。</td></tr><tr><th>改善思路</th><td>未取得</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="HIST-R1">
+      <h2>HIST-R1　第一輪（規則表／邏輯迴歸／GBDT）與官方路徑</h2>
+      <p class="one-liner">90 格裡 60 格有 rank-1；官方路徑合格數 0。探索性、非獨立盲測；非官方驗收。</p>
+      <p class="fn">來源：SUMMARY.md · c094f151 · SUMMARY.csv · 8bc42da2 · PLAN_v13.md · 210a97a7 · summary.csv · 14734b4a · progress.json · ef1d62b4</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>tick 帳本階段 2026-11-11 21:17:37 +0800～2026-11-11 21:21:05 +0800。快篩起訖未取得。</td></tr><tr><th>目的</th><td>在前七年為規則表／邏輯迴歸／GBDT 選參並凍結，每格只把第一名拿去評後三年。</td></tr><tr><th>規模</th><td>90 格、試驗 4,410（另有被取代的 v1 4,410）。30 個模式×特徵組合，每組規則表 9、邏輯迴歸 30、GBDT 108。</td></tr><tr><th>方法與出處</th><td>前七年三折擴張窗口排序，每格取前 100 名凍結。文獻出處待補。</td></tr><tr><th>預估與實際耗時</th><td>快篩預估與實際：未取得。tick 帳本階段 elapsed_sec＝208.5578932762146（來源 round1_run/progress.json）。</td></tr><tr><th>問題與替代嘗試</th><td>A3／A3B 共 30 格無合格 rank-1。官方路徑另存 official_v1，不覆蓋 e2e_tick_v3；後三年數字沿用同一份 rank-1 帳本，不重跑 MC95。PLAN_v13 載明 ledger_reproduced 為腳本自填，與「兩個獨立程序產出位元組級相同 CSV」不符。</td></tr><tr><th>成敗</th><td>研究分級（官方 SUMMARY／stageA）：A 10／B 4／Fail 43／停止判定（研究分級空或無）3。官方路徑：PASS 0／FAIL 51／紅線 4 停止判定／ValueError 9。十年≥300：0 格；二考≥5：7 格。官方合格數 0。</td></tr><tr><th>改善思路</th><td>PLAN_v13 載明後繼官方 evidence 必須另存新檔，ledger_reproduced 須符合雙程序重現。診斷見 HIST-DIAG。</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="HIST-R2">
+      <h2>HIST-R2　第二輪（HMM／RL）</h2>
+      <p class="one-liner">1,620 筆試驗跑完；有 rank-1 的 40 格裡研究 A 2、合格數 0。探索性、非獨立盲測；非官方驗收。</p>
+      <p class="fn">來源：SUMMARY_v1.md · a973aec9 · cell_summary.csv · 3f9d3c4b · summary.csv · c1dc06cf · progress.json · 0049e22d</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>tick v2：2026-11-11 22:12:12 +0800～2026-11-11 22:12:34 +0800。快篩耗時見 SUMMARY（83.6 秒），快篩起訖鐘點未取得。</td></tr><tr><th>目的</th><td>在同一 30 個組合上試 HMM／RL。</td></tr><tr><th>規模</th><td>試驗合計 1620（SUMMARY 寫 HMM 540＋RL 1,080），格數 60。</td></tr><tr><th>方法與出處</th><td>規則凍結於 freeze/screen_rules_v3.json（SUMMARY：寫於看結果前）。hmmlearn 0.3.3。文獻出處待補。</td></tr><tr><th>預估與實際耗時</th><td>快篩預估：外推單程序約 0.17 小時；實際 83.6 秒（round2_run/SUMMARY_v1.md）。tick 預估：未取得。progress.json elapsed_sec＝21.702660083770752。</td></tr><tr><th>問題與替代嘗試</th><td>tick v1 因 0 筆帳本 CSV 無欄名在階段 B 失敗，改 v2 新目錄重跑，v1 產物保留。重跑 test_lookahead_v3.py 時就地覆蓋 reports/test_lookahead_v3_normal.json。階段 B 未計算、未輸出後三年指標。</td></tr><tr><th>成敗</th><td>有 rank-1 的格 40；凍結 536。stageA_v2 研究分級：A 2／B 0／Fail 23／紅線 4 停止判定／ValueError 15。十年≥300 且二考≥5：2 格（SUMMARY 寫這 2 格皆研究 Fail）。合格數 0。</td></tr><tr><th>改善思路</th><td>所列來源檔未載明下一輪方案本文（見後續 E001 若存在）。</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    <article class="card record" id="HIST-DIAG">
+      <h2>HIST-DIAG　交易筆數流失診斷</h2>
+      <p class="one-liner">六種底層 PCR 模式十年完成交易皆不足 300，二考皆為 0；這是第一限制，不是特徵集。</p>
+      <p class="fn">來源：DIAG_TRADECOUNT_v1.md · 18fe1963</p>
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv"><tr><th>時間</th><td>2026-11-11 22:31（台北時間）撰寫。只讀既有輸出，未重跑試驗。</td></tr><tr><th>目的</th><td>查「十年≥300、二考≥5」為何幾乎沒有格子達到。</td></tr><tr><th>規模</th><td>六種 PCR 模式底層 1 分 K 全接受帳本，加上第一輪 60 格與第二輪有 rank-1 的格子。</td></tr><tr><th>方法與出處</th><td>對既有帳本按 freeze/windows_v2.json 切窗計數；對照模型十年交易與接受率。文獻出處待補。</td></tr><tr><th>預估與實際耗時</th><td>預估與實際耗時：未取得（本檔未重跑試驗）。</td></tr><tr><th>問題與替代嘗試</th><td>各模式×延遲的 tick 全接受十年帳本未找到，其餘五模式只能引用 1 分 K 帳本。F4／F5 延遲全接受的獨立交易帳本亦缺。</td></tr><tr><th>成敗</th><td>六種底層模式十年完成交易皆不足 300：A1／A1B＝175、A2／A2B＝189、A3／A3B＝16；PCR_ONLY 對照＝191；二考皆為 0。第一輪 60 格十年交易最多 275，0 格 ≥300。只有第二輪兩格達到十年≥300 且二考≥5，研究分級皆 Fail。</td></tr><tr><th>改善思路</th><td>診斷本身的改善緣由：底層模式單獨無法滿足十年≥300 與二考≥5，後續若要達標須面對這個上限。方案本文以 EXPERIMENT_LOG.md 已寫下的條目為準；本診斷檔未載明新格點設計。</td></tr></table>
+        </div>
+        
+      </details>
+    </article>
+    
+    </section>
+    
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。缺資料標「未取得／未開始」，不編時間、不猜數字。</p>
+      <p class="footer-links"><a href="../sources.html">完整來源清單</a>　舊版首頁：<a href="archive/index_20261112_0348.html">index_20261112_0348.html</a>　<a href="archive/index_20261112_0148.html">index_20261112_0148.html</a>　<a href="archive/index_20261111_2351.html">index_20261111_2351.html</a>　<a href="archive/index_20261111_2309.html">index_20261111_2309.html</a>　<a href="archive/index_20261111_2307.html">index_20261111_2307.html</a>　<a href="archive/index_20261111_2306.html">index_20261111_2306.html</a></p>
+    </footer>
+  </div>
+</body>
+</html>
