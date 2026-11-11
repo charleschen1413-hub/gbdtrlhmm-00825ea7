@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>EXPERIMENT_LOG.md｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>EXPERIMENT_LOG.md</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/v14/EXPERIMENT_LOG.md</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/v14/EXPERIMENT_LOG.md</code></li>
+<li>sha1：<code>d421570f1c797b31bde6fb0e8307b8fc7628b27b</code></li>
+<li>快照時間：2026-11-11 22:59（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<h1>v14 實驗紀錄（網頁用）</h1>
+<p>只附加、不改舊條目。繁體中文。所有結果皆為探索性、非獨立盲測。文獻只列本檔寫入前已用 WebFetch 打開過的出處。</p>
+<h2>E001 計畫凍結與文獻出處</h2>
+<p>時間：2026-11-11 22:53:15 +0800（台北時間 Asia/Taipei）<br>
+目的：把 v14 長跑的格點、試驗數與規則寫死，並說明用了哪些已核對的方法。<br>
+白話說明：先講清楚這次要搜什麼、搜多少，再開始跑，避免邊跑邊改規則。<br>
+方案規模：頻率 2（D1、M15）× 單一頻率 338,034 筆試驗，合計 676,068 筆；54 格。累計 ML 試驗若全部跑完為 10,440+676,068=686,508。主訊號 3,743（P2B 99、P4TA 108、L2CROSS 68×52=3,536）。RAW 模型格點含 logistic 56、histgb 1,152、hmm 72。<br>
+使用的方法與文獻出處（只列本次已用 WebFetch 打開並讀到題名／摘要的網址）：<br>
+- 回測過擬合機率 PBO 與 CPCV：Bailey, Borwein, López de Prado, Zhu，《The Probability of Backtest Overfitting》，https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf<br>
+- 緊縮夏普比率 DSR（依實際試驗數校正）：Bailey &amp; López de Prado，《The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality》，https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf<br>
+- 馬可夫轉換／狀態機率：Hamilton (1989)，〈A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle〉，https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and<br>
+- PPO（本輪因環境無 torch／stable_baselines3，速度實測後不納入凍結格點，僅備查）：Schulman 等，《Proximal Policy Optimization Algorithms》，https://export.arxiv.org/abs/1707.06347<br>
+未在本條引用（WebFetch 當時打不開或未完成驗證，故不寫）：López de Prado 著書頁、Corsi HAR-RV 期刊頁、Gao 等人日內動量、Barndorff-Nielsen &amp; Shephard。PLAN_v14 裡對 triple-barrier／HAR-RV 的設計說明仍在，但本實驗紀錄不把未驗證網址當出處。<br>
+預估耗時：本條為寫計畫，沒有運算預估。總長跑天數必須等 SPEED_v14 實測。<br>
+過程：PLAN_v14.md 已存在（sha1 a4d90478821d04e0a0f6766d1631abd34329b422），screen_rules_v14.json sha1 2acd16440624c16264e24bef049ebf7871b5daca。窗口只讀 freeze/windows_v2.json（sha1 6672824bd0fb5ec953d95957fbed6425555a44da）。前期盤點 sha1 08c4c78bf6bfcd1a5682ab283a1ac61681c6c512。不改舊檔。<br>
+成功或失敗：計畫與格點已凍結，運算尚未開始，尚無 A／B／Fail。</p>
+<p>摘要：trial_count=676068 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=plan status=done plan_sha1=a4d90478821d04e0a0f6766d1631abd34329b422 rules_sha1=2acd16440624c16264e24bef049ebf7871b5daca cells=54 trials_per_frame=338034<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E001 D1 特徵建構第一次失敗，改用 asof 型別修正</h2>
+<p>時間：2026-11-11 22:55:28 +0800（台北時間 Asia/Taipei）<br>
+目的：建立日頻特徵與 3,743 個主訊號快取。<br>
+白話說明：第一次跑因為日期型別一個是奈秒、一個是微秒，合併時直接失敗。<br>
+方案規模：預設 D1、主訊號 3,743、特徵集 G1–G5。<br>
+過程中遇到的問題與替代嘗試：原腳本 build_features_v14.py 呼叫 v14_lib.attach_macro_pcr，在 pandas merge_asof 丟出 MergeError（datetime64[ns] 對 datetime64[us]）。規則是不覆蓋舊檔，所以另寫 v14_asof_fix.py 與 run_build_features_v14_fixasof.py，把兩邊鍵都轉成 datetime64[ns] 再合併。<br>
+成功或失敗：第一次失敗（工程錯誤，不是策略 Fail）。接著改走替代腳本。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=1 elapsed_sec=59 stage=build_features_d1 status=failed error=MergeError datetime64[ns] vs datetime64[us] alternative=run_build_features_v14_fixasof.py<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E001 D1 特徵建構第二次失敗，改複製後再寫入 ADX</h2>
+<p>時間：2026-11-11 22:57:59 +0800（台北時間 Asia/Taipei）<br>
+目的：建立日頻特徵與主訊號。<br>
+白話說明：第二次已經過了日期合併，但算濾網 ADX 時程式要改陣列開頭，而 pandas 給的是不能改的視圖。<br>
+方案規模：仍是 D1、3,743 個主訊號。<br>
+過程中遇到的問題與替代嘗試：v14_signals._adx 對 _wild 的回傳值做 r[:2n]=nan，觸發 ValueError: assignment destination is read-only。不改原檔，另寫 v14_signals_patch.py（先複製成可寫陣列）與 build_features_v14d.py。<br>
+成功或失敗：第二次失敗（工程錯誤）。接著改走 v14d。</p>
+<p>摘要：trial_count=0 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=1 elapsed_sec= stage=build_features_d1 status=failed error=ValueError read-only _adx alternative=build_features_v14d.py<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p>
+<h2>E001 想法落實清單與失敗升級流程（補篇，不覆蓋 PLAN_v14）</h2>
+<p>時間：2026-11-11 22:58:39 +0800（台北時間 Asia/Taipei）<br>
+目的：把已提出的 14 項想法逐條標明落實方式，並寫死失敗後怎麼升級。<br>
+白話說明：Charles 22:55 要求想法不可遺漏；計畫正文已凍結所以不改 PLAN_v14.md，另寫補篇。<br>
+方案規模：凍結格點仍是 676,068 筆。附加試驗每頻率 4,116 筆（規則表 216、單調 GBDT 2,160、正式 fractional Kelly 1,680、堆疊 60）。<br>
+使用的方法與文獻出處（僅列已 WebFetch 打開者）：PBO https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf ；DSR https://www.davidhbailey.com/dhbpapers/deflated-sharpe.pdf ；Hamilton 1989 https://www.econometricsociety.org/publications/econometrica/1989/03/01/new-approach-economic-analysis-nonstationary-time-series-and ；PPO（不納入格點，只備查原因）https://export.arxiv.org/abs/1707.06347 。<br>
+預估耗時：補篇本身無運算。附加 4,116 筆的時間等 SPEED 實測後再估。<br>
+過程：PLAN_v14.md sha1 仍為 a4d90478821d04e0a0f6766d1631abd34329b422。補篇 v14/PLAN_v14_ADDENDUM.md，附加規則 v14/freeze/screen_rules_v14_addon.json。<br>
+成功或失敗：文件已寫入，運算仍在重試特徵建構，尚無 A/B。</p>
+<p>摘要：trial_count=4116 trade_count= n_A=0 n_B=0 n_Fail=0 n_ValueError=0 elapsed_sec=0 stage=plan_addendum status=done plan_sha1=a4d90478821d04e0a0f6766d1631abd34329b422 addendum_sha1=35a9345a57ccb86a2611ecbd452f434b6b4fdb42 addon_rules_sha1=17a852232afaca35ea4b28ccb096d7aeb44496f4 addon_trials_per_frame=4116<br>
+結果標記：探索性、非獨立盲測、非官方結論。</p></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>
