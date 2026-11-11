@@ -55,6 +55,14 @@ def sha1_file(path: Path) -> str:
     return hashlib.sha1(path.read_bytes()).hexdigest()
 
 
+def normalized_sha1(data: bytes) -> str:
+    """Ignore matplotlib / ISO timestamps so redraws of the same figure are treated as unchanged."""
+    text = data.decode("utf-8", "replace")
+    text = re.sub(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\d.+-]*", "", text)
+    text = re.sub(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(?: \+0800)?", "", text)
+    return hashlib.sha1(text.encode("utf-8")).hexdigest()
+
+
 def load_json(path: Path, default):
     if not path.is_file():
         return default
@@ -448,21 +456,28 @@ def import_web_assets(stamp: str) -> dict:
         if p.suffix.lower() not in {".svg", ".html", ".css"}:
             report["skipped_nonvisual"].append(str(p))
             continue
-        sha = sha1_file(p)
+        data = p.read_bytes()
+        sha = hashlib.sha1(data).hexdigest()
+        nsha = normalized_sha1(data)
         if sha in sha_to_rec:
             report["reused"].append({"src": str(p), "sha1": sha, "dest": sha_to_rec[sha].get("dest")})
+            continue
+        same_norm = next((m for m in manifest if m.get("name")==p.name and m.get("norm_sha1")==nsha), None)
+        if same_norm:
+            report["reused"].append({"src": str(p), "sha1": sha, "dest": same_norm.get("dest"), "note": "normalized-same"})
             continue
         dest_name = f"{stamp}_{p.name}"
         dest = ASSETS_DIR / dest_name
         if dest.exists():
             dest_name = f"{stamp}_{sha[:8]}_{p.name}"
             dest = ASSETS_DIR / dest_name
-        dest.write_bytes(p.read_bytes())
+        dest.write_bytes(data)
         rec = {
             "time": stamp,
             "src": str(p),
             "dest": f"assets/imported/{dest_name}",
             "sha1": sha,
+            "norm_sha1": nsha,
             "name": p.name,
         }
         manifest.append(rec)
@@ -472,7 +487,9 @@ def import_web_assets(stamp: str) -> dict:
     # latest per original filename
     latest = {}
     for m in manifest:
-        latest[m.get("name") or m["dest"]] = m
+        key = m.get("name") or m["dest"]
+        if key not in latest:
+            latest[key] = m  # keep first dest; later redraws with only a timestamp do not retarget the page
     report["all_imported"] = list(latest.values())
     report["latest_by_kind"] = classify_assets(latest.values())
     return report
