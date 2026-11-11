@@ -30,16 +30,23 @@ def fmt_num(n: Any) -> str:
     return str(n)
 
 
+def short_name(path) -> str:
+    """Display only the file name, never a long /workspace/... path."""
+    text = "" if path is None else str(path)
+    name = text.rstrip("/").split("/")[-1] if text else ""
+    return name or "未取得"
+
+
 def footnote(sources: list[dict]) -> str:
     if not sources:
-        return f'<p class="fn">數字來源未取得。</p>'
+        return '<p class="fn">來源未取得。</p>'
     bits = []
     for s in sources:
-        path = esc(s.get("path", ""))
+        name = esc(short_name(s.get("path") or s.get("name")))
         sha = s.get("sha1") or ""
         short = esc(sha[:8] if sha else "未取得")
-        bits.append(f"<code>{path}</code> sha1 <code>{short}</code>…")
-    return '<p class="fn">數字來源：' + "；".join(bits) + "。文獻出處見各筆紀錄。</p>"
+        bits.append(f"{name} · {short}")
+    return '<p class="fn">來源：' + " · ".join(bits) + "</p>"
 
 
 def stat_pill(label: str, value: Any, kind: str = "") -> str:
@@ -298,25 +305,29 @@ def record_card(rec: dict) -> str:
     rows = "".join(
         f"<tr><th>{esc(k)}</th><td>{cell(v)}</td></tr>" for k, v in fields
     )
-    charts = rec.get("charts_html") or ""
     link = rec.get("href")
     heading = f"{esc(rec.get('id',''))}　{esc(rec.get('title',''))}"
     more = f'<p class="more"><a href="{esc(link)}">完整快照</a></p>' if link else ""
+    fn = rec.get("footnote_html") or ""
     return f"""
     <article class="card record" id="{esc(rec.get('id',''))}">
       <h2>{heading}</h2>
       <p class="one-liner">{esc(rec.get("one_liner") or rec.get("purpose") or "")}</p>
-      {charts}
-      <div class="scroll">
-        <table class="kv">{rows}</table>
-      </div>
-      {more}
+      {fn}
+      <details class="expand">
+        <summary>展開</summary>
+        <div class="kv-wrap">
+          <table class="kv">{rows}</table>
+        </div>
+        {more}
+      </details>
     </article>
     """
 
 
-def page_shell(title: str, body: str, rel_prefix: str = "") -> str:
+def page_shell(title: str, body: str, rel_prefix: str = "", footer_extra: str = "") -> str:
     css = f"{rel_prefix}style.css"
+    extra = footer_extra or ""
     return f"""<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -331,7 +342,8 @@ def page_shell(title: str, body: str, rel_prefix: str = "") -> str:
     <div class="banner">{esc(DISCLAIMER)}</div>
     {body}
     <footer>
-      <p>{esc(DISCLAIMER)}　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。圖由建置腳本從真實檔案重繪；缺資料標「未取得／未開始」，不編時間、不猜數字。</p>
+      <p>{esc(DISCLAIMER)}　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。缺資料標「未取得／未開始」，不編時間、不猜數字。</p>
+      {extra}
     </footer>
   </div>
 </body>
@@ -340,64 +352,36 @@ def page_shell(title: str, body: str, rel_prefix: str = "") -> str:
 
 
 def render_index(ctx: dict) -> str:
-    v14 = ctx["v14"]
     overview_charts = "".join(ctx.get("overview_charts") or [])
     records_html = "".join(record_card(r) for r in ctx.get("records") or [])
     status_html = ctx.get("status_html") or ""
-    src_rows = ctx.get("src_table_html") or ""
-    hist_table = ctx.get("hist_table_html") or ""
-    trials = ctx.get("trials_html") or ""
     missing_log = ""
     if not ctx.get("experiment_log_found"):
         missing_log = (
-            "<p class=\"meta\"><code>/workspace/ml_meta/v14/EXPERIMENT_LOG.md</code>：未找到。"
+            "<p class=\"meta\">EXPERIMENT_LOG.md：未找到。"
             "以下最早幾條紀錄依既有摘要檔核對寫成，待該檔出現後以它為主，歷史只附加。</p>"
         )
+    footer = ctx.get("footer_extra") or ""
     body = f"""
     <header class="site">
       <h1>GBDTRLHMM 新制度變形｜實驗紀錄</h1>
       <p class="sub">嘗試、規模、耗時、成敗與改善思路。文不如表、表不如圖。{esc(DISCLAIMER)}</p>
     </header>
 
-    <section class="card">
-      <h2>試驗與進度總覽</h2>
-      {trials}
-    </section>
     {status_html}
-    {overview_charts}
+
+    <section class="charts" id="charts">
+      <h2 class="section-h">圖表</h2>
+      {overview_charts}
+    </section>
 
     <section>
       <h2 class="section-h">實驗紀錄</h2>
       {missing_log}
       {records_html or "<p>尚未取得可刊登的實驗紀錄。</p>"}
     </section>
-
-    <section class="card">
-      <h2>來源檔（本次掃描）</h2>
-      <p class="meta">最新快照：{esc(ctx.get("latest_time") or "尚無")}。只讀 <code>/workspace/ml_meta</code>，未改動來源。歷史只附加：來源內容若與上一筆快照 sha1 相同則不新寫；同名檔既已存在則不覆蓋。</p>
-      <div class="scroll">
-      <table>
-        <thead><tr><th>來源路徑</th><th>sha1</th><th>快照</th></tr></thead>
-        <tbody>
-          {src_rows}
-        </tbody>
-      </table>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>累積紀錄（最新在上）</h2>
-      <div class="scroll">
-      <table>
-        <thead><tr><th>時間（台北時間）</th><th>來源檔路徑</th><th>sha1</th><th>摘要連結</th></tr></thead>
-        <tbody>
-          {hist_table}
-        </tbody>
-      </table>
-      </div>
-    </section>
     """
-    return page_shell("GBDTRLHMM 實驗紀錄（探索性、非獨立盲測；非官方驗收）", body, "")
+    return page_shell("GBDTRLHMM 實驗紀錄（探索性、非獨立盲測；非官方驗收）", body, "", footer_extra=footer)
 
 
 def svg_gantt_stages(title: str, stages: list[dict], sources: list[dict], width: int = 880) -> str:
@@ -437,3 +421,38 @@ def svg_gantt_stages(title: str, stages: list[dict], sources: list[dict], width:
     if not rows:
         rows = [{"label": "stages", "status": "未取得", "done": None, "total": None, "elapsed_label": None, "eta_label": None, "when": "progress.json 無 stages 陣列"}]
     return svg_gantt(title, rows, sources, width)
+
+
+def render_sources_page(ctx: dict) -> str:
+    src_rows = ctx.get("src_table_html") or ""
+    hist_table = ctx.get("hist_table_html") or ""
+    body = f"""
+    <header class="site">
+      <h1>來源與快照清單</h1>
+      <p class="sub"><a href="index.html">← 回到實驗紀錄</a>　{esc(DISCLAIMER)}</p>
+    </header>
+    <section class="card">
+      <h2>來源檔</h2>
+      <p class="meta">最新快照：{esc(ctx.get("latest_time") or "尚無")}。只讀來源，未改動。歷史只附加，同名既有檔不覆蓋。</p>
+      <div class="scroll sources-scroll">
+      <table class="sources-table">
+        <thead><tr><th>檔名</th><th>完整路徑</th><th>sha1</th><th>快照</th></tr></thead>
+        <tbody>
+          {src_rows}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    <section class="card">
+      <h2>累積快照（最新在上）</h2>
+      <div class="scroll sources-scroll">
+      <table class="sources-table">
+        <thead><tr><th>時間（台北時間）</th><th>檔名</th><th>完整路徑</th><th>sha1</th><th>摘要連結</th></tr></thead>
+        <tbody>
+          {hist_table}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    """
+    return page_shell("來源與快照清單｜GBDTRLHMM（探索性、非獨立盲測；非官方驗收）", body, "", footer_extra='<p><a href="index.html">回到實驗紀錄</a></p>')

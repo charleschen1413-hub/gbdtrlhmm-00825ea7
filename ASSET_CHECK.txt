@@ -1,5 +1,5 @@
 web_assets 目錄存在：True
-新複製：0；已有相同 sha1 故未再拷：13
+新複製：0；已有相同 sha1 故未再拷：55
 各圖來源：
   - funnel_r1: web_assets
   - funnel_r2: web_assets

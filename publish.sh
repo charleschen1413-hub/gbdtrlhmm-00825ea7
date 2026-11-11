@@ -21,8 +21,8 @@ fi
 git config user.name grokbot
 git config user.email bot@local
 # never add credentials, shots, or the volatile scan log
-git add index.html history.json style.css robots.txt README.md .nojekyll .gitignore
-git add entries assets status status_history.json assets_manifest.json ASSET_CHECK.txt
+git add index.html sources.html history.json style.css robots.txt README.md .nojekyll .gitignore
+git add entries assets status status_history.json assets_manifest.json ASSET_CHECK.txt archive
 git add build.py publish.sh assemble.py visuals.py
 if git diff --cached --quiet; then
   echo "nothing to publish"

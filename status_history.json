@@ -28,5 +28,23 @@
     "sha1": "200b8b8b4ebf17e94d8294a62a4fa9e27ae8b092",
     "file": "status/20261111_2302_progress.json",
     "stage": "build_features_d1"
+  },
+  {
+    "time_taipei": "2026-11-11 23:06:27 +0800",
+    "sha1": "b3001afdb8aa1bc7323f5478b9f27190009830e3",
+    "file": "status/20261111_2306_progress.json",
+    "stage": "lookahead"
+  },
+  {
+    "time_taipei": "2026-11-11 23:07:06 +0800",
+    "sha1": "3ef96bfdfcabda363d619d1405783c77080af136",
+    "file": "status/20261111_2307_progress.json",
+    "stage": "lookahead"
+  },
+  {
+    "time_taipei": "2026-11-11 23:09:01 +0800",
+    "sha1": "9ff565a32c9c02103dff2a94420dee75ba3957c8",
+    "file": "status/20261111_2309_progress.json",
+    "stage": "speed"
   }
 ]

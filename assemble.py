@@ -614,9 +614,8 @@ def pick_chart(kind: str, placeholders: dict[str, str], imported: dict[str, dict
                     f'alt="{esc(kind)}" />'
                 )
                 cap = (
-                    f'<p class="fn">美編圖（唯讀複製自 <code>{esc(rec.get("src"))}</code>，'
-                    f'發布檔 <code>{esc(rel)}</code> sha1 <code>{esc(sha[:8])}</code>…）。'
-                    f'不一致處見建置報告，不改原圖。</p>'
+                    f'<p class="fn">美編圖 · {esc(Path(rec.get("src") or "").name or "未取得")}'
+                    f' · {esc(Path(rel).name)} · {esc(sha[:8])}</p>'
                 )
                 return f'<figure class="fig imported">{inner}{cap}</figure>', "web_assets"
             content = path.read_text(encoding="utf-8", errors="replace")
@@ -626,7 +625,10 @@ def pick_chart(kind: str, placeholders: dict[str, str], imported: dict[str, dict
                 inner = f'<iframe class="asset-frame" src="{esc(rel)}" title="{esc(kind)}"></iframe>'
             else:
                 inner = content
-            cap = f'<p class="fn">美編圖（唯讀複製自 <code>{esc(rec.get("src"))}</code>，sha1 <code>{esc(rec["sha1"][:8])}</code>…）。不一致處見建置報告，不改原圖。</p>'
+            cap = (
+                f'<p class="fn">美編圖 · {esc(Path(rec.get("src") or "").name or "未取得")}'
+                f' · {esc((rec.get("sha1") or "")[:8] or "未取得")}</p>'
+            )
             return f'<figure class="fig imported">{inner}{cap}</figure>', "web_assets"
     return placeholders[kind], "placeholder"
 
@@ -725,33 +727,52 @@ def update_status_history(prog: dict | None, sha: str | None, stamp: str, human:
     return hist
 
 
+
 def render_status_section(hist: list[dict], prog: dict | None, sha: str | None) -> str:
-    current = status_payload(prog, sha)
-    # Prefer payload from the latest hist file if sha matches
-    current_html = render_status_block(current, "目前狀態（可刷新；來源 v14/progress.json）")
+    if not prog:
+        body = "<p>目前狀態：未取得 progress.json。</p>"
+    else:
+        stage = prog.get("stage") or "未取得"
+        detail = (prog.get("stage_detail") or "").strip()
+        st = next((s for s in (prog.get("stages") or []) if s.get("name") == stage), None)
+        raw_status = (st or {}).get("status") or ""
+        status_zh = {
+            "not_started": "未開始",
+            "running": "進行中",
+            "done": "完成",
+            "failed": "失敗",
+        }.get(raw_status, raw_status)
+        when = prog.get("updated_at_taipei") or "未取得"
+        v14d = prog.get("v14_trials_done")
+        nowc = prog.get("cumulative_trials_now")
+        line1 = f"目前階段「{esc(stage)}」"
+        if status_zh:
+            line1 += f"（{esc(status_zh)}）"
+        line1 += "。"
+        if detail:
+            line1 += esc(detail if detail.endswith("。") else detail + "。")
+        line2 = (
+            f"v14 已做試驗 {esc(fmt_num(v14d) if v14d is not None else '未取得')}，"
+            f"累計目前 {esc(fmt_num(nowc) if nowc is not None else '未取得')}。"
+            f"來源更新於 {esc(when)}。"
+        )
+        body = f"<p class='status-lead'>{line1}{line2}</p>"
     old = hist[:-1] if hist else []
     details = []
     for rec in reversed(old):
-        path = ROOT / rec["file"]
-        payload = {"missing": True}
-        if path.is_file():
-            try:
-                payload = status_payload(json.loads(path.read_text(encoding="utf-8")), rec.get("sha1"))
-            except json.JSONDecodeError:
-                payload = {"missing": True, "label": "舊版狀態檔無法解析"}
-        inner = render_status_block(payload, f"舊版狀態 {rec.get('time_taipei','')} sha1 {(rec.get('sha1') or '')[:8]}…")
+        short = (rec.get("sha1") or "")[:8] or "未取得"
         details.append(
-            f"<details class='old-status'><summary>舊版：{esc(rec.get('time_taipei',''))}　階段 {esc(rec.get('stage',''))}</summary>{inner}</details>"
+            f"<li>{esc(rec.get('time_taipei',''))}　{esc(rec.get('stage') or '未取得')}　{esc(short)}</li>"
         )
     old_wrap = ""
     if details:
-        old_wrap = "<details class='old-status-pack'><summary>先前狀態（保留，不刪）</summary>" + "".join(details) + "</details>"
-    src = footnote_sources(SRC / "v14" / "progress.json")
-    fn = visuals.footnote(src)
-    return f"<section class='card' id='status'><h2>目前狀態</h2>{current_html}{fn}{old_wrap}</section>"
+        old_wrap = (
+            "<details class='old-status-pack'><summary>先前狀態（保留，不刪）</summary>"
+            f"<ul class='old-status-list'>{''.join(details)}</ul></details>"
+        )
+    fn = visuals.footnote(footnote_sources(SRC / "v14" / "progress.json"))
+    return f"<section class='card' id='status'><h2>目前狀態</h2>{body}{fn}{old_wrap}</section>"
 
-
-# ---------- historical + log records ----------
 
 def hist_records(facts: dict) -> list[dict]:
     off = facts["official"]
@@ -859,7 +880,6 @@ def records_to_cards(log_recs: list[dict], hist: list[dict], charts_for: dict) -
         method = rec.get("method") or "出處待補"
         rec = dict(rec)
         rec["method"] = {"html": linkify(method)}
-        rec["charts_html"] = charts_for.get(rec["id"], "")
         if not rec.get("one_liner"):
             rec["one_liner"] = rec.get("purpose") or ""
         if not rec.get("next"):
@@ -868,15 +888,35 @@ def records_to_cards(log_recs: list[dict], hist: list[dict], charts_for: dict) -
             rec["timing"] = "未取得"
         if rec.get("summary") and rec.get("id"):
             rec["outcome"] = rec.get("outcome") or rec.get("summary")
+        rec["footnote_html"] = visuals.footnote(
+            footnote_sources(SRC / "v14" / "EXPERIMENT_LOG.md")
+        )
         cards.append(rec)
+    hist_fn = {
+        "HIST-R1": [
+            SRC / "official_v1" / "SUMMARY.md",
+            SRC / "official_v1" / "SUMMARY.csv",
+            SRC / "PLAN_v13.md",
+            SRC / "round1_run" / "stageA" / "summary.csv",
+            SRC / "round1_run" / "progress.json",
+        ],
+        "HIST-R2": [
+            SRC / "round2_run" / "SUMMARY_v1.md",
+            SRC / "round2_run" / "screen" / "cell_summary.csv",
+            SRC / "round2_run" / "stageA_v2" / "summary.csv",
+            SRC / "round2_run" / "progress.json",
+        ],
+        "HIST-DIAG": [SRC / "reports" / "DIAG_TRADECOUNT_v1.md"],
+    }
     for rec in hist:
         rec = dict(rec)
-        rec["charts_html"] = charts_for.get(rec["id"], "")
+        rec["footnote_html"] = visuals.footnote(footnote_sources(*hist_fn.get(rec.get("id"), [])))
         cards.append(rec)
     return cards
 
 
 # ---------- index tables ----------
+
 
 def src_table(existing: list[tuple[Path, str]], missing: list[Path], history: list[dict]) -> str:
     latest = {}
@@ -892,33 +932,87 @@ def src_table(existing: list[tuple[Path, str]], missing: list[Path], history: li
             link = f"<a href='{esc(rec['html'])}'>最新快照</a>"
         parts.append(
             "<tr class='found'>"
-            f"<td><code>{esc(path)}</code></td>"
-            f"<td class='sha'>{esc(sha)}</td>"
+            f"<td>{esc(path.name)}</td>"
+            f"<td class='path'><code>{esc(path)}</code></td>"
+            f"<td class='sha'><code>{esc(sha)}</code></td>"
             f"<td>{link}</td></tr>"
         )
-    for p in missing:
+    for miss in missing:
         parts.append(
-            f"<tr class='missing'><td><code>{esc(p)}</code></td><td>未找到</td><td></td></tr>"
+            "<tr class='missing'>"
+            f"<td>{esc(miss.name)}</td>"
+            f"<td class='path'><code>{esc(miss)}</code></td>"
+            f"<td>未找到</td><td></td></tr>"
         )
     return "\n".join(parts)
+
 
 
 def hist_table(history: list[dict]) -> str:
     rows = []
     for row in reversed(history):
         href = esc(row.get("html") or row.get("filename") or "")
+        src = row.get("source_path") or ""
         rows.append(
             "<tr>"
             f"<td>{esc(row.get('time_taipei',''))}</td>"
-            f"<td><code>{esc(row.get('source_path',''))}</code></td>"
-            f"<td class='sha'>{esc(row.get('sha1',''))}</td>"
+            f"<td>{esc(Path(src).name if src else '未取得')}</td>"
+            f"<td class='path'><code>{esc(src)}</code></td>"
+            f"<td class='sha'><code>{esc(row.get('sha1',''))}</code></td>"
             f"<td><a href='{href}'>{esc(Path(row.get('filename') or href).name)}</a></td>"
             "</tr>"
         )
-    return "\n".join(rows) if rows else "<tr><td colspan='4'>尚無快照</td></tr>"
+    return "\n".join(rows) if rows else "<tr><td colspan='5'>尚無快照</td></tr>"
 
 
-# ---------- assemble ----------
+
+ARCHIVE = ROOT / "archive"
+
+
+def rewrite_archived_index(html_text: str) -> str:
+    html_text = html_text.replace('href="style.css"', 'href="../style.css"')
+    html_text = html_text.replace('src="assets/', 'src="../assets/')
+    html_text = html_text.replace('href="assets/', 'href="../assets/')
+    html_text = html_text.replace('href="entries/', 'href="../entries/')
+    html_text = html_text.replace("href='entries/", "href='../entries/")
+    html_text = html_text.replace('href="sources.html"', 'href="../sources.html"')
+    return html_text
+
+
+def archive_current_index(stamp: str, new_html: str) -> Path | None:
+    """Copy the live homepage aside before replacing it. Never overwrite an archive file."""
+    index_path = ROOT / "index.html"
+    if not index_path.is_file():
+        return None
+    old = index_path.read_text(encoding="utf-8")
+    if old == new_html:
+        return None
+    ARCHIVE.mkdir(parents=True, exist_ok=True)
+    dest = ARCHIVE / f"index_{stamp}.html"
+    if dest.exists():
+        short = hashlib.sha1(old.encode("utf-8")).hexdigest()[:8]
+        dest = ARCHIVE / f"index_{stamp}_{short}.html"
+        if dest.exists():
+            return dest
+    dest.write_text(rewrite_archived_index(old), encoding="utf-8")
+    return dest
+
+
+def list_archives() -> list[dict]:
+    if not ARCHIVE.is_dir():
+        return []
+    items = sorted(ARCHIVE.glob("index_*.html"), key=lambda p: p.name, reverse=True)
+    return [{"name": p.name, "href": f"archive/{p.name}"} for p in items]
+
+
+def footer_links(archives: list[dict]) -> str:
+    bits = ['<p class="footer-links"><a href="sources.html">完整來源清單</a>']
+    if archives:
+        bits.append("　舊版首頁：")
+        bits.append("　".join(f'<a href="{esc(a["href"])}">{esc(a["name"])}</a>' for a in archives))
+    bits.append("</p>")
+    return "".join(bits)
+
 
 def assemble_site(when: datetime, existing, missing, history, added, skipped, stamp: str, human: str) -> dict:
     facts = facts_bundle()
@@ -960,46 +1054,45 @@ def assemble_site(when: datetime, existing, missing, history, added, skipped, st
 
     log_recs, log_found, log_sha = parse_log_file()
     hist = hist_records(facts)
-    charts_for = {
-        "HIST-R1": chosen["funnel_r1"] + chosen["official_grid"] + chosen["research_grid"],
-        "HIST-R2": chosen["funnel_r2"] + chosen["time_r2"],
-        "HIST-DIAG": chosen["diag_trades"],
-        "E001": chosen["gantt"] + chosen["flow"],
-    }
-    cards = records_to_cards(log_recs, hist, charts_for)
+    cards = records_to_cards(log_recs, hist, {})
 
-    # trials overview
-    prior = (prog or {}).get("cumulative_trials_prior", 10440)
-    nowc = (prog or {}).get("cumulative_trials_now")
-    v14d = (prog or {}).get("v14_trials_done")
-    trials_html = (
-        "<div class='stats'>"
-        + stat_pill("累計起點", prior)
-        + stat_pill("累計目前（progress）", nowc if nowc is not None else "未取得")
-        + stat_pill("v14 已做", v14d if v14d is not None else "未取得")
-        + stat_pill("EXPERIMENT_LOG", "已找到" if log_found else "未取得")
-        + "</div>"
-        + visuals.footnote(footnote_sources(SRC / "v14" / "progress.json", SRC / "v14" / "EXPERIMENT_LOG.md"))
-    )
-
-    overview = [chosen["gantt"], chosen["flow"]]
+    overview = []
+    seen_chart = set()
+    for kind in ("funnel_r1", "funnel_r2", "official_grid", "time_r2", "gantt"):
+        frag = chosen[kind]
+        if frag in seen_chart:
+            continue  # same 美編檔不重複貼兩次
+        seen_chart.add(frag)
+        overview.append(frag)
 
     latest_time = history[-1]["time_taipei"] if history else "尚無"
+    src_html = src_table(existing, missing, history)
+    hist_html = hist_table(history)
     ctx = {
         "v14": prog or {},
-        "overview_charts": overview[1:],  # gantt+flow; status is separate? We'll prepend status in overview
+        "overview_charts": overview,
         "records": cards,
-        "src_table_html": src_table(existing, missing, history),
-        "hist_table_html": hist_table(history),
-        "trials_html": trials_html,
+        "src_table_html": src_html,
+        "hist_table_html": hist_html,
         "experiment_log_found": log_found,
         "latest_time": latest_time,
         "status_html": status_html,
     }
-    ctx["overview_charts"] = overview
 
-    index = render_index(ctx)
+    # Write sources.html first (same-dir links). Archive old homepage, then write the new one.
+    sources_page = visuals.render_sources_page(ctx)
+    sources_path = ROOT / "sources.html"
+    sources_changed = (not sources_path.is_file()) or sources_path.read_text(encoding="utf-8") != sources_page
+    if sources_changed:
+        sources_path.write_text(sources_page, encoding="utf-8")
+
     index_path = ROOT / "index.html"
+    # footer lists archives including the one we are about to add
+    ctx["footer_extra"] = footer_links(list_archives())
+    index = render_index(ctx)
+    archived_path = archive_current_index(stamp, index)
+    ctx["footer_extra"] = footer_links(list_archives())
+    index = render_index(ctx)
     if not index_path.is_file() or index_path.read_text(encoding="utf-8") != index:
         index_path.write_text(index, encoding="utf-8")
         index_changed = True
@@ -1008,6 +1101,8 @@ def assemble_site(when: datetime, existing, missing, history, added, skipped, st
 
     return {
         "index_changed": index_changed,
+        "sources_changed": sources_changed,
+        "archived": str(archived_path) if archived_path else None,
         "assets": assets,
         "log_found": log_found,
         "log_sha": log_sha,
