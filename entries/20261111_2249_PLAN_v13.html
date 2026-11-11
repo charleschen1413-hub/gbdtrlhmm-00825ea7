@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>PLAN_v13.md｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>PLAN_v13.md</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/PLAN_v13.md</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/PLAN_v13.md</code></li>
+<li>sha1：<code>210a97a78a620f1ecab62ba31756f0570c2e5b0f</code></li>
+<li>快照時間：2026-11-11 22:49（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<h1>GBDTRLHMM新制度變形 計畫書 v13（完整版，一份看懂）</h1>
+<p>撰寫：2026-11-11 22:32（台北時間）。PLAN_v1～v12 全部不動（已核對 PLAN_v11.md sha1 <code>b06ac2f2e2de69f46acd5f06353703abf0033646</code>、PLAN_v12.md sha1 <code>fe15ba6e6c5aa3e97ce12160a008c957da56f9d5</code> 仍與寫入前相同）。本檔是整合版，只寫已查證的事實；未查證處明標。本檔依 REVIEW8（sha1 <code>bbf592e71aa0bc185daf445a1b041285d221aba7</code>）「有條件通過」必修與建議改寫，並補上第一輪、官方路徑與第二輪的既有結果。所有數字皆為探索性、非官方結論，不得稱獨立盲測。</p>
+<h2>1. 結論先講</h2>
+<ul>
+<li>windows_v2 為 REVIEW7「有條件通過」（官方窗口日期與可觀察終點的凍結檔）：2026-09-05～28 可納入官方日曆；但含該段與後三年第二次評估的數字不得稱獨立盲測；e2e_tick_v3 不得直接當官方驗收。</li>
+<li>基準策略（PCR-only MACD 20/54/90）tick 逐筆重現完成，與 1 分 K 帳本 309 筆損益完全相同；check.py 六項完整性旗標皆為 True、已進入判定，結果 research_tier＝Fail（十年 191 筆、二考 0 筆；這是策略未達標，不是缺證據）。以上為探索性、非官方結論。</li>
+<li>第一輪（探索性、非官方結論）：有 rank-1 的 60 格研究分級為 A 10／B 4／Fail 43／紅線 4 停止判定／ValueError 3。A3／A3B 30 格無合格 rank-1，不在官方目錄。十年 ≥300 的格數為 0。</li>
+<li>官方路徑 official_v1（探索性）：PASS 0／FAIL 51／紅線 4 停止判定／ValueError 9。這 51 個 FAIL <strong>不是</strong>已滿足紅線 4 全部條件的正式官方驗收。60 格六旗標雖全為 True，但 <code>ledger_reproduced</code> 是腳本自填（<code>scripts/run_official_v1.py</code> 第 334、342–344 行：沿用第一輪單一管線帳本、sha1 相符，註記寫明未重跑 tick、未重跑 MC95），與「兩個獨立程序產出位元組級相同 CSV 才可把該旗標設為 True」的定義不符。後繼官方 evidence 必須另存新檔，不得覆蓋本批。旗標不合時，正式措辭為「紅線 4 停止判定／ValueError」。</li>
+<li>上述 9 個 ValueError 格中，第一輪已停止的 3 格（A1|F1|logistic、A1|F3|gbdt、A2|F1|logistic）官方說明沿用「後三年 Trim PF 或 MC95 不是有限值」，但本次 check.py 實際例外是 <code>invalid evidence: original_oos_psr_p</code>。兩項問題同時存在；後繼 evidence 應並列實際例外，不以「後三年 PF／MC95 非有限」單獨歸因。</li>
+<li>第二輪 HMM／RL（探索性、非官方結論）：試驗 1,620 筆（HMM 540＋RL 1,080），累計 ML 試驗 10,440。有 rank-1 的 40 格 tick 研究分級為 A 2／B 0／Fail 23／紅線 4 停止判定／ValueError 15。十年 ≥300 且二考 ≥5 的 2 格皆研究 Fail。合格數 0。</li>
+<li>PCR 生效時間：T+1 台北 12:00（冬令 T 日 23:00 ET、夏令 T+1 00:00 ET）已承認為正式規則；規則本文未改、仍無歷史公布時戳。不再詢問。此裁示只涵蓋生效時間一項；紅線 4 其餘條件（無早分鐘 join、凍結完整 PCR 與 tick 上逐 tick 重現）須各自成立。更正：PLAN_v8 第 40 行與 PLAN_v10 第 8 行（編號第 6 點）舊表述均已作廢，以本條為準。</li>
+<li>Charles 21:02 准許跑第一輪，以及第二輪 HMM／RL 的授權來源：第二輪是我自行解讀 Charles 21:58「自主完成」與「若失敗另找他法」，<strong>沒有另存的第二輪裁示檔</strong>；以上授權出處均標為「未經檔案核對」，不把它寫成已有獨立裁示。</li>
+</ul>
+<h2>2. 制度（新制補強 V1.0 變形）</h2>
+<ul>
+<li>前七年 2016-09-29～2023-09-28 選參並凍結；後三年 2023-09-29～2026-09-28 驗收；不加 WFE。暖機自 2016-08-29。</li>
+<li>原 377 天 OOS＝2025-09-17～2026-09-28；二考＝2026-08-15～2026-09-28（45 天，已凍結）。</li>
+<li>A 級：後三年 Trim PF&gt;1.10 且 MC95&lt;35,000 美元；B 級：Trim PF&gt;1.03 且 MC95&lt;48,000 美元；否則 Fail。</li>
+<li>合格另需：十年完成交易 ≥300、二考 ≥5 筆、2022～2024 Trim PF ≥1.05、PSR p ≤0.01（N=1）。</li>
+<li>四紅線沿用新制補強 V1.0；紅線 4＝證據完整性，缺證據是工程錯誤，不是策略 Fail。</li>
+<li>固定 1 口、每點 20 美元、來回成本 8 美元。</li>
+</ul>
+<h2>3. 資料</h2>
+<ul>
+<li>主資料 data/minute.pkl，3,534,089 根 1 分 K；tick 799,822,729 筆（tick/ 四個 npy，sha256 在 tick/SHA256_ORIGINAL.txt）。tick 重組 1 分 K 與 minute.pkl 全量逐根一致。</li>
+<li>外部資料：USD／UST10Y（Yahoo）。Fear &amp; Greed 可靠區間只有 2021-02-01 起，不進核心模型。</li>
+<li>運算只在 box，不碰 M3。</li>
+</ul>
+<h2>4. 快篩設計（第一輪凍結於 freeze/screen_rules_v2.json；第二輪凍結於 freeze/screen_rules_v3.json）</h2>
+<ul>
+<li>一格＝PCR 模式（A1／A1B／A2／A2B／A3／A3B，6 種）×特徵集（F1～F5，5 種）×模型族。第一輪模型族＝規則表、邏輯迴歸、GBDT，共 90 格。第二輪模型族＝HMM、RL，共 60 格。其中 PCR 模式×特徵集＝30 個組合。</li>
+<li>只用前七年排序，三折擴張窗口；每格取前 100 名凍結；每格 rank-1 才評後三年一次。</li>
+<li>embargo：SUMMARY 所寫「6／5／5」是 train_end 到驗證首筆的間距；以規則錨點（最後一筆訓練成交）計算則為 6／6／6。兩者皆 ≥5，通過。後繼文件須寫清口徑，不得只寫一組數字。</li>
+<li>第一輪骨幹數（每個組合）：規則表 9、邏輯迴歸 30、GBDT 108（深度 3×學習率 2×樹數 3×葉最小樣本 2＝36 種結構，再×進場門檻 3）。30 個組合合計 147×30＝4,410 個試驗；GBDT 佔 3,240。</li>
+<li>第二輪骨幹數（每個組合）：HMM 18、RL 36；30 個組合合計 1,620 個試驗（HMM 540＋RL 1,080）。</li>
+<li>因 GBDT 每格只有 108 個，取前 100 幾乎不篩；實際篩選發生在 tick 帳本與驗收。</li>
+<li>累計 ML 試驗 10,440＝8,820（新 4,410＋被取代的 v1 4,410）＋第二輪 1,620。另加基準 14＋端到端 1。</li>
+<li>試驗日誌 <code>trials/TRIAL_LOG_v4_round2.csv</code> 的 <code>n_trades</code> 欄 1,620 列皆為空（快篩只記前七年 CV 分數／部分淨利），不影響試驗筆數核對；後繼可補欄或註明「本欄不適用」。</li>
+</ul>
+<h2>5. 第一輪與官方路徑結果（探索性、非官方結論）</h2>
+<ul>
+<li>前七年內部驗證：A1B、A2B 規則表與 GBDT 相對全接受有改善；但後三年 Trim PF 都 &lt;1 的情況仍然存在。後三年已被看過多次（含審核修正驅動與官方路徑沿用同一帳本），不是獨立盲測。</li>
+<li>研究分級與官方路徑數字見第 1 節。十年完成交易 ≥300：0 格；二考 ≥5：7 格（皆未同時過 A／B）。</li>
+<li>官方驗收前還須：(1) 另存新 evidence 再唯讀呼叫 check.py，不覆蓋 e2e_tick_v3，也不覆蓋 official_v1；(2) <code>ledger_reproduced</code> 必須符合「兩個獨立程序產出位元組級相同 CSV」，否則不得設 True，正式措辭為「紅線 4 停止判定／ValueError」；(3) 裁示只涵蓋 PCR 生效時間，紅線 4 其餘條件各自成立；(4) 正式結論只用 PASS／FAIL 或研究 A／B／Fail，證據不足用「紅線 4 停止判定／ValueError」，不用 BLOCKED；(5) ML 管線與歷史腳本目前仍寫死日期者，不得當官方路徑；後繼版改從 freeze/windows_v2.json 讀起訖。</li>
+<li>不改凍結名單、不再用後三年回頭選模、不回頭改前七年排序。</li>
+</ul>
+<h2>6. 第二輪結果（探索性、非官方結論）</h2>
+<ul>
+<li>快篩 1,620 筆全部跑完，耗時 83.6 秒（單程序）。60 格中 40 格有合格 rank-1；A3／A3B 共 20 格無合格候選。</li>
+<li>tick 以 round2_run 的 v2 目錄為準（v1 因 0 筆帳本缺欄名中斷，產物保留不覆蓋；v2 只改空帳本欄名與新目錄）。研究分級見第 1 節。</li>
+<li>研究 A（皆未合格）：A1B|F2|rl 十年 183、二考 0；A2|F2|rl 十年 67、二考 0。十年 ≥300 且二考 ≥5：A1B|F3|hmm（371／5，Trim PF 0.8226，Fail）、A2B|F4|hmm（419／5，Trim PF 0.8317，Fail）。合格數 0。</li>
+<li><code>round2_run/progress.json</code> 為 v1／v2 腳本共用路徑。不是 21:00 前凍結證據；若要保留 v1 中斷當下的進度，後繼重跑應另存。</li>
+<li>授權出處見第 1 節，標未經檔案核對。</li>
+</ul>
+<h2>7. 工程違規紀錄（不可再犯）</h2>
+<ul>
+<li>重跑 <code>scripts/test_lookahead_v3.py</code> 時，就地覆蓋了 <code>reports/test_lookahead_v3_normal.json</code>（出生 19:40:51、mtime 22:07:50，台北時間），違反不覆蓋舊檔規則。現檔 sha1 <code>36d48c70632b068fc16d35e215d7a25409064589</code>，與 REVIEW4 獨立副本位元組級相同，原內容可還原、實質結果相同。不得再跑會就地寫入該檔（或 <code>test_lookahead_v3_optim.json</code>）的腳本；同類風險見 <code>scripts/test_lookahead_v3.py</code> 第 237–239 行、<code>scripts/test_lookahead_v2.py</code> 第 219 行。不要改已凍結的測試腳本就地修；若要修，另存新版腳本，寫入新檔名。</li>
+<li>21:00 起、出生早於 21:00 而被就地改寫的既有檔，REVIEW8 只找到上述 1 個。已知凍結檔 sha1 未變。</li>
+</ul>
+<h2>8. 未做／未查證</h2>
+<ul>
+<li>Charles 21:02 准許第一輪、21:58「自主完成／若失敗另找他法」作為第二輪授權，以及 T+1 裁示對話原文：皆未經檔案或原始聊天核對。</li>
+<li>M3 暫存（_gm2_xfer、/tmp/gm2_xfer）：未清理，只可改名移開、不可刪。</li>
+<li>M3 端十年 tick 的獨立 shasum 未查證。</li>
+<li>PLAN_v8 我原寫版本已遺失（被執行程序就地覆蓋），現檔 sha1 <code>21243afc5854ef6c36abd241027bd7684f22917b</code>。</li>
+<li>本輪文件未重跑 check.py、未重跑 ML 管線、未重跑 tick 帳本。</li>
+</ul>
+<h2>9. 資源與規則</h2>
+<ul>
+<li>程序最多 3 個（總上限 14）；不加 worker；不刪檔、不覆蓋舊檔；只殺自己的 PID。</li>
+<li>不動 MC2、下單、Windows、Codex、driver.py、cache.py、凍結 WFE 腳本。</li>
+<li>回報只報要 Charles 決定的事、最終結果、阻礙、逾期（第一輪運算期間另依 Charles 21:02 指示每 2 小時回報）。運算期間若再開新試驗，須有明確准許。</li>
+</ul>
+<h2>10. 相對 v12 的更正（REVIEW8）</h2>
+<ul>
+<li>windows_v2 由「已通過」改寫為 REVIEW7「有條件通過」，限制條件保留。</li>
+<li>T+1 用語改為「已承認為正式規則；規則本文未改、仍無歷史公布時戳」，不再詢問；本檔不把現行規則稱為代理。</li>
+<li>第 1 節基準策略句於本地再標「探索性、非官方結論」（對應 v12 約第 7 行）。</li>
+<li>補上 official_v1 不得當作正式官方驗收的理由、後繼 evidence 另存新檔、以及旗標不合時的正式措辭。</li>
+<li>記錄前視測試就地覆蓋違規，並禁止再跑會寫入舊檔名的腳本。</li>
+<li>3 個官方 ValueError 格的實際 check.py 例外改為 <code>invalid evidence: original_oos_psr_p</code>。</li>
+<li>embargo 同時寫明 train_end 間距 6／5／5 與錨點間距 6／6／6，兩者皆 ≥5。</li>
+<li>註明 progress.json 為 v1／v2 共用路徑，以及 TRIAL_LOG_v4 的 n_trades 1,620 列皆空。</li>
+<li>補上第一輪／官方路徑／第二輪既有結果與累計 10,440，以及第二輪授權「未經檔案核對」。</li>
+<li>未查證項維持明標：M3 shasum、PLAN_v8 原版、Charles 原話與授權檔。</li>
+</ul></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>

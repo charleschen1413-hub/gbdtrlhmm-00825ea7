@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+*.swp
+
+shots/
+__pycache__/
+
+SCAN_REPORT.txt

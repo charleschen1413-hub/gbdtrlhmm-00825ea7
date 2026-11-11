@@ -1,0 +1,22 @@
+{
+  "updated_at_taipei": "2026-11-11 22:41:12 +0800",
+  "stage": "writing_plan",
+  "stage_detail": "正在撰寫 PLAN_v14.md 與凍結格點，尚未開跑。",
+  "done": 0,
+  "total": null,
+  "elapsed_sec": 0,
+  "eta_sec": null,
+  "eta_days": null,
+  "measured_sec_per_trial": null,
+  "n_workers": 0,
+  "supervisor_pid": null,
+  "worker_pids": [],
+  "failures": [],
+  "alternatives": [],
+  "best_exploratory": null,
+  "results_label": "探索性、非官方結論，不得稱獨立盲測",
+  "cumulative_trials_prior": 10440,
+  "cumulative_trials_now": 10440,
+  "v14_trials_done": 0,
+  "note": "所有運算尚未開始。progress.json 將至少每 10 分鐘更新。"
+}

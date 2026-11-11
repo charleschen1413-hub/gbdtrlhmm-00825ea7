@@ -1,0 +1,12 @@
+web_assets 目錄存在：True
+新複製：0；已有相同 sha1 故未再拷：0
+各圖來源：
+  - funnel_r1: placeholder
+  - funnel_r2: placeholder
+  - flow: placeholder
+  - official_grid: placeholder
+  - research_grid: placeholder
+  - time_r2: placeholder
+  - diag_trades: placeholder
+  - gantt: placeholder
+未發現可判定的數字不一致（或本輪僅用占位圖，數字由來源檔繪製）。

@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>DIAG_TRADECOUNT_v1.md｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>DIAG_TRADECOUNT_v1.md</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/reports/DIAG_TRADECOUNT_v1.md</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/reports/DIAG_TRADECOUNT_v1.md</code></li>
+<li>sha1：<code>18fe1963514dc3658619e16c0d8709bf009bb28a</code></li>
+<li>快照時間：2026-11-11 22:49（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<h1>交易筆數流失診斷 v1（探索性、非官方結論）</h1>
+<p>撰寫：2026-11-11 22:31（台北時間）。只讀既有輸出，未重跑試驗、未重訓模型、未重算後三年驗收。不得稱獨立盲測。</p>
+<h2>結論先講</h2>
+<ol>
+<li>六種 PCR 模式本身（1 分 K、全接受、無模型過濾）十年完成交易皆不足 300：A1／A1B＝175、A2／A2B＝189、A3／A3B＝16；PCR_ONLY 對照＝191（與 tick 基準證據相符）。沒有任何底層模式單獨達到十年 ≥300。</li>
+<li>六種底層模式的二考完成交易皆為 0。PCR_ONLY 在 2026-08-09 18:00 進場後持倉至資料終點 2026-09-28、不強制平倉，故 2026-08-15～09-28 二考窗內沒有已完成交易。底層模式單獨也無法滿足二考 ≥5。</li>
+<li>因此「十年 ≥300、二考 ≥5」的第一限制是底層 PCR 模式本身筆數不足（以及二考窗內未完成出場），不是特徵集。特徵只改變可算樣本數（F1 的 <code>n_finite</code> 等於該模式全部訊號；F2～F5 因缺值降至約三分之二），不改變上述十年交易上限。</li>
+<li>模型過濾是第二層流失：第一輪 60 格 rank-1 樣本接受率中位數僅 19.1%（最高 78.6%，無一格 ≥90%）；GBDT／邏輯迴歸 rank-1 幾乎都選了較嚴的進場門檻 0.6（GBDT 17／20、邏輯迴歸 17／20）。第一輪十年交易最多 275（仍 &lt;300），中位數 107。</li>
+<li>少數格子靠更碎的進出把十年交易抬到超過底層（第一輪 13 格、第二輪 10 格交易比 &gt;1）。只有第二輪兩格達到十年 ≥300 且二考 ≥5：A1B|F3|hmm＝371／5（交易比 2.12）、A2B|F4|hmm＝419／5（交易比 2.22），接受率約 57–59%，研究分級皆 Fail。另有 3 格模型完全不接受訊號（<code>n_take</code>＝0，十年 0 筆，紅線 4 停止判定／ValueError）。全接受的兩格 HMM（接受率 100%）十年交易正好等於底層 189，仍不足 300。</li>
+</ol>
+<h2>口徑與限制</h2>
+<ul>
+<li><strong>底層訊號</strong>：<code>features_v3/samples_all.csv</code> 中該 PCR 模式、該特徵集延遲（F1／F2／F3＝0 小時，F4＝6 小時，F5＝24 小時）的樣本。「十年訊號」＝<code>in_front7</code> 或 <code>in_back3</code>（以 <code>fill_dt</code> 落在前七年或後三年）。這是日頻訊號列，不是完成交易。</li>
+<li><strong>底層交易</strong>：既有 <code>baselines/ledger_{模式}.csv</code>（1 分 K、該模式全接受、無 SMA3 過濾）。以 <code>metrics_v2.slice_trades</code>、出場交易日＝出場時戳＋6 小時後取曆日、閉區間，按 <code>freeze/windows_v2.json</code> 切十年／前七年／後三年／二考。缺資料日名單為空。這不是新回測，只是對既有帳本做窗口計數。</li>
+<li><strong>未找到、故未猜測的輸入</strong>：各模式×延遲的 tick 全接受十年帳本不在既有輸出裡。僅 PCR_ONLY 有 tick 基準證據，十年 191、二考 0，與 1 分 K 帳本重切結果完全相同；其餘五模式的十年底層交易只能引用 1 分 K 帳本。F4／F5 延遲全接受的獨立交易帳本亦缺。</li>
+<li><strong>樣本接受率</strong>：<code>n_take / n_finite</code>。<code>n_finite</code> 是該格特徵可算的全部樣本（含 2016-09-29 之前），不是十年子集；既有 metrics 沒有另存十年限定的 <code>n_take</code>，本診斷不重擬合，故不編造十年接受率。</li>
+<li><strong>交易比</strong>：模型十年完成交易／該模式 1 分 K 底層十年完成交易。可比 1 大：模型把長持倉切成更多來回，不是底層機會變多。</li>
+<li><code>n_signal_events</code> 是目標序列變點（含平倉到 0），不是接受筆數，不當作接受率分母。</li>
+<li>本檔數字皆為探索性、非官方結論。官方路徑 51 個 FAIL 依 REVIEW8 不得當成已滿足紅線 4 全部條件的正式官方驗收。</li>
+</ul>
+<h2>底層 PCR 模式（1 分 K 全接受）</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th style="text-align: right;">帳本列數（含暖機）</th>
+<th style="text-align: right;">前七年</th>
+<th style="text-align: right;">後三年</th>
+<th style="text-align: right;">十年</th>
+<th style="text-align: right;">二考</th>
+<th>十年是否 ≥300</th>
+<th>帳本 sha1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCR_ONLY（對照，非六模式之一）</td>
+<td style="text-align: right;">309</td>
+<td style="text-align: right;">124</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">0</td>
+<td>否</td>
+<td><code>9394899f4cd63292967edea9f207499ca388c4ab</code></td>
+</tr>
+<tr>
+<td>A1</td>
+<td style="text-align: right;">285</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">0</td>
+<td>否</td>
+<td><code>04f57be45817814109500054f80016fc6bb8abb8</code></td>
+</tr>
+<tr>
+<td>A1B</td>
+<td style="text-align: right;">285</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">0</td>
+<td>否</td>
+<td><code>a85aa7671d7d47d1fce1076b82d739bd79d26cfd</code></td>
+</tr>
+<tr>
+<td>A2</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">0</td>
+<td>否</td>
+<td><code>e3a9b2f5958c2c7cb58b542da54837c1244f6182</code></td>
+</tr>
+<tr>
+<td>A2B</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">0</td>
+<td>否</td>
+<td><code>2d960560a88d58eb8f7d843487e9d21d026e2ebb</code></td>
+</tr>
+<tr>
+<td>A3</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td>否</td>
+<td><code>46581255e37e1496751220fd8f912bc870f76fa1</code></td>
+</tr>
+<tr>
+<td>A3B</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+<td>否</td>
+<td><code>48147c8750e5e44ec461facdbb566044d5153a9a</code></td>
+</tr>
+</tbody>
+</table>
+<p>核對：PCR_ONLY 十年 191、前七年 124、二考 0，與 <code>e2e_tick_v3/baseline_evidence.json</code> 及前七年基準表相符。A1／A2／A3 前七年 108／122／16 亦與 <code>baselines/front7_table.csv</code> 相符。A2／A2B 帳本列數恰好 300，但含暖機；十年完成交易是 189，不是 300。</p>
+<p>十年訊號（delay 0／6 小時相同；delay 24 小時 A1／A2 系僅多 1 筆後三年）：A1／A1B＝2,205，A2／A2B＝2,508，A3／A3B＝223（後三年訊號 0）。A3／A3B 第一輪 30 格、第二輪 20 格皆無合格 rank-1，與後三年樣本為 0、前七年樣本只落在折 3 之後的既有結論相符。</p>
+<h2>第一輪 60 格 rank-1（另 30 格 A3／A3B 無合格 rank-1）</h2>
+<ul>
+<li>研究分級：A 10／B 4／Fail 43／紅線 4 停止判定／ValueError 3。官方路徑沿用同一批帳本：PASS 0／FAIL 51／紅線 4 停止判定／ValueError 9（與 official SUMMARY 及階段 A metrics 的十年／二考筆數逐格相符，0 筆不符）。</li>
+<li>十年交易：最少 4、中位數 107、最多 275，<strong>0 格 ≥300</strong>。二考 ≥5 的 7 格皆研究 Fail。</li>
+<li>樣本接受率：最少 0.55%（A2|F1|logistic，門檻 0.6）、中位數 19.1%、最多 78.6%（A1B|F3|rule_table，<code>mean_return_threshold=0.0</code>）。</li>
+<li>選中門檻：GBDT 進場門檻 0.6 共 17 格、0.55 共 3 格（網格尚有 0.5，無 rank-1 選到 0.5）。邏輯迴歸 0.6 共 17 格、0.55 共 2 格、0.5 共 1 格。規則表 <code>mean_return_threshold</code> 為 0.0／0.001／0.0005 各 10／7／3 格，<code>min_cell_n</code> 全為 5。</li>
+<li>十年交易最多的格是 A2B|F4|rule_table（275，交易比 1.46，二考 3，Fail），仍低於 300。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>格</th>
+<th>trial_id</th>
+<th style="text-align: right;">底層十年訊號</th>
+<th style="text-align: right;">底層十年交易</th>
+<th style="text-align: right;">n_finite</th>
+<th style="text-align: right;">n_take</th>
+<th style="text-align: right;">樣本接受率</th>
+<th style="text-align: right;">模型十年交易</th>
+<th style="text-align: right;">二考交易</th>
+<th style="text-align: right;">交易比</th>
+<th>選中門檻／參數</th>
+<th>研究分級</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F1_gbdt_00051</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">234</td>
+<td style="text-align: right;">7.1%</td>
+<td style="text-align: right;">100</td>
+<td>0</td>
+<td>0.571</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F1_logistic_00018</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0.7%</td>
+<td style="text-align: right;">4</td>
+<td>0</td>
+<td>0.023</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F1_rule_table_00001</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">1631</td>
+<td style="text-align: right;">49.5%</td>
+<td style="text-align: right;">88</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F2_gbdt_00207</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">116</td>
+<td style="text-align: right;">5.2%</td>
+<td style="text-align: right;">61</td>
+<td>0</td>
+<td>0.349</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F2_logistic_00175</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">823</td>
+<td style="text-align: right;">37.0%</td>
+<td style="text-align: right;">107</td>
+<td>0</td>
+<td>0.611</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F2_rule_table_00148</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">1112</td>
+<td style="text-align: right;">50.0%</td>
+<td style="text-align: right;">88</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F3_gbdt_00372</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">145</td>
+<td style="text-align: right;">6.5%</td>
+<td style="text-align: right;">74</td>
+<td>0</td>
+<td>0.423</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F3_logistic_00323</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">415</td>
+<td style="text-align: right;">18.6%</td>
+<td style="text-align: right;">161</td>
+<td>0</td>
+<td>0.920</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F3_rule_table_00297</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">477</td>
+<td style="text-align: right;">21.4%</td>
+<td style="text-align: right;">178</td>
+<td>0</td>
+<td>1.017</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F4_gbdt_00501</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">6.7%</td>
+<td style="text-align: right;">88</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F4_logistic_00456</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">3.7%</td>
+<td style="text-align: right;">51</td>
+<td>0</td>
+<td>0.291</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F4_rule_table_00443</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">249</td>
+<td style="text-align: right;">11.2%</td>
+<td style="text-align: right;">100</td>
+<td>0</td>
+<td>0.571</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F5_gbdt_00651</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">218</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: right;">88</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F5_logistic_00621</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">574</td>
+<td style="text-align: right;">25.8%</td>
+<td style="text-align: right;">133</td>
+<td>0</td>
+<td>0.760</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F5_rule_table_00591</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">568</td>
+<td style="text-align: right;">25.5%</td>
+<td style="text-align: right;">121</td>
+<td>0</td>
+<td>0.691</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F1_gbdt_00777</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">572</td>
+<td style="text-align: right;">17.4%</td>
+<td style="text-align: right;">133</td>
+<td>3</td>
+<td>0.760</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F1_logistic_00765</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">339</td>
+<td style="text-align: right;">10.3%</td>
+<td style="text-align: right;">33</td>
+<td>0</td>
+<td>0.189</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F1_rule_table_00736</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">1655</td>
+<td style="text-align: right;">50.2%</td>
+<td style="text-align: right;">87</td>
+<td>0</td>
+<td>0.497</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F2_gbdt_00927</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">461</td>
+<td style="text-align: right;">20.7%</td>
+<td style="text-align: right;">126</td>
+<td>5</td>
+<td>0.720</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F2_logistic_00894</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">392</td>
+<td style="text-align: right;">17.6%</td>
+<td style="text-align: right;">88</td>
+<td>5</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F2_rule_table_00883</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">1114</td>
+<td style="text-align: right;">50.0%</td>
+<td style="text-align: right;">87</td>
+<td>0</td>
+<td>0.497</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F3_gbdt_01113</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">955</td>
+<td style="text-align: right;">42.9%</td>
+<td style="text-align: right;">248</td>
+<td>2</td>
+<td>1.417</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F3_logistic_01044</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">268</td>
+<td style="text-align: right;">12.0%</td>
+<td style="text-align: right;">108</td>
+<td>5</td>
+<td>0.617</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F3_rule_table_01030</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">1749</td>
+<td style="text-align: right;">78.6%</td>
+<td style="text-align: right;">274</td>
+<td>0</td>
+<td>1.566</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F4_gbdt_01263</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">16.4%</td>
+<td style="text-align: right;">170</td>
+<td>3</td>
+<td>0.971</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F4_logistic_01200</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">372</td>
+<td style="text-align: right;">16.7%</td>
+<td style="text-align: right;">190</td>
+<td>8</td>
+<td>1.086</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F4_rule_table_01179</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">553</td>
+<td style="text-align: right;">24.8%</td>
+<td style="text-align: right;">195</td>
+<td>3</td>
+<td>1.114</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F5_gbdt_01383</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">645</td>
+<td style="text-align: right;">29.0%</td>
+<td style="text-align: right;">184</td>
+<td>4</td>
+<td>1.051</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F5_logistic_01335</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">577</td>
+<td style="text-align: right;">25.9%</td>
+<td style="text-align: right;">99</td>
+<td>3</td>
+<td>0.566</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F5_rule_table_01326</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">767</td>
+<td style="text-align: right;">34.5%</td>
+<td style="text-align: right;">135</td>
+<td>3</td>
+<td>0.771</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F1_gbdt_01514</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">831</td>
+<td style="text-align: right;">22.8%</td>
+<td style="text-align: right;">218</td>
+<td>0</td>
+<td>1.153</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F1_logistic_01488</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.5%</td>
+<td style="text-align: right;">4</td>
+<td>0</td>
+<td>0.021</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F1_rule_table_01471</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">1844</td>
+<td style="text-align: right;">50.5%</td>
+<td style="text-align: right;">95</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F2_gbdt_01658</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: right;">9.8%</td>
+<td style="text-align: right;">118</td>
+<td>0</td>
+<td>0.624</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F2_logistic_01632</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">2.5%</td>
+<td style="text-align: right;">30</td>
+<td>0</td>
+<td>0.159</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F2_rule_table_01618</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">1335</td>
+<td style="text-align: right;">52.8%</td>
+<td style="text-align: right;">104</td>
+<td>0</td>
+<td>0.550</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F3_gbdt_01823</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">394</td>
+<td style="text-align: right;">15.6%</td>
+<td style="text-align: right;">166</td>
+<td>0</td>
+<td>0.878</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F3_logistic_01785</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">148</td>
+<td style="text-align: right;">5.9%</td>
+<td style="text-align: right;">94</td>
+<td>0</td>
+<td>0.497</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F3_rule_table_01767</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">531</td>
+<td style="text-align: right;">21.0%</td>
+<td style="text-align: right;">198</td>
+<td>0</td>
+<td>1.048</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F4_gbdt_02046</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">362</td>
+<td style="text-align: right;">14.3%</td>
+<td style="text-align: right;">207</td>
+<td>2</td>
+<td>1.095</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F4_logistic_01926</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">3.2%</td>
+<td style="text-align: right;">52</td>
+<td>0</td>
+<td>0.275</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F4_rule_table_01913</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">531</td>
+<td style="text-align: right;">21.0%</td>
+<td style="text-align: right;">198</td>
+<td>0</td>
+<td>1.048</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F5_gbdt_02121</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">174</td>
+<td style="text-align: right;">6.9%</td>
+<td style="text-align: right;">85</td>
+<td>0</td>
+<td>0.450</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F5_logistic_02090</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">758</td>
+<td style="text-align: right;">30.0%</td>
+<td style="text-align: right;">105</td>
+<td>0</td>
+<td>0.556</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F5_rule_table_02061</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">14.4%</td>
+<td style="text-align: right;">107</td>
+<td>0</td>
+<td>0.566</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F1_gbdt_02256</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">717</td>
+<td style="text-align: right;">19.6%</td>
+<td style="text-align: right;">187</td>
+<td>4</td>
+<td>0.989</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F1_logistic_02235</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">283</td>
+<td style="text-align: right;">7.8%</td>
+<td style="text-align: right;">49</td>
+<td>0</td>
+<td>0.259</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F1_rule_table_02206</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">1805</td>
+<td style="text-align: right;">49.5%</td>
+<td style="text-align: right;">94</td>
+<td>0</td>
+<td>0.497</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F2_gbdt_02397</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">295</td>
+<td style="text-align: right;">11.7%</td>
+<td style="text-align: right;">163</td>
+<td>3</td>
+<td>0.862</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F2_logistic_02373</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">321</td>
+<td style="text-align: right;">12.7%</td>
+<td style="text-align: right;">81</td>
+<td>5</td>
+<td>0.429</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F2_rule_table_02353</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">1194</td>
+<td style="text-align: right;">47.2%</td>
+<td style="text-align: right;">88</td>
+<td>0</td>
+<td>0.466</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F3_gbdt_02598</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">615</td>
+<td style="text-align: right;">24.3%</td>
+<td style="text-align: right;">251</td>
+<td>7</td>
+<td>1.328</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F3_logistic_02520</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">375</td>
+<td style="text-align: right;">14.8%</td>
+<td style="text-align: right;">185</td>
+<td>5</td>
+<td>0.979</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F3_rule_table_02500</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">1633</td>
+<td style="text-align: right;">64.6%</td>
+<td style="text-align: right;">219</td>
+<td>0</td>
+<td>1.159</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F4_gbdt_02733</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">271</td>
+<td style="text-align: right;">10.7%</td>
+<td style="text-align: right;">134</td>
+<td>0</td>
+<td>0.709</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F4_logistic_02658</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">116</td>
+<td style="text-align: right;">4.6%</td>
+<td style="text-align: right;">76</td>
+<td>1</td>
+<td>0.402</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F4_rule_table_02648</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">1231</td>
+<td style="text-align: right;">48.7%</td>
+<td style="text-align: right;">275</td>
+<td>3</td>
+<td>1.455</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F5_gbdt_02835</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">538</td>
+<td style="text-align: right;">21.3%</td>
+<td style="text-align: right;">107</td>
+<td>0</td>
+<td>0.566</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F5_logistic_02805</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">615</td>
+<td style="text-align: right;">24.3%</td>
+<td style="text-align: right;">114</td>
+<td>0</td>
+<td>0.603</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F5_rule_table_02796</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">859</td>
+<td style="text-align: right;">34.0%</td>
+<td style="text-align: right;">150</td>
+<td>3</td>
+<td>0.794</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>第二輪 60 格（40 格有 rank-1；20 格 A3／A3B 無合格 rank-1）</h2>
+<ul>
+<li>研究分級（有 rank-1 的 40 格）：A 2／B 0／Fail 23／紅線 4 停止判定／ValueError 15。</li>
+<li>十年交易：最少 0、中位數 131、最多 419；<strong>2 格 ≥300</strong>（見結論第 5 點），皆 Fail。二考 ≥5 共 4 格，皆 Fail。</li>
+<li>樣本接受率中位數：HMM 50.0%、RL 16.7%。HMM 有 2 格接受率 100%（A2B|F3|hmm、A2B|F5|hmm），十年交易＝底層 189。RL／HMM 各有格子 <code>n_take</code>＝0：A1B|F3|rl、A2|F1|rl、A2|F5|hmm（十年 0 筆，停止判定）。</li>
+<li>選中參數：達到 ≥300 的兩格都是 HMM <code>n_states=3</code>、<code>mean_return_threshold=0.0</code>、<code>min_state_n=10</code>。其餘 HMM rank-1 以 <code>n_states=4</code>（11 格）或 <code>2</code>（7 格）為主。RL 進場門檻 0.0005 與 0.001 各 8 格、0.0 共 4 格。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>格</th>
+<th>trial_id</th>
+<th style="text-align: right;">底層十年訊號</th>
+<th style="text-align: right;">底層十年交易</th>
+<th style="text-align: right;">n_finite</th>
+<th style="text-align: right;">n_take</th>
+<th style="text-align: right;">樣本接受率</th>
+<th style="text-align: right;">模型十年交易</th>
+<th style="text-align: right;">二考交易</th>
+<th style="text-align: right;">交易比</th>
+<th>選中門檻／參數</th>
+<th>研究分級</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1_F1_hmm_00001</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">1641</td>
+<td style="text-align: right;">49.8%</td>
+<td style="text-align: right;">88</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1_F1_rl_00044</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.2%</td>
+<td style="text-align: right;">1</td>
+<td>0</td>
+<td>0.006</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1_F2_hmm_00067</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">454</td>
+<td style="text-align: right;">20.4%</td>
+<td style="text-align: right;">40</td>
+<td>0</td>
+<td>0.229</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1_F2_rl_00083</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1%</td>
+<td style="text-align: right;">2</td>
+<td>0</td>
+<td>0.011</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1_F3_hmm_00122</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">483</td>
+<td style="text-align: right;">21.7%</td>
+<td style="text-align: right;">191</td>
+<td>3</td>
+<td>1.091</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1_F3_rl_00158</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">802</td>
+<td style="text-align: right;">36.0%</td>
+<td style="text-align: right;">114</td>
+<td>0</td>
+<td>0.651</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1_F4_hmm_00176</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">483</td>
+<td style="text-align: right;">21.7%</td>
+<td style="text-align: right;">191</td>
+<td>3</td>
+<td>1.091</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1_F4_rl_00195</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">20.2%</td>
+<td style="text-align: right;">139</td>
+<td>0</td>
+<td>0.794</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1_F5_hmm_00229</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">483</td>
+<td style="text-align: right;">21.7%</td>
+<td style="text-align: right;">191</td>
+<td>3</td>
+<td>1.091</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1_F5_rl_00243</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">392</td>
+<td style="text-align: right;">17.6%</td>
+<td style="text-align: right;">147</td>
+<td>0</td>
+<td>0.840</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1B_F1_hmm_00271</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">1654</td>
+<td style="text-align: right;">50.2%</td>
+<td style="text-align: right;">87</td>
+<td>0</td>
+<td>0.497</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1B_F1_rl_00322</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">3295</td>
+<td style="text-align: right;">155</td>
+<td style="text-align: right;">4.7%</td>
+<td style="text-align: right;">52</td>
+<td>0</td>
+<td>0.297</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1B_F2_hmm_00337</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">1772</td>
+<td style="text-align: right;">79.6%</td>
+<td style="text-align: right;">135</td>
+<td>0</td>
+<td>0.771</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1B_F2_rl_00362</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">760</td>
+<td style="text-align: right;">34.1%</td>
+<td style="text-align: right;">183</td>
+<td>0</td>
+<td>1.046</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1B_F3_hmm_00385</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">1278</td>
+<td style="text-align: right;">57.4%</td>
+<td style="text-align: right;">371</td>
+<td>5</td>
+<td>2.120</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1B_F3_rl_00419</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0%</td>
+<td style="text-align: right;">0</td>
+<td>0</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1B_F4_hmm_00445</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">1743</td>
+<td style="text-align: right;">78.3%</td>
+<td style="text-align: right;">289</td>
+<td>3</td>
+<td>1.651</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1B_F4_rl_00469</td>
+<td style="text-align: right;">2205</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">353</td>
+<td style="text-align: right;">15.9%</td>
+<td style="text-align: right;">77</td>
+<td>0</td>
+<td>0.440</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A1B_F5_hmm_00499</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">1743</td>
+<td style="text-align: right;">78.3%</td>
+<td style="text-align: right;">289</td>
+<td>3</td>
+<td>1.651</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A1B_F5_rl_00525</td>
+<td style="text-align: right;">2206</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">2226</td>
+<td style="text-align: right;">590</td>
+<td style="text-align: right;">26.5%</td>
+<td style="text-align: right;">127</td>
+<td>0</td>
+<td>0.726</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2_F1_hmm_00541</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">1845</td>
+<td style="text-align: right;">50.6%</td>
+<td style="text-align: right;">95</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2_F1_rl_00579</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0%</td>
+<td style="text-align: right;">0</td>
+<td>0</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2_F2_hmm_00608</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">454</td>
+<td style="text-align: right;">18.0%</td>
+<td style="text-align: right;">40</td>
+<td>0</td>
+<td>0.212</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2_F2_rl_00624</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">3.2%</td>
+<td style="text-align: right;">67</td>
+<td>0</td>
+<td>0.354</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2_F3_hmm_00662</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">521</td>
+<td style="text-align: right;">20.6%</td>
+<td style="text-align: right;">211</td>
+<td>3</td>
+<td>1.116</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2_F3_rl_00677</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">208</td>
+<td style="text-align: right;">8.2%</td>
+<td style="text-align: right;">110</td>
+<td>5</td>
+<td>0.582</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2_F4_hmm_00716</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">521</td>
+<td style="text-align: right;">20.6%</td>
+<td style="text-align: right;">211</td>
+<td>3</td>
+<td>1.116</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2_F4_rl_00746</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">838</td>
+<td style="text-align: right;">33.1%</td>
+<td style="text-align: right;">142</td>
+<td>0</td>
+<td>0.751</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2_F5_hmm_00757</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0%</td>
+<td style="text-align: right;">0</td>
+<td>0</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2_F5_rl_00809</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">748</td>
+<td style="text-align: right;">29.6%</td>
+<td style="text-align: right;">174</td>
+<td>0</td>
+<td>0.921</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2B_F1_hmm_00811</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">1804</td>
+<td style="text-align: right;">49.4%</td>
+<td style="text-align: right;">94</td>
+<td>0</td>
+<td>0.497</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2B_F1_rl_00859</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">3649</td>
+<td style="text-align: right;">464</td>
+<td style="text-align: right;">12.7%</td>
+<td style="text-align: right;">173</td>
+<td>9</td>
+<td>0.915</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2B_F2_hmm_00880</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">1827</td>
+<td style="text-align: right;">72.2%</td>
+<td style="text-align: right;">135</td>
+<td>0</td>
+<td>0.714</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2B_F2_rl_00900</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">526</td>
+<td style="text-align: right;">20.8%</td>
+<td style="text-align: right;">67</td>
+<td>0</td>
+<td>0.354</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2B_F3_hmm_00919</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">100.0%</td>
+<td style="text-align: right;">189</td>
+<td>0</td>
+<td>1.000</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2B_F3_rl_00957</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">929</td>
+<td style="text-align: right;">36.7%</td>
+<td style="text-align: right;">95</td>
+<td>0</td>
+<td>0.503</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2B_F4_hmm_00979</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">1482</td>
+<td style="text-align: right;">58.6%</td>
+<td style="text-align: right;">419</td>
+<td>5</td>
+<td>2.217</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2B_F4_rl_01021</td>
+<td style="text-align: right;">2508</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">853</td>
+<td style="text-align: right;">33.7%</td>
+<td style="text-align: right;">136</td>
+<td>0</td>
+<td>0.720</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">v4_A2B_F5_hmm_01027</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">100.0%</td>
+<td style="text-align: right;">189</td>
+<td>0</td>
+<td>1.000</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">v4_A2B_F5_rl_01056</td>
+<td style="text-align: right;">2509</td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">2529</td>
+<td style="text-align: right;">166</td>
+<td style="text-align: right;">6.6%</td>
+<td style="text-align: right;">59</td>
+<td>0</td>
+<td>0.312</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F1</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F1</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F2</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F2</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F3</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F3</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F4</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F4</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F5</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>F5</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F1</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F1</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F2</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F2</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F3</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F3</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F4</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F4</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F5</td>
+<td style="text-align: right;">hmm</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>A3B</td>
+<td>F5</td>
+<td style="text-align: right;">rl</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>輸入雜湊</h2>
+<table>
+<thead>
+<tr>
+<th>檔案</th>
+<th>說明</th>
+<th>sha1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/workspace/ml_meta/official_v1/SUMMARY.csv</code></td>
+<td>官方路徑彙整 CSV</td>
+<td><code>8bc42da2e7be0a3bcc114e052f230a4013d6f977</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/official_v1/SUMMARY.md</code></td>
+<td>官方路徑彙整 MD</td>
+<td><code>c094f151c8a8d41f5dc6258a0b3ed7d775d496f8</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/round1_run/stageA/summary.csv</code></td>
+<td>第一輪階段 A 彙整</td>
+<td><code>14734b4a7ec57b8f34461a2152b646298e23ddd2</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/round2_run/stageA_v2/summary.csv</code></td>
+<td>第二輪階段 A（v2）彙整</td>
+<td><code>c1dc06cf3ff44d91d537251809974b43b3cf947f</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/round2_run/SUMMARY_v1.md</code></td>
+<td>第二輪結果彙整</td>
+<td><code>a973aec97b0e27477032e411ae2d10619f87523b</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/features_v3/samples_all.csv</code></td>
+<td>特徵樣本（底層訊號筆數）</td>
+<td><code>013ff1e333248561f76e38a3f3f1b876e33e13f5</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/freeze/windows_v2.json</code></td>
+<td>官方窗口</td>
+<td><code>6672824bd0fb5ec953d95957fbed6425555a44da</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/front7_table.csv</code></td>
+<td>前七年基準表（核對 front7 筆數）</td>
+<td><code>77f853026b1699e2924cfce0b8e1295c57fe92d7</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/front7_baselines.json</code></td>
+<td>前七年基準 JSON</td>
+<td><code>ca02fc4df9d0d3cf8025a8bbf4eb1c5ba16adf0a</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/ledger_PCR_ONLY.csv</code></td>
+<td>PCR_ONLY 1 分 K 帳本</td>
+<td><code>9394899f4cd63292967edea9f207499ca388c4ab</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/ledger_A1.csv</code></td>
+<td>A1 1 分 K 帳本</td>
+<td><code>04f57be45817814109500054f80016fc6bb8abb8</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/ledger_A1B.csv</code></td>
+<td>A1B 1 分 K 帳本</td>
+<td><code>a85aa7671d7d47d1fce1076b82d739bd79d26cfd</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/ledger_A2.csv</code></td>
+<td>A2 1 分 K 帳本</td>
+<td><code>e3a9b2f5958c2c7cb58b542da54837c1244f6182</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/ledger_A2B.csv</code></td>
+<td>A2B 1 分 K 帳本</td>
+<td><code>2d960560a88d58eb8f7d843487e9d21d026e2ebb</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/ledger_A3.csv</code></td>
+<td>A3 1 分 K 帳本</td>
+<td><code>46581255e37e1496751220fd8f912bc870f76fa1</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/baselines/ledger_A3B.csv</code></td>
+<td>A3B 1 分 K 帳本</td>
+<td><code>48147c8750e5e44ec461facdbb566044d5153a9a</code></td>
+</tr>
+<tr>
+<td><code>/workspace/ml_meta/e2e_tick_v3/baseline_evidence.json</code></td>
+<td>PCR_ONLY tick 基準證據（核對十年 191／二考 0）</td>
+<td><code>d572cd05aa13000ffbc30bca87c0c6b7dc837873</code></td>
+</tr>
+<tr>
+<td>第一輪／第二輪階段 A metrics JSON 共 150 份</td>
+<td>每格 <code>n_take</code>、十年／二考、參數、研究分級</td>
+<td>逐檔 sha1 見同目錄 CSV 的 <code>metrics_sha1</code> 欄</td>
+</tr>
+</tbody>
+</table>
+<p>完整逐格欄位（含 <code>metrics_sha1</code>、官方結論、底層帳本 sha1）見同目錄 <code>DIAG_TRADECOUNT_v1.csv</code>。</p></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>

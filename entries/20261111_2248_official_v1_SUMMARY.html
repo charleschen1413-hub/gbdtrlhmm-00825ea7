@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>SUMMARY.md｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>SUMMARY.md</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/official_v1/SUMMARY.md</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/official_v1/SUMMARY.md</code></li>
+<li>sha1：<code>c094f151c8a8d41f5dc6258a0b3ed7d775d496f8</code></li>
+<li>快照時間：2026-11-11 22:48（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<h1>官方路徑 evidence v1 彙整</h1>
+<p><strong>探索性、非獨立盲測。</strong> 後三年第二次評估與含 2026-09-05～28 的數字不得稱獨立盲測。<br>
+本目錄為另存的官方路徑 evidence，不覆蓋 e2e_tick_v3。後三年數字沿用第一輪同一份 rank-1 帳本，不重跑 MC95、不重算研究分級。<br>
+windows_v2 已通過第七輪審核。PCR 裁示只涵蓋生效時間一項。正式結論只用研究 A／B／Fail 與 PASS／FAIL；證據不足寫「紅線 4 停止判定／ValueError」，不寫 BLOCKED。</p>
+<p>產生時間（台北時間）：2026-11-11 22:03:20 +0800</p>
+<h2>結論</h2>
+<ul>
+<li>第一輪有 rank-1 的格：60（另 30 格 A3／A3B 無合格 rank-1，不在本目錄）。</li>
+<li>沿用第一輪研究分級：A 10／B 4／Fail 43／第一輪已停止判定 3。</li>
+<li>官方路徑結論：PASS 0／FAIL 51／紅線 4 停止判定／ValueError 9。</li>
+<li>官方合格數（結論為 PASS 者）：0。</li>
+<li>十年完成交易 ≥300 的格數：0；二考 ≥5 的格數：7。</li>
+</ul>
+<h2>逐格</h2>
+<table>
+<thead>
+<tr>
+<th>格</th>
+<th>trial_id</th>
+<th style="text-align: right;">十年交易</th>
+<th style="text-align: right;">二考交易</th>
+<th>研究分級</th>
+<th>官方結論</th>
+<th>紅線1</th>
+<th>紅線2</th>
+<th>紅線3</th>
+<th>紅線4</th>
+<th>fail_reasons 或停止原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F1_gbdt_00777</td>
+<td>133</td>
+<td>3</td>
+<td>B</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F1_logistic_00765</td>
+<td>33</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F1_rule_table_00736</td>
+<td>87</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F2_gbdt_00927</td>
+<td>126</td>
+<td>5</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F2_logistic_00894</td>
+<td>88</td>
+<td>5</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>未觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F2_rule_table_00883</td>
+<td>87</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F3_gbdt_01113</td>
+<td>248</td>
+<td>2</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F3_logistic_01044</td>
+<td>108</td>
+<td>5</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>未觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F3_rule_table_01030</td>
+<td>274</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F4_gbdt_01263</td>
+<td>170</td>
+<td>3</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F4_logistic_01200</td>
+<td>190</td>
+<td>8</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F4_rule_table_01179</td>
+<td>195</td>
+<td>3</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1B_F5_gbdt_01383</td>
+<td>184</td>
+<td>4</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1B_F5_logistic_01335</td>
+<td>99</td>
+<td>3</td>
+<td>A</td>
+<td>FAIL</td>
+<td>未觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1B</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1B_F5_rule_table_01326</td>
+<td>135</td>
+<td>3</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F1_gbdt_00051</td>
+<td>100</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F1_logistic_00018</td>
+<td>4</td>
+<td>0</td>
+<td>None</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F1_rule_table_00001</td>
+<td>88</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F2_gbdt_00207</td>
+<td>61</td>
+<td>0</td>
+<td>A</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F2_logistic_00175</td>
+<td>107</td>
+<td>0</td>
+<td>A</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F2_rule_table_00148</td>
+<td>88</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F3_gbdt_00372</td>
+<td>74</td>
+<td>0</td>
+<td>None</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F3_logistic_00323</td>
+<td>161</td>
+<td>0</td>
+<td>A</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F3_rule_table_00297</td>
+<td>178</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F4_gbdt_00501</td>
+<td>88</td>
+<td>0</td>
+<td>A</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F4_logistic_00456</td>
+<td>51</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F4_rule_table_00443</td>
+<td>100</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A1_F5_gbdt_00651</td>
+<td>88</td>
+<td>0</td>
+<td>A</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A1_F5_logistic_00621</td>
+<td>133</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A1</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A1_F5_rule_table_00591</td>
+<td>121</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F1_gbdt_02256</td>
+<td>187</td>
+<td>4</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>未觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F1_logistic_02235</td>
+<td>49</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F1_rule_table_02206</td>
+<td>94</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F2_gbdt_02397</td>
+<td>163</td>
+<td>3</td>
+<td>B</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F2_logistic_02373</td>
+<td>81</td>
+<td>5</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>未觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F2_rule_table_02353</td>
+<td>88</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F3_gbdt_02598</td>
+<td>251</td>
+<td>7</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>未觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F3_logistic_02520</td>
+<td>185</td>
+<td>5</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>未觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F3_rule_table_02500</td>
+<td>219</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F4_gbdt_02733</td>
+<td>134</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>未觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F4_logistic_02658</td>
+<td>76</td>
+<td>1</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>未觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F4_rule_table_02648</td>
+<td>275</td>
+<td>3</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2B_F5_gbdt_02835</td>
+<td>107</td>
+<td>0</td>
+<td>Fail</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2B_F5_logistic_02805</td>
+<td>114</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2B</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2B_F5_rule_table_02796</td>
+<td>150</td>
+<td>3</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F1_gbdt_01514</td>
+<td>218</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F1_logistic_01488</td>
+<td>4</td>
+<td>0</td>
+<td>None</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F1</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F1_rule_table_01471</td>
+<td>95</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F2_gbdt_01658</td>
+<td>118</td>
+<td>0</td>
+<td>A</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F2_logistic_01632</td>
+<td>30</td>
+<td>0</td>
+<td>A</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F2</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F2_rule_table_01618</td>
+<td>104</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F3_gbdt_01823</td>
+<td>166</td>
+<td>0</td>
+<td>A</td>
+<td>紅線 4 停止判定／ValueError</td>
+<td>停止判定</td>
+<td>停止判定</td>
+<td>停止判定</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F3_logistic_01785</td>
+<td>94</td>
+<td>0</td>
+<td>A</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>未觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F3</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F3_rule_table_01767</td>
+<td>198</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F4_gbdt_02046</td>
+<td>207</td>
+<td>2</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F4_logistic_01926</td>
+<td>52</td>
+<td>0</td>
+<td>B</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F4</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F4_rule_table_01913</td>
+<td>198</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">gbdt</td>
+<td style="text-align: right;">v3_A2_F5_gbdt_02121</td>
+<td>85</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">logistic</td>
+<td style="text-align: right;">v3_A2_F5_logistic_02090</td>
+<td>105</td>
+<td>0</td>
+<td>B</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>觸發</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>F5</td>
+<td style="text-align: right;">rule_table</td>
+<td style="text-align: right;">v3_A2_F5_rule_table_02061</td>
+<td>107</td>
+<td>0</td>
+<td>Fail</td>
+<td>FAIL</td>
+<td>觸發</td>
+<td>觸發</td>
+<td>未觸發</td>
+</tr>
+</tbody>
+</table>
+<h2>說明</h2>
+<ul>
+<li>研究分級沿用第一輪後三年 Trim PF 與 MC95，本輪不重算。</li>
+<li>官方 PASS 須通過 check.py 全部准入條件（研究非 Fail、十年≥300、二考≥5、2022–2024 Trim PF≥1.05、PSR p≤0.01 且 N=1、四紅線）。</li>
+<li>若 original_oos_daily_mdd 不為正、完整性旗標非全為 True、或研究分級無法判定，則不進入策略判定，結論為「紅線 4 停止判定／ValueError」，不是策略 Fail。</li>
+</ul></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>

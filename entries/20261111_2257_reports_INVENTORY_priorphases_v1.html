@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>INVENTORY_priorphases_v1.md｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>INVENTORY_priorphases_v1.md</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/reports/INVENTORY_priorphases_v1.md</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/reports/INVENTORY_priorphases_v1.md</code></li>
+<li>sha1：<code>08c4c78bf6bfcd1a5682ab283a1ac61681c6c512</code></li>
+<li>快照時間：2026-11-11 22:57（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<h1>前期研究盤點 INVENTORY_priorphases_v1</h1>
+<p>撰寫：2026-11-11（台北時間 Asia/Taipei）。範圍：只讀 box 上 <code>/workspace</code>、<code>/home/box</code>（不含 agent-data／sand-data 隱私）、<code>/cursor/stores/*/</code>。未碰 M3，未改、刪、覆蓋任何既有檔。本檔為唯一新寫入。只列實際找到的內容；未找到一律標「未找到」，不推測。</p>
+<p>時間註記：下列 mtime 皆為 box 檔案系統時間，已是台北時間。<code>/workspace/xfer/hv2/stage/</code> 與多數 handoff／reports 壓縮包的 mtime 集中在 2026-11-09 16:12–16:14，應為搬到 box 的時間，不是原寫作日。少數解壓自 MC2 交付包的檔案仍保留原 mtime（例如 2026-10-23）。小於 50MB 的檔才列 sha1（SHA-1 hex）。</p>
+<p>分類約定：（a）可在既有 <code>/workspace/ml_meta</code> 的十年 NQ 分／tick 與 PCR／USD／UST10Y 上重算的訊號或特徵定義；（b）涵蓋約十年的逐筆帳本或日訊號序列；（c）只有摘要、鎖參、成績或短窗帳本。同一來源可同時有 (a) 與 (c)。</p>
+<hr>
+<h2>0. 結論（先講）</h2>
+<p>box 上找得到的前期材料，主體是一份約 57MB 的研究樹 <code>/workspace/xfer/hv2/stage/research/</code>（另有同內容的交接 zip，以及 MC2 交付包解壓在 <code>/workspace/ml_meta/unzips/</code>）。這份材料夠用來把「GBDTRLHMM新制度變形」的骨幹，從目前只用 PCR 模式 A1–A3B 當方向來源，推廣到更早各期已經做過的訊號與濾網家族。</p>
+<p>未找到完整的 evocloud／M3 研究主樹（<code>/workspace/evocloud_phase4</code> 不存在；<code>/home/box/Projects/history-data-review/research</code> 是指向它的斷裂符號連結）。也未找到 <code>/workspace/pcrall_sets/</code>（Phase3 計畫所稱的平滑集合 2.1–2.30、306 對係數庫）、未找到 G1–G4 預計算 <code>.npy</code>、未找到 hero／sif／fast_sif 的原始引擎目錄。box 上沒有任何一份已核對為 2016-09-29～2026-09-28 的十年逐筆帳本。既有帳本最長是 EVO 三考（約 2021-12～2024-08）加上 OOS1（2025-03-24～2026-09-04），以及 hero 二考約 25 個日曆日（2026-09-14～2026-10-16）。因此推廣只能重算訊號／特徵，不能直接拿舊帳本当十年樣本。</p>
+<p>最可行、有完整程式或完整參數可在現有資料上重算的 6 個家族見第 5 節：Phase2b／Phase4 骨幹訊號產生器、元哥濾網與進場規則、pcrall 四分支 PCR 環境（寬於 A1–A3B）、kok_9way／已鎖 4 對平滑、EVO 出場／停損疊層、以及凍結 hero 配置（後者缺引擎，可行性較低）。</p>
+<hr>
+<h2>1. 未找到（查過，沒有）</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>查過的位置</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>evocloud／M3 研究主樹</td>
+<td><code>/workspace/evocloud_phase4</code>；<code>/home/box/Projects/history-data-review/research</code> → <code>/workspace/evocloud_phase4/research</code></td>
+<td>未找到主樹；符號連結目標不存在</td>
+</tr>
+<tr>
+<td>pcrall 平滑集合係數庫</td>
+<td><code>/workspace/pcrall_sets/</code>（Phase3 計畫寫「box 上有 SMOOTH_COLLECTION_2_1_TO_2_30_20261009 等 69 份」）</td>
+<td>未找到該目錄</td>
+</tr>
+<tr>
+<td>stream_filters.py、BATCH_INTEGRATION.json</td>
+<td>全 box（已排除隱私與 site-packages）</td>
+<td>未找到</td>
+</tr>
+<tr>
+<td>預計算平滑檔 G1_long.npy～G4_short.npy</td>
+<td>全 box</td>
+<td>未找到（只有 manifest 與 sha256）</td>
+</tr>
+<tr>
+<td>posthoc_smoothing_v1_pcrall／V5 來源章程與掃描聯集</td>
+<td>PCRALL 說明文件所引用的相對路徑</td>
+<td>未找到這些原件</td>
+</tr>
+<tr>
+<td>正規 Phase4 程式樹 <code>research/phase4_20261023/</code></td>
+<td>xfer 研究樹與 zip 清單</td>
+<td>未找到該目錄；只找到審查／任務目錄裡的程式副本（見 2.4）</td>
+</tr>
+<tr>
+<td>Phase3 執行樹 <code>research/phase3_on_phase1_20261024/</code>、<code>evo_combo_20261024/</code></td>
+<td>同上</td>
+<td>未找到</td>
+</tr>
+<tr>
+<td>hero／sif 引擎</td>
+<td><code>research/hero_extension_20261012</code>、<code>research/sif_f1_optimized_20261009</code>、oos2 的 <code>data/</code>（ts.npy、px.npy、nq_1m.pkl）</td>
+<td>未找到。<code>run_oos2.py</code> 寫明引擎從這兩處「原文重用」，但 box 上沒有這些目錄與資料陣列</td>
+</tr>
+<tr>
+<td>evo_master_board.csv</td>
+<td><code>/workspace/reports/evo_master_board.csv</code>（Phase3 計畫引用）</td>
+<td>未找到</td>
+</tr>
+<tr>
+<td>2016-09-29～2026-09-28 十年逐筆帳本或日訊號序列</td>
+<td>xfer、ml_meta/unzips、dashboard、reports</td>
+<td>未找到任何涵蓋該完整十年的 (b) 類檔</td>
+</tr>
+<tr>
+<td>FOTT／sV43／sif／fast_sif／K01／K06 在 <code>.pla</code> 內的策略原文</td>
+<td>已讀 UTF-16 PLA</td>
+<td>PLA 內 0 次出現這些名稱；只有 Selene_* 族</td>
+</tr>
+<tr>
+<td><code>/cursor/stores</code> 內前期策略定義</td>
+<td><code>/cursor/stores/user/...</code> 與本 bot store</td>
+<td>未找到前期策略碼；只有本計畫 PLAN 副本</td>
+</tr>
+<tr>
+<td><code>/home/box/reference</code>、<code>/home/box/notes</code></td>
+<td>已列目錄</td>
+<td>未找到 phase／evo／sif 研究檔（notes 是 MES／ZS 權益圖與產品草稿）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>2. 找到的來源（按叢集）</h2>
+<h3>2.1 主研究樹（phase1／1b／2／2b、evo、evo2、phase3 計畫、hero 二考）</h3>
+<ul>
+<li>路徑：<code>/workspace/xfer/hv2/stage/research/</code><br>
+  目錄大小約 57MB；box mtime 2026-11-09 16:14:49（台北時間）。內含 29 個子目錄與數份根層定義檔。</li>
+<li>幾乎同一份內容也打在交接包：<br>
+<code>/workspace/reports/phase1_1b_2_2b_handoff_20261104_v2.zip</code>（13,389,577 B，mtime 2026-11-09 16:14:46，sha1 <code>1b51bef3472e51e4d7fb67711830618b39a925c3</code>，2,608 檔）；較小的 v1 zip <code>/workspace/reports/phase1_1b_2_2b_handoff_20261104.zip</code>（4,046,708 B，同日 16:14:45，sha1 <code>ccc59756af6835ec495435bcbc20e42ee5d7a167</code>，1,891 檔）。以下以已解在磁碟上的 xfer 樹為準，不重複列 zip 內同檔。</li>
+</ul>
+<p>根層定義（皆 (a) 說明／索引，或 (c) 摘要；不是十年帳本）：</p>
+<table>
+<thead>
+<tr>
+<th>路徑</th>
+<th style="text-align: right;">大小</th>
+<th>mtime（台北）</th>
+<th>sha1</th>
+<th>內容與分類</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.../PCRALL_既有定義與GM執行說明.md</code></td>
+<td style="text-align: right;">5,895</td>
+<td>2026-11-09 16:14:46</td>
+<td><code>d9b1c8afebdde140f883839981ac29a3a79a8e7d</code></td>
+<td>pcrall＝V4.3／V4.31／V4.4／V4.41 四條 PCR 分支＋NONE 對照的聯集，不是四網同時成立。寫明 T+1 台北 12:00、A2B 與 PCR-only 鎖存語意。引用的 V5 原件未找到。(a) 定義；(c) 無十年帳本</td>
+</tr>
+<tr>
+<td><code>.../EVO_NAMING_CURRENT.json</code></td>
+<td style="text-align: right;">3,356</td>
+<td>2026-11-09 16:14:46</td>
+<td><code>bdc63a149b8c3be08c41a89576d55f33fa8e9af1</code></td>
+<td>已登錄別名：evo13_stop.1、evo14_dstopmae.22、evo18_exit.2，以及 Phase3 日線濾網版 evo31_daily.1／.2（DHMA60、DEMA20）。(c)</td>
+</tr>
+<tr>
+<td><code>.../scope_frozen.json</code></td>
+<td style="text-align: right;">4,688</td>
+<td>2026-11-09 16:14:48</td>
+<td><code>89b03a334fe25a54ef92fc9fbd2acc26bbfde57f</code></td>
+<td>凍結搜尋域。(c)</td>
+</tr>
+<tr>
+<td><code>.../scope_domains.json</code></td>
+<td style="text-align: right;">26,653</td>
+<td>同左</td>
+<td><code>e22e9579b26a2c070df090f521688a2dd7201833</code></td>
+<td>域索引。(c)</td>
+</tr>
+<tr>
+<td><code>.../scope_table.csv</code></td>
+<td style="text-align: right;">289,565</td>
+<td>同左</td>
+<td><code>9809bc283e05832865f11ad214645416a3bdd896</code></td>
+<td>域表。(c)</td>
+</tr>
+<tr>
+<td><code>.../friction.json</code></td>
+<td style="text-align: right;">3,642</td>
+<td>同左</td>
+<td><code>8ff3ee56bc086d50590bd84a53f0b70a905bdfe1</code></td>
+<td>成本／摩擦設定。(a) 規則</td>
+</tr>
+</tbody>
+</table>
+<p>計畫與花招清單（(c)，附定義可當 (a) 的說明，但不是可執行的完整函式庫）：</p>
+<table>
+<thead>
+<tr>
+<th>路徑</th>
+<th style="text-align: right;">大小</th>
+<th>mtime（台北）</th>
+<th>sha1</th>
+<th>內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>research_plans/Phase3_總表_20261029.md</code></td>
+<td style="text-align: right;">2,483</td>
+<td>2026-11-09 16:14:49</td>
+<td><code>facfafb53f17ae15554fbb967c24cdc78e850429</code></td>
+<td>舊制 Phase3：A 案 p3asm（306 對事後平滑）、B 案 p3sif（前平滑）；平滑集合 2.1–2.30，多方 17、空方 18 個濾波器</td>
+</tr>
+<tr>
+<td><code>research_plans/EVO_Phase3_on_Phase1_plan_20261024.md</code></td>
+<td style="text-align: right;">10,383</td>
+<td>同左</td>
+<td><code>2d62f5d43dc3bd1daa47fa84a2e780c80ef986e2</code></td>
+<td>寫 box 應有 <code>/workspace/pcrall_sets/</code>；該目錄現在未找到</td>
+</tr>
+<tr>
+<td><code>research_plans/phase3_on_phase1_configs_20261024/pairs_306.json</code></td>
+<td style="text-align: right;">6,337</td>
+<td>2026-11-09 16:14:50</td>
+<td><code>9038b013d46d831e07893d50a8d7313059c63dcc</code></td>
+<td>306 列 <code>["2.n","Lxx","Sxx"]</code> 識別碼，沒有濾波器係數本身。(a) 不完整；(c)</td>
+</tr>
+<tr>
+<td><code>research_plans/Phase4_總計畫_20261023.md</code></td>
+<td style="text-align: right;">6,380</td>
+<td>2026-11-09 16:14:49</td>
+<td><code>b9bcf901fd2a576a9649a94f6cff3d919b1fbe30</code></td>
+<td>TA01–TA20 骨幹、元哥濾網、PCR 四種＋NONE；Phase5 外部濾網（UST10Y、F&amp;G）當時標未定義</td>
+</tr>
+<tr>
+<td><code>research_plans/Phase4_花招總清單_20261029.md</code></td>
+<td style="text-align: right;">5,188</td>
+<td>同左</td>
+<td><code>09a4ef990a61e4a97202407f8f8929e148f17c6b</code></td>
+<td>26 項花招盤點；多處標「來源檔在 research/phase4_20261023/」，該樹未找到</td>
+</tr>
+<tr>
+<td><code>research_plans/EVO_純花招清單_20261023.md</code></td>
+<td style="text-align: right;">29,902</td>
+<td>2026-11-09 16:12:59</td>
+<td><code>2304d24ccbf74d50d3644887159b1ae53e38b1fd</code></td>
+<td>stop／dstopmae／kok_9way／cool／trans 等定義與成績摘要</td>
+</tr>
+<tr>
+<td><code>deliveries_20261023/EVO_Phase1_全花招說明_20261023.md</code></td>
+<td style="text-align: right;">38,129</td>
+<td>2026-11-09 16:14:46</td>
+<td><code>5dc54a92c90e1f81bc453b3f5090307e53dc979e</code></td>
+<td>Phase1 技術底座與各槽（tier、V331、trans、stopC、dstopmae、kok、cool）說明</td>
+</tr>
+</tbody>
+</table>
+<p>PCR 濾網可執行碼（(a)，可用 Equity／SPX PCR 與日線重算；box 上 PCR 日線在 oos2 inputs 與 <code>ml_meta/unzips/PCR_SPXPCR_SPX_NQ_daily_20261012/</code>，Equity PCR 自 2011-04-01、SPX PCR 自 2011-02-17，皆到 2026-10 月）：</p>
+<table>
+<thead>
+<tr>
+<th>路徑</th>
+<th style="text-align: right;">大小</th>
+<th>mtime（台北）</th>
+<th>sha1</th>
+<th>內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>protocols/v1_3_pcr_v22/filter_logic.py</code></td>
+<td style="text-align: right;">6,292</td>
+<td>2026-11-09 16:14:47</td>
+<td><code>8d62a85a22fc29a3fbec1182d28fc0e7ae0dd00c</code></td>
+<td>Equity PCR MACD × NQ 日線 EMA 的 A2B 環境；另有 README、protocol.json、日線診斷 CSV</td>
+</tr>
+<tr>
+<td><code>protocols/v1_31_spxpcr_v22/filter_logic.py</code></td>
+<td style="text-align: right;">6,388</td>
+<td>2026-11-09 16:14:48</td>
+<td><code>9dc825538b7f55337b7343b9f8be705ef85dc843</code></td>
+<td>SPX PCR 分支對應實作</td>
+</tr>
+<tr>
+<td><code>.../v44_nq_20261009/v14_filter_logic.py</code>（及同文 <code>pcr_filter.py</code>）</td>
+<td style="text-align: right;">1,185</td>
+<td>2026-11-09 16:14:47</td>
+<td><code>8fbd47a0405de1dacb2a173bc4b8758a1dcf8b93</code></td>
+<td>PCR-only：histogram 穿零鎖存，<code>available_at</code>＝D+1 台北 12:00</td>
+</tr>
+</tbody>
+</table>
+<p>平滑／kok（(a) 方法可重算，但 306 對係數庫未找到；已鎖 4 對參數完整）：</p>
+<table>
+<thead>
+<tr>
+<th>路徑</th>
+<th style="text-align: right;">大小</th>
+<th>mtime（台北）</th>
+<th>sha1</th>
+<th>內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.../frozen/多空平滑集合.json</code></td>
+<td style="text-align: right;">3,344</td>
+<td>2026-11-09 16:14:47</td>
+<td><code>5977a4ea08d84f3b5f4c70c7bf8d94bad5073a8d</code></td>
+<td>2026-10-08 凍結 4 對：BigA v2、BigC v2、Sec.1 v4、K01 v4。含完整 Bessel／MEDIAN／HMA／FIR20 參數與權重。(a)</td>
+</tr>
+<tr>
+<td><code>shared_smoothing_fixed4_20261008/continuous/filters_manifest.json</code></td>
+<td style="text-align: right;">2,889</td>
+<td>2026-11-09 16:14:48</td>
+<td><code>d9775c23d50023aeb33652d1c195cff2aaaac270</code></td>
+<td>G1–G4 的方法參數與 sha256；對應 <code>.npy</code> 未找到。資料 manifest 寫來源是 M3 Databento tick（2024-08-28～2026-09-04），不是十年窗</td>
+</tr>
+<tr>
+<td><code>pcrall_kok9_20261021/filters.py</code></td>
+<td style="text-align: right;">4,121</td>
+<td>2026-11-09 16:13:16</td>
+<td><code>238893eb1712e2054cd904cbef7173bb84a61f5d</code></td>
+<td>九法平滑（EMA／FIR／MEDIAN／ORI／BESSEL／SMA／WMA／HMA／SG）。硬編碼 M3 的 <code>filter_lib.py</code> 路徑；box 另有副本見下</td>
+</tr>
+<tr>
+<td><code>pcrall_kok9_20261021/kok_engine.py</code></td>
+<td style="text-align: right;">6,289</td>
+<td>2026-11-09 16:14:48</td>
+<td><code>bdeb05b23e9602303677ed7800aa11ed0e0e284a</code></td>
+<td>kok 九法出場引擎。(a)</td>
+</tr>
+<tr>
+<td><code>k01_kok_9way_v3_20261008/filter_lib.py</code></td>
+<td style="text-align: right;">6,293</td>
+<td>同左</td>
+<td><code>b3d171b590c26e7fc933f3af4be11c9d0d10cf9c</code></td>
+<td>SMA／WMA／中值／出場平滑等實作。(a)</td>
+</tr>
+<tr>
+<td><code>k01_kok_9way_v3_20261008/K01.kok_9way_v3.md</code></td>
+<td style="text-align: right;">8,854</td>
+<td>同左</td>
+<td><code>9af6ea511021e08385b1fe2acda5d10906833f75</code></td>
+<td>K01 骨幹鎖參（C89390／S13_E67／VB80，無外部 PCR）與 12 段時間分流選法。(a) 定義＋(c) 成績；目錄內 full_results 是方法驗證 JSON，不是十年帳本</td>
+</tr>
+<tr>
+<td><code>k01_kok_9way_v3_20261008/K01.kok_9way_v4.md</code></td>
+<td style="text-align: right;">8,235</td>
+<td>同左</td>
+<td><code>c87dd4ec2ac53610363bf96d5afa41592c16249c</code></td>
+<td>v4 對照說明。(c)</td>
+</tr>
+</tbody>
+</table>
+<p>Phase2b 骨幹訊號（(a)，可用 NQ 分／K 棒重算）：</p>
+<table>
+<thead>
+<tr>
+<th>路徑</th>
+<th style="text-align: right;">大小</th>
+<th>mtime（台北）</th>
+<th>sha1</th>
+<th>內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>phase2b_20261023/backbones/signals_2b.py</code></td>
+<td style="text-align: right;">9,801</td>
+<td>2026-11-09 16:14:49</td>
+<td><code>3bff06b9683e4ea94e467e372aec403577c700a4</code></td>
+<td>11 個骨幹的 <code>generate_signals</code>。PORT 自 PLA：SuperTrend、CCI_EMA_reverse、GMMA、Chaikin oscillator、RSI_DMI_opposite、MTM_Kateband；NEW：Vegas、Fibo、LinReg、AD、Chaikin_volatility</td>
+</tr>
+<tr>
+<td><code>phase2b_20261023/backbones/README.md</code></td>
+<td style="text-align: right;">1,878</td>
+<td>同左</td>
+<td><code>3992e3fb754904d56909d383ebb6e78f4c3e31b5</code></td>
+<td>上列家族說明與已知限制</td>
+</tr>
+<tr>
+<td><code>phase2b_20261023/</code> 其餘</td>
+<td style="text-align: right;">目錄約 9.6MB</td>
+<td>2026-11-09 16:14</td>
+<td>—</td>
+<td>L1–L3 掃描腳本、多份 SELECTION_LOCK_*.json（鎖參與成績，(c)）、元哥／kok／cool／mae 層程式</td>
+</tr>
+</tbody>
+</table>
+<p>EVO／EVO2 執行與鎖參（引擎 (a) 有一部分；帳本不是十年）：</p>
+<ul>
+<li><code>evo_secbtob8_20261021/phase1_fit_driver/</code>：有 <code>engines.py</code>（sha1 <code>1a2b0ccc8c593f70b151321396205dcc2577ef4f</code>）、<code>envs.py</code>、<code>p17c_stopC/engine_p17c.py</code>、<code>p12_stop/engine_p12.py</code> 等。這是 evo13_stop 等疊層的可執行碼。(a)</li>
+<li><code>evo_dstopmae_20261021/</code>：dstopmae 跑程與引擎產生器。(a)</li>
+<li><code>evo2_*_20261023/</code>（dstopmae／selene_entry／exit／kok／stop／tick_seed）：掃描、漏斗、SELECTION_LOCK、部分結果。(c) 為主，另有引擎腳本可當 (a)</li>
+<li><code>/workspace/reports/evo2_aroon_dstopmae_key_map_20261111.md</code>（16,041 B，mtime 2026-11-11 14:30:06，sha1 <code>4fd6c160fb6f3209e33fe342ab90eeec617cdc11</code>）與其 CSV：鍵對照表。(c)</li>
+</ul>
+<p>Hero 二考（配置可當凍結參數；(c) 短窗帳本，不是十年）：</p>
+<ul>
+<li>目錄：<code>oos2_exam_hero8_20261021/</code>（約 2.8MB）</li>
+<li><code>REPORT.md</code>（1,496 B，sha1 <code>9614043ac7fe697b9a2a8fab3fcc8cd564dc4e88</code>）：期間 2026-09-14～10-16；列出 sV43.1、fast_sif.f10.1／f9.8／f20.2、sif.f1–f8、FOTT.2、xV441.1、TTadp.3 等。每策略 2–21 筆。</li>
+<li>凍結配置例：<code>v1/FOTT.2.json</code>（sha1 <code>f0f78c4508e4edc927de939c7efd856a4b15f3a6</code>，S12／T199／RSI 參數＋MACD 24/72/108）；<code>v1/sV43.1.json</code>（sha1 <code>5e699bc2134849aaa50762fc4e1063a496c33165</code>，S14_E3／T38／avgnum=19）；<code>v1/sif.f2.1.json</code>（sha1 <code>a2ab22f9ff26443633f587dd0fa1f9e437620fe9</code>，S12_E57、EQ_A2B、L02×S11、DBSMA_120_20）；<code>v1/fast_sif.f10.1.json</code>（sha1 <code>205029c938db5571d57e498a78503ba92105923c</code>，S8／T211、SPX_A2B、L07×S11）。</li>
+<li><code>results/*_trades.csv</code>：已抽樣 FOTT.2（10 筆，2026-09-20～10-11）、sV43.1（8 筆，09-16～10-14）、sif.f2.1 與 fast_sif.f20.2（各 5 筆）。屬 (c)，不是 (b)。</li>
+<li><code>trans/K01.trans.5_extension_trades.csv</code>：322 筆，2026-09-13～10-16，仍是短窗。(c)</li>
+<li><code>run_oos2.py</code>（sha1 <code>5dcedf8bafcca6c1ee3ed6ddbce92050ec5e3959</code>）依賴未找到的 hero_extension／sif_f1 引擎與 <code>data/*.npy</code>。</li>
+<li>inputs 另有 NQ 日線（2011-01-03～2026-10-16）與 PCR 日線，可作 (a) 的輸入，不是策略帳本。</li>
+</ul>
+<p>PLA 原始碼（(a) 的 Selene 家族來源，不是 FOTT／sif）：</p>
+<ul>
+<li><code>/workspace/xfer/hv2/stage/project_root/2025feb23th_code_selene_filter_mix (1).pla</code>（513,294 B，mtime 2026-11-09 16:12:08，sha1 <code>8254695dce174e5585ee49da8c8fae22390710c5</code>）。UTF-16 XML。內含至少 47 個 <code>Selene_*</code> 名稱（Aroon、BBI、CMO、Chaikin、DMI、ForceIndex、GMMA、MTM、Oops、ROC、RSI、SuperTrend 等）。0 次出現 FOTT、sV43、sif、fast_sif、K01、K06。</li>
+</ul>
+<h3>2.2 Phase4 程式副本（正規樹未找到，審查目錄有碼）</h3>
+<p>正規 <code>research/phase4_20261023/</code> 未找到。以下 5 份 <code>signals_p4.py</code> sha1 全相同；3 份 <code>l2p4.py</code> sha1 全相同。以 <code>/workspace/b2_tasks/a7/src/</code> 為代表（mtime 約 2026-11-09 16:13–16:14，台北時間）：</p>
+<table>
+<thead>
+<tr>
+<th>檔</th>
+<th style="text-align: right;">大小</th>
+<th>sha1</th>
+<th>內容與分類</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>signals_p4.py</code></td>
+<td style="text-align: right;">3,594</td>
+<td><code>c8dbeb6de58aa17b6eeba0e192db99140d9118f0</code></td>
+<td>TA01–TA09 來自 v16ta 移植，P4 新骨幹走 ta_numba。(a)</td>
+</tr>
+<tr>
+<td><code>l2p4.py</code></td>
+<td style="text-align: right;">39,977</td>
+<td><code>c8e25d5166a9fcca420403433d26ab2fb3fb21c9</code></td>
+<td>元哥濾網 F02–F11、F02R–F07R、ST±、BB±（68）；進場 1–4／1B–4B／A1–A3／A1B／A2B ×{10,20,30,40}（52）；出場格。(a)</td>
+</tr>
+<tr>
+<td><code>ta_numba.py</code></td>
+<td style="text-align: right;">8,636</td>
+<td><code>46a5625f609d8a4dedfc19599fe39253ed17262d</code></td>
+<td>TA 指標因果實作。(a)</td>
+</tr>
+<tr>
+<td><code>v16ta.py</code></td>
+<td style="text-align: right;">2,764</td>
+<td><code>e654846bbea96557f66140b1ce8da786b0850f0a</code></td>
+<td>v1.6 TA01–TA09 匯入層。(a)</td>
+</tr>
+<tr>
+<td><code>p4wave.py</code></td>
+<td style="text-align: right;">4,507</td>
+<td><code>d2ae65e41559f6da60b0a764d65462f32a4e47e3</code></td>
+<td>波浪停利。(a)</td>
+</tr>
+</tbody>
+</table>
+<p>同目錄還有 <code>nap.py</code>、<code>coolB.py</code>、<code>kokB.py</code>、<code>famB*.py</code> 等。L1 掃描結果的 parquet／十年帳本未在這些審查目錄找到。</p>
+<h3>2.3 Phase4 handoff（大多是 evo4x 組裝／稽核，不是訊號定義）</h3>
+<ul>
+<li><code>/workspace/handoff_phase4/</code>：<code>HANDOFF_phase4_v3.md</code>～<code>v7.md</code>、失敗稿 v2、<code>box_phase4_files_20261103.tgz</code>（151,568,970 B，mtime 2026-11-09 16:13:01，≥50MB 省略 sha1）。tgz 頂層幾乎全是 <code>a2_w_v1p</code>、<code>rev_a2</code> 等 slice 組裝與 audit，不是 TA／元哥／pcrall 原始訊號庫。</li>
+<li><code>HANDOFF_phase4_v7.md</code>（44,884 B，mtime 2026-11-09 16:14:45，sha1 <code>34866666ebb22b4628d4babdf4b8bb7a76d0a9e1</code>）：交接說明。(c)</li>
+<li><code>/workspace/evo4x*</code>、<code>/workspace/a2_w_v1p/</code>：slice 稽核、slicer、rescue 腳本，屬 phase4 執行工具，不是可直接當特徵的訊號表。</li>
+</ul>
+<h3>2.4 MC2 交付包與較長（但仍非十年）帳本</h3>
+<p>路徑根：<code>/workspace/ml_meta/unzips/</code>（對應 zips 在 <code>/workspace/ml_meta/zips/</code>）。</p>
+<table>
+<thead>
+<tr>
+<th>檔</th>
+<th style="text-align: right;">大小</th>
+<th>mtime（台北）</th>
+<th>sha1</th>
+<th>期間（已讀首末列）</th>
+<th>分類</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>evo13_stop.1/.../evidence/trades.csv</code></td>
+<td style="text-align: right;">30,523</td>
+<td>2026-10-23 08:52:04</td>
+<td><code>3d45fd5abfa36ecbb09f7ffeb842d1294f42de56</code></td>
+<td>daily.csv 為 2025-03-24～2026-09-04，377 日，239 筆</td>
+<td>(c)</td>
+</tr>
+<tr>
+<td><code>evo14_dstopmae.22/.../evidence/trades.csv</code></td>
+<td style="text-align: right;">14,051</td>
+<td>2026-10-23（交付包內）</td>
+<td><code>5a77322fc43e1e54b798cd848584396c653419a1</code></td>
+<td>同 OOS1 窗，109 筆</td>
+<td>(c)</td>
+</tr>
+<tr>
+<td><code>evo18_exit.2/.../evidence/trades.csv</code></td>
+<td style="text-align: right;">19,983</td>
+<td>同左</td>
+<td><code>996d9b3ef7cddde5c4b78c7f984413967c5508b4</code></td>
+<td>同窗，156 筆</td>
+<td>(c)</td>
+</tr>
+<tr>
+<td><code>EVO_三考逐筆.../evo13_stop.1_exam3_trades_full.csv</code></td>
+<td style="text-align: right;">72,537</td>
+<td>2026-10-23 11:23:58</td>
+<td><code>73b990f264510594c34635c279da6672241d30a2</code></td>
+<td>2021-12-02～2024-08-22，471 筆</td>
+<td>(c)，不是十年、也不接上 2016</td>
+</tr>
+<tr>
+<td><code>.../evo18_exit.2_exam3_trades_full.csv</code></td>
+<td style="text-align: right;">42,003</td>
+<td>2026-10-23</td>
+<td>—（此次未再列 sha1）</td>
+<td>2021-12-01～2024-08-30，270 筆</td>
+<td>(c)</td>
+</tr>
+<tr>
+<td><code>evo13_stop.1/locked_config.json</code></td>
+<td style="text-align: right;">6,999</td>
+<td>2026-10-23 08:52:04</td>
+<td><code>3ab40266eb9f1d24290e54200ddb253564f4f845</code></td>
+<td>凍結執行鍵與來源檔 sha256，指向 phase1_fit_driver 與 v1_31 filter_logic。(a) 鎖參</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>各包另有 OOS2／EXAM3 短窗、<code>reference_source/</code>（部分 Phase1 程式副本）、<code>provenance/filters_manifest.json</code>。沒有 2016 年起的十年帳本。</p>
+<h3>2.5 Dashboard、現場成交、stores</h3>
+<ul>
+<li><code>/workspace/dashboard/slots.json</code>（17,722 B，mtime 2026-11-09 18:02:44，sha1 <code>a252ecbede3786c9d6ffbcb97fbf986ec3028f38</code>）：現場／紙單／退役名稱，含 FOTT.2、evo4x.slice01.1、B1.04、P3v2_M3.02、p4r96.slice02.5、SecBtoB.8adp、退役 sif.f3.1、fast_sif.f20.2、evo18_exit.2、evo14_dstopmae.22、evo31_daily.1、Selene_Aroon 等。(c)</li>
+<li><code>/workspace/dashboard/data/MC2_TRADES_20261021.csv</code> 等：單日或數日現場／紙單紀錄（例：2026-10-21 檔 126,995 B，sha1 <code>4666d841a5763e6de58108b5c2139a23db5d9f52</code>，約 132 列）。(c)，不是回測十年帳本。</li>
+<li><code>/cursor/stores/.../assets/</code>：本計畫 PLAN_v1～v4 與相關筆記，不是前期策略庫。</li>
+</ul>
+<h3>2.6 其他已掃、價值較低或與本任務無關的路徑</h3>
+<ul>
+<li><code>tick3_exam_20261022/</code>：有 <code>k01_run.py</code>、<code>ticks/2021-12.json</code> 起的小型月檔（整個 ticks 約 140KB），不是完整 tick 庫。</li>
+<li><code>v17_phase2_step1_20261023/</code>、<code>v33_*</code>、<code>v331_stop_research_20261020/K01/</code>：舊窗選參、停損研究與 lock JSON。(c) 為主，部分引擎可當 (a)。</li>
+<li><code>/workspace/ml_meta/</code> 本身：目前 GBDTRLHMM 新研究的資料與第一、二輪產物，不是「前期 phase／evo」來源（本盤點不展開）。</li>
+<li>大量 <code>review_*</code>、<code>mon_cand_*</code>、<code>rev_a2</code>：多為 phase4 組裝審查副本，訊號碼若出現，sha1 已與 2.2 相同。</li>
+</ul>
+<hr>
+<h2>3. 十年帳本調查（專門回答 (b)）</h2>
+<p>在已搜範圍內，<strong>未找到 (b)</strong>：沒有一份逐筆帳本或日訊號序列覆蓋 2016-09-29～2026-09-28。找到的最長片段是：</p>
+<ul>
+<li>EVO 三考：約 2021-12～2024-08（evo13 471 筆、evo18 270 筆）。</li>
+<li>EVO OOS1 證據：2025-03-24～2026-09-04（evo13 239、evo14.22 109、evo18 156 筆）。</li>
+<li>Hero／K01 trans 二考：2026-09-13～2026-10-16（數筆至 322 筆）。</li>
+<li>Dashboard MC2：個別交易日。</li>
+</ul>
+<p>這些都不能替代新制前七年選參、後三年驗收的重算。</p>
+<hr>
+<h2>4. 與現有 ml_meta 資料能否對接</h2>
+<p>已存在、可支撐重算（a）的輸入：<code>/workspace/ml_meta/data/minute.pkl</code> 與 tick（新研究已用 2016-08-28／08-29～2026-09-28）；<code>/workspace/ml_meta/ext/</code> 的 USD、UST10Y；PCR 日線在 <code>ml_meta/unzips/PCR_SPXPCR_SPX_NQ_daily_20261012/</code> 與 oos2 inputs（Equity／SPX PCR 皆自約 2011 年至 2026-10 月，長於十年窗）。SPX 日線同樣在上述 PCR 包與 oos2 inputs，不在 <code>ml_meta/data/</code> 根目錄，但在 box 上找得到。</p>
+<p>不能直接對接、會擋住完整重現的缺口：pcrall_sets 306 對係數、G1–G4 npy、hero／sif 引擎與 oos2 的 ts／px 陣列、evocloud 主樹、正規 phase4_20261023 結果檔。</p>
+<hr>
+<h2>5. 評估：最可行的 6 個訊號／濾網家族</h2>
+<p>只根據上面已見到的程式、參數與缺口，不猜測未找到的引擎「應該也在 M3」。</p>
+<ol>
+<li>
+<p><strong>Phase2b／Phase4 骨幹訊號產生器（Selene＋TA01–TA20）</strong><br>
+   證據：<code>signals_2b.py</code>（11 族，sha1 <code>3bff06b9683e4ea94e467e372aec403577c700a4</code>）、<code>signals_p4.py</code>／<code>ta_numba.py</code>／<code>v16ta.py</code>（sha1 見 2.2）、PLA（sha1 <code>8254695dce174e5585ee49da8c8fae22390710c5</code>）。這些函式自己從 NQ K 棒產生多空事件，不依賴 PCR 模式當唯一方向。可在現有十年分鐘／tick 上重算。正規 Phase4 L1 結果檔未找到，必須重跑，不能沿用舊榜。</p>
+</li>
+<li>
+<p><strong>元哥濾網與進場規則（F02–F11、ST／BB、進場 1–4／A1–A3 系）</strong><br>
+   證據：<code>l2p4.py</code>（sha1 <code>c8e25d5166a9fcca420403433d26ab2fb3fb21c9</code>）內含完整 FILTS 68、ENTS 52、EXITS 格與實作。可當模型特徵（濾網狀態）或替代訊號產生器，輸入只需 NQ OHLC 棒。這與「只把 PCR A2B 當骨幹」是不同層。</p>
+</li>
+<li>
+<p><strong>pcrall 四分支 PCR 環境（寬於目前 A1–A3B）</strong><br>
+   證據：PCRALL 說明（sha1 <code>d9b1c8af…</code>）、<code>v1_3</code>／<code>v1_31</code> <code>filter_logic.py</code>、<code>v14_filter_logic.py</code>（PCR-only 穿零鎖存）。可在現有 Equity／SPX PCR 與日線上，以 T+1 台北 12:00 重算方向與 histogram。用途應是特徵或閘門，而不是唯一進場骨幹；搜尋域還有已登錄 MACD／EMA 聯集（文件寫 424 種 MACD、63 種 EMA），不必先做笛卡兒積。</p>
+</li>
+<li>
+<p><strong>kok_9way 與已鎖平滑對（價格濾波，不是 PCR）</strong><br>
+   證據：<code>filter_lib.py</code>、<code>filters.py</code>、<code>kok_engine.py</code>、<code>多空平滑集合.json</code>（4 對完整係數，sha1 <code>5977a4ea08d84f3b5f4c70c7bf8d94bad5073a8d</code>）、<code>pairs_306.json</code>（只有 L／S 編號）。可把平滑後價格、價格減平滑、或多空濾波方向當特徵；4 對可立即重算。306 對要等 pcrall_sets 或 BATCH 係數出現後才能完整重現 Phase3 集合，目前不能聲稱 2.1–2.30 已在 box。</p>
+</li>
+<li>
+<p><strong>EVO Phase1 出場／停損疊層（stopC、dstopmae、trans、tier、cool）</strong><br>
+   證據：<code>phase1_fit_driver</code> 與 <code>evo_dstopmae</code> 引擎、<code>EVO_Phase1_全花招說明</code>、三支 locked_config、以及 2021-12 起的三考帳本與 2025-03 起的 OOS1 帳本。適合在新骨幹之上當出場狀態特徵或候選出場，不能單獨當十年進場訊號。舊帳本期間與新制十年窗不一致，只可當對照，不可當訓練標籤來源。</p>
+</li>
+<li>
+<p><strong>凍結 hero 配置（FOTT.2、sV43.1、sif.<em>、fast_sif.</em>）</strong><br>
+   證據：各 <code>v1/*.json</code> 有完整凍結參數（槽位、K 棒框架、RSI／均線參數、PCR 分支與 k）。但 <code>run_oos2.py</code> 所需引擎目錄與資料陣列未找到；PLA 裡也沒有這些名字。現有帳本只有約 25 日。可行性低於前五項：只能先當「若引擎補齊可重跑」的候選清單，不能在目前 box 材料上直接當訊號產生器。</p>
+</li>
+</ol>
+<p>不建議把「現場 slots 裡還在跑的 evo4x／P3v2／B1.04」直接當成可重算特徵：dashboard 只有名稱與當日成交，沒有在 box 上找到對應的完整十年定義與帳本。</p>
+<hr>
+<h2>6. 本檔</h2>
+<p>路徑：<code>/workspace/ml_meta/reports/INVENTORY_priorphases_v1.md</code><br>
+（寫入後由外層計算 sha1。）</p></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>

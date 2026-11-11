@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>progress.json｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>progress.json</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/v14/progress.json</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/v14/progress.json</code></li>
+<li>sha1：<code>add554a8ec15127627280c485994cef4b709f6fb</code></li>
+<li>快照時間：2026-11-11 22:58（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<pre><code class="language-json">{
+  &quot;updated_at_taipei&quot;: &quot;2026-11-11 22:57:59 +0800&quot;,
+  &quot;stage&quot;: &quot;build_features_d1&quot;,
+  &quot;stage_detail&quot;: &quot;載入 minute.pkl 與建構特徵&quot;,
+  &quot;done&quot;: 0,
+  &quot;total&quot;: 338034,
+  &quot;elapsed_sec&quot;: 0,
+  &quot;eta_sec&quot;: null,
+  &quot;eta_days&quot;: null,
+  &quot;measured_sec_per_trial&quot;: null,
+  &quot;n_workers&quot;: 0,
+  &quot;supervisor_pid&quot;: null,
+  &quot;worker_pids&quot;: [],
+  &quot;failures&quot;: [
+    {
+      &quot;at&quot;: &quot;2026-11-11 22:54:20 +0800&quot;,
+      &quot;error&quot;: &quot;e/ml_meta/v14/scripts/build_features_v14.py\&quot;, line 42, in main\n    daily = attach_macro_pcr(daily)\n  File \&quot;/workspace/ml_meta/v14/scripts/v14_lib.py\&quot;, line 258, in attach_macro_pcr\n    m_eq = asof(out, eq, \&quot;eq_available_et\&quot; if \&quot;eq_available_et\&quot; in eq.columns else \&quot;available_et\&quot;, \&quot;eq\&quot;)\n  File \&quot;/workspace/ml_meta/v14/scripts/v14_lib.py\&quot;, line 254, in asof\n    m = pd.merge_asof(l, r, left_on=\&quot;_dec\&quot;, right_on=\&quot;_avail\&quot;, direction=\&quot;backward\&quot;)\n  File \&quot;/workspace/ml_meta/.venv/lib/python3.13/site-packages/pandas/core/reshape/merge.py\&quot;, line 913, in merge_asof\n    op = _AsOfMerge(\n        left,\n    ...&lt;13 lines&gt;...\n        direction=direction,\n    )\n  File \&quot;/workspace/ml_meta/.venv/lib/python3.13/site-packages/pandas/core/reshape/merge.py\&quot;, line 2460, in __init__\n    _OrderedMerge.__init__(\n    ~~~~~~~~~~~~~~~~~~~~~~^\n        self,\n        ^^^^^\n    ...&lt;9 lines&gt;...\n        fill_method=None,\n        ^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \&quot;/workspace/ml_meta/.venv/lib/python3.13/site-packages/pandas/core/reshape/merge.py\&quot;, line 2372, in __init__\n    _MergeOperation.__init__(\n    ~~~~~~~~~~~~~~~~~~~~~~~~^\n        self,\n        ^^^^^\n    ...&lt;9 lines&gt;...\n        sort=True,  # factorize sorts\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \&quot;/workspace/ml_meta/.venv/lib/python3.13/site-packages/pandas/core/reshape/merge.py\&quot;, line 1022, in __init__\n    self._maybe_require_matching_dtypes(self.left_join_keys, self.right_join_keys)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \&quot;/workspace/ml_meta/.venv/lib/python3.13/site-packages/pandas/core/reshape/merge.py\&quot;, line 2585, in _maybe_require_matching_dtypes\n    _check_dtype_match(lk, rk, i)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^\n  File \&quot;/workspace/ml_meta/.venv/lib/python3.13/site-packages/pandas/core/reshape/merge.py\&quot;, line 2581, in _check_dtype_match\n    raise MergeError(msg)\npandas.errors.MergeError: incompatible merge keys [0] dtype('&lt;M8[ns]') and dtype('&lt;M8[us]'), must be the same type\n&quot;
+    }
+  ],
+  &quot;alternatives&quot;: [],
+  &quot;best_exploratory&quot;: null,
+  &quot;results_label&quot;: &quot;探索性、非官方結論，不得稱獨立盲測&quot;,
+  &quot;cumulative_trials_prior&quot;: 10440,
+  &quot;cumulative_trials_now&quot;: 10440,
+  &quot;v14_trials_done&quot;: 0,
+  &quot;note&quot;: &quot;甘特圖請讀 stages 陣列。所有結果探索性、非獨立盲測。&quot;,
+  &quot;stages&quot;: [
+    {
+      &quot;name&quot;: &quot;build_features_d1&quot;,
+      &quot;status&quot;: &quot;running&quot;,
+      &quot;start_time&quot;: &quot;2026-11-11 22:57:59 +0800&quot;,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;lookahead&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;speed&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;pilot&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 12,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;screen_d1&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 338034,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;freeze_d1&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 27,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;cpcv_d1&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 27,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;build_features_m15&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;screen_m15&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 338034,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;freeze_m15&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 27,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;cpcv_m15&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 27,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;tick_eval&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: null,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;summary&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: null
+    }
+  ],
+  &quot;experiment_log_path&quot;: &quot;v14/EXPERIMENT_LOG.md&quot;,
+  &quot;experiment_log_sha1&quot;: &quot;a7259e267f79988837fe7e01953f466ae3378c83&quot;,
+  &quot;experiment_log_latest_id&quot;: &quot;E001&quot;
+}
+</code></pre></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+[
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/PLAN_v13.md",
+    "sha1": "210a97a78a620f1ecab62ba31756f0570c2e5b0f",
+    "filename": "entries/20261111_2248_PLAN_v13.md",
+    "html": "entries/20261111_2248_PLAN_v13.html",
+    "bytes": 11390
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/official_v1/SUMMARY.csv",
+    "sha1": "8bc42da2e7be0a3bcc114e052f230a4013d6f977",
+    "filename": "entries/20261111_2248_official_v1_SUMMARY.csv.md",
+    "html": "entries/20261111_2248_official_v1_SUMMARY.csv.html",
+    "bytes": 31979
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/official_v1/SUMMARY.md",
+    "sha1": "c094f151c8a8d41f5dc6258a0b3ed7d775d496f8",
+    "filename": "entries/20261111_2248_official_v1_SUMMARY.md",
+    "html": "entries/20261111_2248_official_v1_SUMMARY.html",
+    "bytes": 25443
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/reports/DIAG_TRADECOUNT_v1.md",
+    "sha1": "18fe1963514dc3658619e16c0d8709bf009bb28a",
+    "filename": "entries/20261111_2248_reports_DIAG_TRADECOUNT_v1.md",
+    "html": "entries/20261111_2248_reports_DIAG_TRADECOUNT_v1.html",
+    "bytes": 33927
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/round1_run/stageA/summary.csv",
+    "sha1": "14734b4a7ec57b8f34461a2152b646298e23ddd2",
+    "filename": "entries/20261111_2248_round1_run_stageA_summary.csv.md",
+    "html": "entries/20261111_2248_round1_run_stageA_summary.csv.html",
+    "bytes": 16866
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/round1_run/stageB/summary.csv",
+    "sha1": "c7cad434e2d9163014510d1489f13016f02b25df",
+    "filename": "entries/20261111_2248_round1_run_stageB_summary.csv.md",
+    "html": "entries/20261111_2248_round1_run_stageB_summary.csv.html",
+    "bytes": 557
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/SUMMARY_v1.md",
+    "sha1": "a973aec97b0e27477032e411ae2d10619f87523b",
+    "filename": "entries/20261111_2248_round2_run_SUMMARY_v1.md",
+    "html": "entries/20261111_2248_round2_run_SUMMARY_v1.html",
+    "bytes": 4043
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/screen/cell_summary.csv",
+    "sha1": "3f9d3c4bd423b0ab11fd1740e042aca84dc29d32",
+    "filename": "entries/20261111_2248_round2_run_screen_cell_summary.csv.md",
+    "html": "entries/20261111_2248_round2_run_screen_cell_summary.csv.html",
+    "bytes": 4679
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/stageA/summary.csv",
+    "sha1": "af0ec4696f9387c5d60fca6054adb5174e9a24a0",
+    "filename": "entries/20261111_2248_round2_run_stageA_summary.csv.md",
+    "html": "entries/20261111_2248_round2_run_stageA_summary.csv.html",
+    "bytes": 14147
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/stageA_v2/summary.csv",
+    "sha1": "c1dc06cf3ff44d91d537251809974b43b3cf947f",
+    "filename": "entries/20261111_2248_round2_run_stageA_v2_summary.csv.md",
+    "html": "entries/20261111_2248_round2_run_stageA_v2_summary.csv.html",
+    "bytes": 14165
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/stageB_v2/summary.csv",
+    "sha1": "d5033ba23cf70cbefd90fdf332f19dbf0ccea3da",
+    "filename": "entries/20261111_2248_round2_run_stageB_v2_summary.csv.md",
+    "html": "entries/20261111_2248_round2_run_stageB_v2_summary.csv.html",
+    "bytes": 561
+  },
+  {
+    "time_taipei": "2026-11-11 22:48（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/progress.json",
+    "sha1": "70b7da31122a06f8c7423030bc2c88ac948fecfc",
+    "filename": "entries/20261111_2248_v14_progress.json.md",
+    "html": "entries/20261111_2248_v14_progress.json.html",
+    "bytes": 1037
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/PLAN_v13.md",
+    "sha1": "210a97a78a620f1ecab62ba31756f0570c2e5b0f",
+    "filename": "entries/20261111_2249_PLAN_v13.md",
+    "html": "entries/20261111_2249_PLAN_v13.html",
+    "bytes": 11390
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/official_v1/SUMMARY.csv",
+    "sha1": "8bc42da2e7be0a3bcc114e052f230a4013d6f977",
+    "filename": "entries/20261111_2249_official_v1_SUMMARY.csv.md",
+    "html": "entries/20261111_2249_official_v1_SUMMARY.csv.html",
+    "bytes": 31979
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/official_v1/SUMMARY.md",
+    "sha1": "c094f151c8a8d41f5dc6258a0b3ed7d775d496f8",
+    "filename": "entries/20261111_2249_official_v1_SUMMARY.md",
+    "html": "entries/20261111_2249_official_v1_SUMMARY.html",
+    "bytes": 25443
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/reports/DIAG_TRADECOUNT_v1.md",
+    "sha1": "18fe1963514dc3658619e16c0d8709bf009bb28a",
+    "filename": "entries/20261111_2249_reports_DIAG_TRADECOUNT_v1.md",
+    "html": "entries/20261111_2249_reports_DIAG_TRADECOUNT_v1.html",
+    "bytes": 33927
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/round1_run/stageA/summary.csv",
+    "sha1": "14734b4a7ec57b8f34461a2152b646298e23ddd2",
+    "filename": "entries/20261111_2249_round1_run_stageA_summary.csv.md",
+    "html": "entries/20261111_2249_round1_run_stageA_summary.csv.html",
+    "bytes": 16866
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/round1_run/stageB/summary.csv",
+    "sha1": "c7cad434e2d9163014510d1489f13016f02b25df",
+    "filename": "entries/20261111_2249_round1_run_stageB_summary.csv.md",
+    "html": "entries/20261111_2249_round1_run_stageB_summary.csv.html",
+    "bytes": 557
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/SUMMARY_v1.md",
+    "sha1": "a973aec97b0e27477032e411ae2d10619f87523b",
+    "filename": "entries/20261111_2249_round2_run_SUMMARY_v1.md",
+    "html": "entries/20261111_2249_round2_run_SUMMARY_v1.html",
+    "bytes": 4043
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/screen/cell_summary.csv",
+    "sha1": "3f9d3c4bd423b0ab11fd1740e042aca84dc29d32",
+    "filename": "entries/20261111_2249_round2_run_screen_cell_summary.csv.md",
+    "html": "entries/20261111_2249_round2_run_screen_cell_summary.csv.html",
+    "bytes": 4679
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/stageA/summary.csv",
+    "sha1": "af0ec4696f9387c5d60fca6054adb5174e9a24a0",
+    "filename": "entries/20261111_2249_round2_run_stageA_summary.csv.md",
+    "html": "entries/20261111_2249_round2_run_stageA_summary.csv.html",
+    "bytes": 14147
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/stageA_v2/summary.csv",
+    "sha1": "c1dc06cf3ff44d91d537251809974b43b3cf947f",
+    "filename": "entries/20261111_2249_round2_run_stageA_v2_summary.csv.md",
+    "html": "entries/20261111_2249_round2_run_stageA_v2_summary.csv.html",
+    "bytes": 14165
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/round2_run/stageB_v2/summary.csv",
+    "sha1": "d5033ba23cf70cbefd90fdf332f19dbf0ccea3da",
+    "filename": "entries/20261111_2249_round2_run_stageB_v2_summary.csv.md",
+    "html": "entries/20261111_2249_round2_run_stageB_v2_summary.csv.html",
+    "bytes": 561
+  },
+  {
+    "time_taipei": "2026-11-11 22:49（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/progress.json",
+    "sha1": "70b7da31122a06f8c7423030bc2c88ac948fecfc",
+    "filename": "entries/20261111_2249_v14_progress.json.md",
+    "html": "entries/20261111_2249_v14_progress.json.html",
+    "bytes": 1037
+  },
+  {
+    "time_taipei": "2026-11-11 22:57（台北時間）",
+    "source_path": "/workspace/ml_meta/reports/INVENTORY_priorphases_v1.md",
+    "sha1": "08c4c78bf6bfcd1a5682ab283a1ac61681c6c512",
+    "filename": "entries/20261111_2257_reports_INVENTORY_priorphases_v1.md",
+    "html": "entries/20261111_2257_reports_INVENTORY_priorphases_v1.html",
+    "bytes": 24057
+  },
+  {
+    "time_taipei": "2026-11-11 22:57（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/EXPERIMENT_LOG.md",
+    "sha1": "36e8325f9311070f67f01a180d255976981701c2",
+    "filename": "entries/20261111_2257_v14_EXPERIMENT_LOG.md",
+    "html": "entries/20261111_2257_v14_EXPERIMENT_LOG.html",
+    "bytes": 4405
+  },
+  {
+    "time_taipei": "2026-11-11 22:57（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/progress.json",
+    "sha1": "eae08320e46255563c0016bea7ad9c2cd97012bb",
+    "filename": "entries/20261111_2257_v14_progress.json.md",
+    "html": "entries/20261111_2257_v14_progress.json.html",
+    "bytes": 6193
+  },
+  {
+    "time_taipei": "2026-11-11 22:58（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/EXPERIMENT_LOG.md",
+    "sha1": "a7259e267f79988837fe7e01953f466ae3378c83",
+    "filename": "entries/20261111_2258_v14_EXPERIMENT_LOG.md",
+    "html": "entries/20261111_2258_v14_EXPERIMENT_LOG.html",
+    "bytes": 5357
+  },
+  {
+    "time_taipei": "2026-11-11 22:58（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/progress.json",
+    "sha1": "add554a8ec15127627280c485994cef4b709f6fb",
+    "filename": "entries/20261111_2258_v14_progress.json.md",
+    "html": "entries/20261111_2258_v14_progress.json.html",
+    "bytes": 6193
+  }
+]

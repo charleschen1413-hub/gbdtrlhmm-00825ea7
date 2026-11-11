@@ -1,0 +1,20 @@
+[
+  {
+    "time_taipei": "2026-11-11 22:41:12 +0800（來源 updated_at_taipei）",
+    "sha1": "70b7da31122a06f8c7423030bc2c88ac948fecfc",
+    "file": "status/20261111_2241_progress.json",
+    "stage": "writing_plan"
+  },
+  {
+    "time_taipei": "2026-11-11 22:56:49 +0800",
+    "sha1": "eae08320e46255563c0016bea7ad9c2cd97012bb",
+    "file": "status/20261111_2257_progress.json",
+    "stage": "build_features_d1"
+  },
+  {
+    "time_taipei": "2026-11-11 22:57:59 +0800",
+    "sha1": "add554a8ec15127627280c485994cef4b709f6fb",
+    "file": "status/20261111_2258_progress.json",
+    "stage": "build_features_d1"
+  }
+]
