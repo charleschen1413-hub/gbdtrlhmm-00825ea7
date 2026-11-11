@@ -1,0 +1,170 @@
+{
+  "updated_at_taipei": "2026-11-11 23:49:00 +0800",
+  "stage": "screen_d1",
+  "stage_detail": "screen_d1 續跑，已完成 0",
+  "done": 16077,
+  "total": 338034,
+  "elapsed_sec": 2111.7373003959656,
+  "eta_sec": 42289.51956357429,
+  "eta_days": 0.48946203198581356,
+  "measured_sec_per_trial": 0.1313514524100246,
+  "n_workers": 6,
+  "supervisor_pid": 654824,
+  "worker_pids": [
+    654839,
+    654842,
+    654845,
+    654863,
+    654866,
+    654869
+  ],
+  "failures": [],
+  "alternatives": [],
+  "best_exploratory": {
+    "metric": "front7_cv_mean_trim_pf",
+    "value": 552.7207264600796,
+    "trial_id": "92d848607d831989",
+    "note": "探索性、非獨立盲測；不是後三年 A/B"
+  },
+  "results_label": "探索性、非官方結論，不得稱獨立盲測",
+  "cumulative_trials_prior": 10440,
+  "cumulative_trials_now": 26517,
+  "v14_trials_done": 16077,
+  "note": "甘特圖請讀 stages 陣列。所有結果探索性、非獨立盲測。",
+  "stages": [
+    {
+      "name": "build_features_d1",
+      "status": "done",
+      "start_time": "2026-11-11 22:57:59 +0800",
+      "end_time": "2026-11-11 23:04:50 +0800",
+      "end_time_estimated": null,
+      "done": 1,
+      "total": 1,
+      "eta_seconds": 0
+    },
+    {
+      "name": "lookahead",
+      "status": "done",
+      "start_time": "2026-11-11 23:05:09 +0800",
+      "end_time": "2026-11-11 23:07:50 +0800",
+      "end_time_estimated": "2026-11-11 23:08:44 +0800",
+      "done": 4,
+      "total": 4,
+      "eta_seconds": 0
+    },
+    {
+      "name": "speed",
+      "status": "done",
+      "start_time": "2026-11-11 23:08:54 +0800",
+      "end_time": "2026-11-11 23:09:01 +0800",
+      "end_time_estimated": "2026-11-11 23:08:59 +0800",
+      "done": 1,
+      "total": 1,
+      "eta_seconds": 0
+    },
+    {
+      "name": "pilot",
+      "status": "done",
+      "start_time": "2026-11-11 23:09:50 +0800",
+      "end_time": "2026-11-11 23:09:55 +0800",
+      "end_time_estimated": "2026-11-11 23:09:55 +0800",
+      "done": 14,
+      "total": 14,
+      "eta_seconds": 0
+    },
+    {
+      "name": "screen_d1",
+      "status": "running",
+      "start_time": "2026-11-11 23:13:48 +0800",
+      "end_time": null,
+      "end_time_estimated": "2026-11-12 11:33:49 +0800",
+      "done": 16077,
+      "total": 338034,
+      "eta_seconds": 42289.51956357429,
+      "measured_sec_per_unit": 0.1313514524100246
+    },
+    {
+      "name": "freeze_d1",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": 27,
+      "eta_seconds": null
+    },
+    {
+      "name": "cpcv_d1",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": 27,
+      "eta_seconds": null
+    },
+    {
+      "name": "build_features_m15",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": 1,
+      "eta_seconds": null
+    },
+    {
+      "name": "screen_m15",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": 338034,
+      "eta_seconds": null
+    },
+    {
+      "name": "freeze_m15",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": 27,
+      "eta_seconds": null
+    },
+    {
+      "name": "cpcv_m15",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": 27,
+      "eta_seconds": null
+    },
+    {
+      "name": "tick_eval",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": null,
+      "eta_seconds": null
+    },
+    {
+      "name": "summary",
+      "status": "not_started",
+      "start_time": null,
+      "end_time": null,
+      "end_time_estimated": null,
+      "done": 0,
+      "total": 1,
+      "eta_seconds": null
+    }
+  ],
+  "experiment_log_path": "v14/EXPERIMENT_LOG.md",
+  "experiment_log_sha1": "9fad738cef28d5c0112f90fc55449db1dc6b5a93",
+  "experiment_log_latest_id": "E014"
+}
