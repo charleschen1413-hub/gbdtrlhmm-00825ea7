@@ -503,5 +503,61 @@
     "sha1": "66c06ad34c155689b0ed2791d1aa825285f817b1",
     "norm_sha1": "89966856028423b2e24553dbe4796dc38f77dee0",
     "name": "v14_progress_card_20261111_2305.svg"
+  },
+  {
+    "time": "20261112_1716",
+    "src": "/workspace/ml_meta/web_assets/display_order/charts_newest_first.html",
+    "dest": "assets/imported/20261112_1716_charts_newest_first.html",
+    "sha1": "58935d5ba1a6b8ab2a3c0ff6568c834e88bdb4e7",
+    "norm_sha1": "58935d5ba1a6b8ab2a3c0ff6568c834e88bdb4e7",
+    "name": "charts_newest_first.html"
+  },
+  {
+    "time": "20261112_1716",
+    "src": "/workspace/ml_meta/web_assets/display_order/index_preview_newest_first.html",
+    "dest": "assets/imported/20261112_1716_index_preview_newest_first.html",
+    "sha1": "6a44eafecb28b908d15042a61f850fe71845e0ea",
+    "norm_sha1": "4a81fcb4ba79d427b37cb4c3eb27589cce95039e",
+    "name": "index_preview_newest_first.html"
+  },
+  {
+    "time": "20261112_1716",
+    "src": "/workspace/ml_meta/web_assets/display_order/preview_style_v1.css",
+    "dest": "assets/imported/20261112_1716_preview_style_v1.css",
+    "sha1": "163051a43dd2d4c9ed817bd7f3b3cdd3a0a2e97a",
+    "norm_sha1": "163051a43dd2d4c9ed817bd7f3b3cdd3a0a2e97a",
+    "name": "preview_style_v1.css"
+  },
+  {
+    "time": "20261112_1716",
+    "src": "/workspace/ml_meta/web_assets/display_order/records_newest_first.html",
+    "dest": "assets/imported/20261112_1716_records_newest_first.html",
+    "sha1": "2881a165ae8974ed651d899ccdc36837954659cf",
+    "norm_sha1": "11271fa836aa02875e7d8419823bb7fbb64f9d1d",
+    "name": "records_newest_first.html"
+  },
+  {
+    "time": "20261112_1716",
+    "src": "/workspace/ml_meta/web_assets/display_order_v2/charts_newest_first.html",
+    "dest": "assets/imported/20261112_1716_01b65300_charts_newest_first.html",
+    "sha1": "01b653006d74a4ece1eafdffed16b5e6c0ec8058",
+    "norm_sha1": "01b653006d74a4ece1eafdffed16b5e6c0ec8058",
+    "name": "charts_newest_first.html"
+  },
+  {
+    "time": "20261112_1716",
+    "src": "/workspace/ml_meta/web_assets/display_order_v2/index_preview_newest_first.html",
+    "dest": "assets/imported/20261112_1716_36479957_index_preview_newest_first.html",
+    "sha1": "364799577519d69b0ada9b661a42cd1108fa73f8",
+    "norm_sha1": "66dd7c681aa6a5a5b6ebfaf8a3fb35afe6dde3a8",
+    "name": "index_preview_newest_first.html"
+  },
+  {
+    "time": "20261112_1716",
+    "src": "/workspace/ml_meta/web_assets/display_order_v2/records_newest_first.html",
+    "dest": "assets/imported/20261112_1716_fd7dde04_records_newest_first.html",
+    "sha1": "fd7dde049ef49d469c50d00e51386610599bf4a6",
+    "norm_sha1": "558805f5e279f1a698aab149a60bb8d9851f4be6",
+    "name": "records_newest_first.html"
   }
 ]

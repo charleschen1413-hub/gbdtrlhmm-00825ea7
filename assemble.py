@@ -1045,6 +1045,79 @@ def footer_links(archives: list[dict]) -> str:
     return "".join(bits)
 
 
+# ---------- chart groups (display order v2, Charles 2026-11-12 17:10) ----------
+# Order inside one version group, per display_order_v2 handoff: funnel first.
+GROUP_KIND_ORDER = ["funnel", "outcome_blocks", "timing_bars", "method_flow", "gantt", "v14_progress_card"]
+GROUP_KIND_TITLE = {
+    "funnel": "漏斗：候選 → 前七年篩選 → 凍結 top100 → 後三年評估",
+    "outcome_blocks": "成敗色塊表（A／B／Fail／ValueError）",
+    "timing_bars": "耗時條圖（預估 vs 實際）",
+    "method_flow": "方法流程圖",
+    "gantt": "整體甘特圖",
+    "v14_progress_card": "v14 即時進度卡",
+}
+_GROUP_NAME_RE = re.compile(
+    r"^(latest_)?(" + "|".join(GROUP_KIND_ORDER) + r")(?:_(v1|\d{8}_\d{4}))?\.svg$"
+)
+
+
+def _group_stamp(rec: dict, latest: bool, stamp: str | None) -> tuple[str, str]:
+    """(sort stamp, label). Named timestamp wins; latest_* follows its symlink target; else import time."""
+    if stamp and stamp != "v1":
+        return stamp, stamp
+    if latest:
+        src = Path(rec.get("src") or "")
+        try:
+            target = src.resolve().name if src.is_symlink() else ""
+        except OSError:
+            target = ""
+        m = _GROUP_NAME_RE.match(target)
+        if m and m.group(3) and m.group(3) != "v1":
+            return m.group(3), m.group(3)
+    t = rec.get("time") or ""
+    return t, f"{t}（v1 匯入）" if stamp == "v1" else t
+
+
+def chart_groups_newest_first(facts: dict, mismatches: list[str]) -> list[str]:
+    """All imported chart version groups, newest group on top; same sha1 shown once (newest kept).
+    Display order only: no file under assets/imported is changed or removed."""
+    manifest = load_json(ASSETS_MANIFEST, [])
+    groups: dict[str, dict] = {}
+    for rec in manifest:
+        m = _GROUP_NAME_RE.match(rec.get("name") or "")
+        if not m:
+            continue
+        path = ROOT / rec["dest"]
+        if not path.is_file():
+            continue
+        key, label = _group_stamp(rec, bool(m.group(1)), m.group(3))
+        g = groups.setdefault(key, {"label": label, "items": []})
+        g["items"].append((m.group(2), rec, path))
+    out = []
+    seen_sha = set()
+    for key in sorted(groups, reverse=True):
+        g = groups[key]
+        g["items"].sort(key=lambda x: GROUP_KIND_ORDER.index(x[0]))
+        figs = []
+        for kind, rec, path in g["items"]:
+            sha = sha1_file(path)
+            if sha in seen_sha:
+                continue
+            seen_sha.add(sha)
+            mismatches.extend(check_asset_numbers(rec, facts))
+            rel = path.relative_to(ROOT).as_posix()
+            title = GROUP_KIND_TITLE[kind]
+            figs.append(
+                f'<figure class="fig imported"><img class="asset-img" src="{esc(rel)}" alt="{esc(title)}" />'
+                f'<p class="one-liner">{esc(title)}</p>'
+                f'<p class="fn">美編圖 · {esc(Path(rec.get("src") or "").name or "未取得")}'
+                f' · {esc(path.name)} · {esc(sha[:8])}</p></figure>'
+            )
+        if figs:
+            out.append(f'<h3 class="stamp-h">版本 {esc(g["label"])}</h3>' + "".join(figs))
+    return out
+
+
 def assemble_site(when: datetime, existing, missing, history, added, skipped, stamp: str, human: str) -> dict:
     facts = facts_bundle()
     placeholders = placeholder_charts(facts)
@@ -1087,16 +1160,16 @@ def assemble_site(when: datetime, existing, missing, history, added, skipped, st
     hist = hist_records(facts)
     cards = records_to_cards(log_recs, hist, {})
 
-    overview = []
-    seen_chart = set()
-    for kind in ("funnel_r1", "funnel_r2", "official_grid", "time_r2", "gantt"):
-        frag = chosen[kind]
-        if frag in seen_chart:
-            continue  # same 美編檔不重複貼兩次
-        seen_chart.add(frag)
-        overview.append(frag)
-    # display order only: later (newer) charts on top (Charles 2026-11-12 17:10); files unchanged
-    overview.reverse()
+    overview = chart_groups_newest_first(facts, mismatches)
+    if not overview:
+        # no imported chart groups: fall back to the single placeholder set, each image once
+        seen_chart = set()
+        for kind in ("funnel_r1", "funnel_r2", "official_grid", "time_r2", "gantt"):
+            frag = chosen[kind]
+            if frag in seen_chart:
+                continue
+            seen_chart.add(frag)
+            overview.append(frag)
 
     latest_time = history[-1]["time_taipei"] if history else "尚無"
     src_html = src_table(existing, missing, history)
