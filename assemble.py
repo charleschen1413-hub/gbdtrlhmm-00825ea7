@@ -635,6 +635,57 @@ def pick_chart(kind: str, placeholders: dict[str, str], imported: dict[str, dict
 
 # ---------- status history ----------
 
+
+TRIAL_LOG_V14 = SRC / "v14" / "trials" / "TRIAL_LOG_v14.csv"
+
+
+def count_trial_log(path: Path) -> dict:
+    """Read-only row counts from the trial log. Does not modify the file."""
+    if not path.is_file():
+        return {"exists": False, "path": str(path)}
+    st = path.stat()
+    mtime = datetime.fromtimestamp(st.st_mtime, TZ).strftime("%Y-%m-%d %H:%M:%S %z")
+    by_frame: Counter = Counter()
+    status_by_frame: Counter = Counter()
+    m15_error = 0
+    total = 0
+    with path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        if not reader.fieldnames or "frame" not in reader.fieldnames:
+            return {
+                "exists": True,
+                "path": str(path),
+                "mtime_taipei": mtime,
+                "sha1": sha1_file(path),
+                "unsupported": True,
+            }
+        has_status = "status" in reader.fieldnames
+        has_error = "error" in reader.fieldnames
+        for row in reader:
+            total += 1
+            frame = row.get("frame") or ""
+            by_frame[frame] += 1
+            if has_status:
+                status_by_frame[(frame, row.get("status") or "")] += 1
+            if frame == "M15" and has_error:
+                err = (row.get("error") or "").strip()
+                if err not in ("", "0", "None", "none"):
+                    m15_error += 1
+    return {
+        "exists": True,
+        "path": str(path),
+        "mtime_taipei": mtime,
+        "sha1": sha1_file(path),
+        "total_rows": total,
+        "by_frame": dict(by_frame),
+        "m15": int(by_frame.get("M15", 0)),
+        "d1": int(by_frame.get("D1", 0)),
+        "m15_error": m15_error,
+        "m15_status": {st: n for (fr, st), n in status_by_frame.items() if fr == "M15"},
+        "unsupported": False,
+    }
+
+
 def status_payload(prog: dict | None, sha: str | None) -> dict:
     if not prog:
         return {"sha1": sha, "missing": True, "label": "未取得 v14/progress.json"}
@@ -729,12 +780,13 @@ def update_status_history(prog: dict | None, sha: str | None, stamp: str, human:
 
 
 def render_status_section(hist: list[dict], prog: dict | None, sha: str | None) -> str:
+    log = count_trial_log(TRIAL_LOG_V14)
     if not prog:
         body = "<p>目前狀態：未取得 progress.json。</p>"
     else:
         stage = prog.get("stage") or "未取得"
-        detail = (prog.get("stage_detail") or "").strip()
         st = next((s for s in (prog.get("stages") or []) if s.get("name") == stage), None)
+        freeze = next((s for s in (prog.get("stages") or []) if s.get("name") == "freeze_m15"), None)
         raw_status = (st or {}).get("status") or ""
         status_zh = {
             "not_started": "未開始",
@@ -743,19 +795,66 @@ def render_status_section(hist: list[dict], prog: dict | None, sha: str | None) 
             "failed": "失敗",
         }.get(raw_status, raw_status)
         when = prog.get("updated_at_taipei") or "未取得"
-        v14d = prog.get("v14_trials_done")
-        nowc = prog.get("cumulative_trials_now")
         line1 = f"目前階段「{esc(stage)}」"
-        if status_zh:
-            line1 += f"（{esc(status_zh)}）"
-        line1 += "。"
-        if detail:
-            line1 += esc(detail if detail.endswith("。") else detail + "。")
-        line2 = (
-            f"v14 已做試驗 {esc(fmt_num(v14d) if v14d is not None else '未取得')}，"
-            f"累計目前 {esc(fmt_num(nowc) if nowc is not None else '未取得')}。"
-            f"來源更新於 {esc(when)}。"
-        )
+        # screen_m15 completion must come from the trial log, never from progress.json done/eta.
+        if stage == "screen_m15":
+            planned = (st or {}).get("total")
+            if log.get("exists") and not log.get("unsupported"):
+                done = log["m15"]
+                # If progress.json claims this stage is finished but the log is short of planned total, keep 進行中.
+                if planned and done < int(planned):
+                    status_zh = "進行中"
+                if status_zh:
+                    line1 += f"（{esc(status_zh)}）"
+                line1 += "。"
+                if planned:
+                    planned_i = int(planned)
+                    remain = planned_i - done
+                    pct = f"{(100.0 * done / planned_i):.1f}%"
+                    line1 += (
+                        f"試驗日誌 frame=M15 已完成 {esc(fmt_num(done))}／{esc(fmt_num(planned_i))}"
+                        f"（約 {esc(pct)}），剩餘 {esc(fmt_num(remain))}，錯誤 {esc(fmt_num(log.get('m15_error', 0)))}。"
+                    )
+                else:
+                    line1 += f"試驗日誌 frame=M15 已完成 {esc(fmt_num(done))}，總數未取得，錯誤 {esc(fmt_num(log.get('m15_error', 0)))}。"
+                freeze_st = (freeze or {}).get("status") or "未取得"
+                if freeze_st != "done":
+                    line1 += "尚未進入 freeze_m15。"
+                v14d = log.get("total_rows")
+                prior = prog.get("cumulative_trials_prior")
+                nowc = (int(prior) + int(v14d)) if prior is not None and v14d is not None else None
+                line2 = (
+                    f"v14 已做試驗 {esc(fmt_num(v14d) if v14d is not None else '未取得')}，"
+                    f"累計目前 {esc(fmt_num(nowc) if nowc is not None else '未取得')}。"
+                    f"完成數取自 TRIAL_LOG_v14.csv（檔案時間 {esc(log.get('mtime_taipei') or '未取得')}），"
+                    f"不採用 progress.json 的 done／eta。progress.json 更新於 {esc(when)}。"
+                )
+            elif log.get("unsupported"):
+                if status_zh:
+                    line1 += f"（{esc(status_zh)}）"
+                line1 += "。"
+                line1 += "試驗日誌沒有 frame 欄，screen_m15 完成數標「未審」，不以 progress.json 的 done／eta 代替。"
+                line2 = f"progress.json 更新於 {esc(when)}。"
+            else:
+                if status_zh:
+                    line1 += f"（{esc(status_zh)}）"
+                line1 += "。"
+                line1 += "未取得 TRIAL_LOG_v14.csv，screen_m15 完成數未取得；不採用 progress.json 的 done／eta。"
+                line2 = f"progress.json 更新於 {esc(when)}。"
+        else:
+            detail = (prog.get("stage_detail") or "").strip()
+            if status_zh:
+                line1 += f"（{esc(status_zh)}）"
+            line1 += "。"
+            if detail:
+                line1 += esc(detail if detail.endswith("。") else detail + "。")
+            v14d = prog.get("v14_trials_done")
+            nowc = prog.get("cumulative_trials_now")
+            line2 = (
+                f"v14 已做試驗 {esc(fmt_num(v14d) if v14d is not None else '未取得')}，"
+                f"累計目前 {esc(fmt_num(nowc) if nowc is not None else '未取得')}。"
+                f"來源更新於 {esc(when)}。"
+            )
         body = f"<p class='status-lead'>{line1}{line2}</p>"
     old = hist[:-1] if hist else []
     details = []
@@ -770,7 +869,7 @@ def render_status_section(hist: list[dict], prog: dict | None, sha: str | None) 
             "<details class='old-status-pack'><summary>先前狀態（保留，不刪）</summary>"
             f"<ul class='old-status-list'>{''.join(details)}</ul></details>"
         )
-    fn = visuals.footnote(footnote_sources(SRC / "v14" / "progress.json"))
+    fn = visuals.footnote(footnote_sources(SRC / "v14" / "progress.json", TRIAL_LOG_V14))
     return f"<section class='card' id='status'><h2>目前狀態</h2>{body}{fn}{old_wrap}</section>"
 
 
