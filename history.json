@@ -566,5 +566,13 @@
     "filename": "entries/20261113_0153_v14_progress.json.md",
     "html": "entries/20261113_0153_v14_progress.json.html",
     "bytes": 4877
+  },
+  {
+    "time_taipei": "2026-11-13 03:52（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/progress.json",
+    "sha1": "564301989634dabef00cf17f5ec5fcc9c56d2071",
+    "filename": "entries/20261113_0352_v14_progress.json.md",
+    "html": "entries/20261113_0352_v14_progress.json.html",
+    "bytes": 4874
   }
 ]
