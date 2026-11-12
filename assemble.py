@@ -875,7 +875,7 @@ def hist_records(facts: dict) -> list[dict]:
 
 def records_to_cards(log_recs: list[dict], hist: list[dict], charts_for: dict) -> list[dict]:
     cards = []
-    # log first (newest / official log), then historical
+    # collect log + historical; display order is set by sort_cards_newest_first
     for rec in log_recs:
         method = rec.get("method") or "出處待補"
         rec = dict(rec)
@@ -912,7 +912,38 @@ def records_to_cards(log_recs: list[dict], hist: list[dict], charts_for: dict) -
         rec = dict(rec)
         rec["footnote_html"] = visuals.footnote(footnote_sources(*hist_fn.get(rec.get("id"), [])))
         cards.append(rec)
-    return cards
+    return sort_cards_newest_first(cards)
+
+
+_TIME_RE = re.compile(r"(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?")
+
+
+def card_time(rec: dict) -> datetime | None:
+    """Latest timestamp written in the record's 時間 field (Taipei wall clock); None if absent."""
+    found = []
+    for m in _TIME_RE.finditer(str(rec.get("time") or "")):
+        y, mo, d, h, mi, sec = m.groups()
+        try:
+            found.append(datetime(int(y), int(mo), int(d), int(h), int(mi), int(sec or 0)))
+        except ValueError:
+            continue
+    return max(found) if found else None
+
+
+def sort_cards_newest_first(cards: list[dict]) -> list[dict]:
+    """Display order only: newest on top (Charles 2026-11-12 17:10). Records are not changed.
+    An undated record inherits the time of the record listed before it; ties keep later-listed first."""
+    keyed = []
+    last = datetime.min
+    for i, rec in enumerate(cards):
+        t = card_time(rec)
+        if t is None:
+            t = last
+        else:
+            last = t
+        keyed.append((t, i, rec))
+    keyed.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    return [rec for _, _, rec in keyed]
 
 
 # ---------- index tables ----------
@@ -1064,6 +1095,8 @@ def assemble_site(when: datetime, existing, missing, history, added, skipped, st
             continue  # same 美編檔不重複貼兩次
         seen_chart.add(frag)
         overview.append(frag)
+    # display order only: later (newer) charts on top (Charles 2026-11-12 17:10); files unchanged
+    overview.reverse()
 
     latest_time = history[-1]["time_taipei"] if history else "尚無"
     src_html = src_table(existing, missing, history)
