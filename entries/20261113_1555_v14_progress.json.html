@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>progress.json｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>progress.json</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/v14/progress.json</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/v14/progress.json</code></li>
+<li>sha1：<code>f06a26a61ecde9f1499078196923c4b4a13a122a</code></li>
+<li>快照時間：2026-11-13 15:55（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<pre><code class="language-json">{
+  &quot;updated_at_taipei&quot;: &quot;2026-11-13 15:46:04 +0800&quot;,
+  &quot;stage&quot;: &quot;screen_m15&quot;,
+  &quot;stage_detail&quot;: &quot;screen_m15 續跑，已完成 680184&quot;,
+  &quot;done&quot;: 342150,
+  &quot;total&quot;: 342150,
+  &quot;elapsed_sec&quot;: 3035.16947221756,
+  &quot;eta_sec&quot;: 0.0,
+  &quot;eta_days&quot;: null,
+  &quot;measured_sec_per_trial&quot;: 0.004444412758512091,
+  &quot;n_workers&quot;: 6,
+  &quot;supervisor_pid&quot;: 4039,
+  &quot;worker_pids&quot;: [
+    343475,
+    343481,
+    343485,
+    343494,
+    343497,
+    343500
+  ],
+  &quot;failures&quot;: [],
+  &quot;alternatives&quot;: [],
+  &quot;best_exploratory&quot;: {
+    &quot;metric&quot;: &quot;front7_cv_mean_trim_pf&quot;,
+    &quot;value&quot;: 5609.612951449567,
+    &quot;trial_id&quot;: &quot;a2b9862a33d9ea9a&quot;,
+    &quot;note&quot;: &quot;探索性、非獨立盲測；不是後三年 A/B&quot;
+  },
+  &quot;results_label&quot;: &quot;探索性、非官方結論，不得稱獨立盲測&quot;,
+  &quot;cumulative_trials_prior&quot;: 10440,
+  &quot;cumulative_trials_now&quot;: 693358,
+  &quot;v14_trials_done&quot;: 682918,
+  &quot;note&quot;: &quot;甘特圖請讀 stages 陣列。所有結果探索性、非獨立盲測。&quot;,
+  &quot;stages&quot;: [
+    {
+      &quot;name&quot;: &quot;build_features_d1&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-11 22:57:59 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-11 23:04:50 +0800&quot;,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 1,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;lookahead&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-11 23:05:09 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-11 23:07:50 +0800&quot;,
+      &quot;end_time_estimated&quot;: &quot;2026-11-11 23:08:44 +0800&quot;,
+      &quot;done&quot;: 4,
+      &quot;total&quot;: 4,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;speed&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-11 23:08:54 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-11 23:09:01 +0800&quot;,
+      &quot;end_time_estimated&quot;: &quot;2026-11-11 23:08:59 +0800&quot;,
+      &quot;done&quot;: 1,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;pilot&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-11 23:09:50 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-11 23:09:55 +0800&quot;,
+      &quot;end_time_estimated&quot;: &quot;2026-11-11 23:09:55 +0800&quot;,
+      &quot;done&quot;: 14,
+      &quot;total&quot;: 14,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;screen_d1&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-12 04:13:41 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-12 04:20:24 +0800&quot;,
+      &quot;end_time_estimated&quot;: &quot;2026-11-12 04:20:22 +0800&quot;,
+      &quot;done&quot;: 342150,
+      &quot;total&quot;: 342150,
+      &quot;eta_seconds&quot;: 0,
+      &quot;measured_sec_per_unit&quot;: 0.0011776887877510424
+    },
+    {
+      &quot;name&quot;: &quot;freeze_d1&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-12 04:27:23 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-12 04:27:25 +0800&quot;,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 44,
+      &quot;total&quot;: 44,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;cpcv_d1&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-12 04:52:42 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-12 08:02:20 +0800&quot;,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 44,
+      &quot;total&quot;: 44,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;build_features_m15&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: &quot;2026-11-12 08:23:05 +0800&quot;,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 1,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;screen_m15&quot;,
+      &quot;status&quot;: &quot;running&quot;,
+      &quot;start_time&quot;: &quot;2026-11-13 14:55:32 +0800&quot;,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: &quot;2026-11-13 15:46:04 +0800&quot;,
+      &quot;done&quot;: 342150,
+      &quot;total&quot;: 342150,
+      &quot;eta_seconds&quot;: 0.0,
+      &quot;measured_sec_per_unit&quot;: 0.004444412758512091
+    },
+    {
+      &quot;name&quot;: &quot;freeze_m15&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 27,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;cpcv_m15&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 27,
+      &quot;eta_seconds&quot;: null
+    },
+    {
+      &quot;name&quot;: &quot;tick_eval&quot;,
+      &quot;status&quot;: &quot;done&quot;,
+      &quot;start_time&quot;: &quot;2026-11-12 06:04:10 +0800&quot;,
+      &quot;end_time&quot;: &quot;2026-11-12 07:00:22 +0800&quot;,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 3950,
+      &quot;total&quot;: 3950,
+      &quot;eta_seconds&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;summary&quot;,
+      &quot;status&quot;: &quot;not_started&quot;,
+      &quot;start_time&quot;: null,
+      &quot;end_time&quot;: null,
+      &quot;end_time_estimated&quot;: null,
+      &quot;done&quot;: 0,
+      &quot;total&quot;: 1,
+      &quot;eta_seconds&quot;: null
+    }
+  ],
+  &quot;experiment_log_path&quot;: &quot;v14/EXPERIMENT_LOG.md&quot;,
+  &quot;experiment_log_sha1&quot;: &quot;45f82cf8f3f90ebb98f41c7e55bb8b71f8eeabd9&quot;,
+  &quot;experiment_log_latest_id&quot;: &quot;E033&quot;
+}
+</code></pre></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>
