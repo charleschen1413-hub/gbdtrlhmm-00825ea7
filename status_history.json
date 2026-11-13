@@ -214,5 +214,11 @@
     "sha1": "f06a26a61ecde9f1499078196923c4b4a13a122a",
     "file": "status/20261113_1555_progress.json",
     "stage": "screen_m15"
+  },
+  {
+    "time_taipei": "2026-11-13 17:43:50 +0800",
+    "sha1": "905160efa782c1a237a794212b84a5cb58941ae7",
+    "file": "status/20261113_1748_progress.json",
+    "stage": "cpcv_m15"
   }
 ]
