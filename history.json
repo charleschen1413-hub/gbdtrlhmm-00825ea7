@@ -686,5 +686,13 @@
     "filename": "entries/20261113_2350_v14_progress.json.md",
     "html": "entries/20261113_2350_v14_progress.json.html",
     "bytes": 4945
+  },
+  {
+    "time_taipei": "2026-11-14 01:53（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/EXPERIMENT_LOG.md",
+    "sha1": "36502aac2468533cdf6845decfef5a93b5c2ed48",
+    "filename": "entries/20261114_0153_v14_EXPERIMENT_LOG.md",
+    "html": "entries/20261114_0153_v14_EXPERIMENT_LOG.html",
+    "bytes": 86888
   }
 ]
