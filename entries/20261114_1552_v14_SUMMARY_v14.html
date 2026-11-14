@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>SUMMARY_v14.md｜探索性、非獨立盲測；非官方驗收</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    <p class="back"><a href="../index.html">← 回到索引</a></p>
+<header class="site"><h1>SUMMARY_v14.md</h1><p class="sub">探索性、非獨立盲測；非官方驗收</p></header>
+<div class="entry-body scroll"><h1>來源快照：<code>/workspace/ml_meta/v14/SUMMARY_v14.md</code></h1>
+<ul>
+<li><strong>探索性、非獨立盲測；非官方驗收</strong></li>
+<li>來源路徑：<code>/workspace/ml_meta/v14/SUMMARY_v14.md</code></li>
+<li>sha1：<code>75601c4ec59e5d2b396035a0a724186853f8410a</code></li>
+<li>快照時間：2026-11-14 15:52（台北時間）</li>
+<li>本頁只轉述來源文件已有的內容，不自行推論或加數字。</li>
+</ul>
+<hr>
+<h1>v14 總結：NQ 方向性 ML 路線封存（2026-11-14 15:30 台北，TZ=Asia/Taipei）</h1>
+<h2>結論</h2>
+<ul>
+<li><strong>六輪（v14 主輪、補正、v14b、v14c、v14d、v14e）正式合格都是 0。</strong> 依 PLAN_v14e §9.5 封存「NQ 方向性 ML」路線。</li>
+<li>共同根本原因：前七年（2016-09-29～2023-09-28）可得訊號的<strong>日 SR 上限約 0.09</strong>（最強是 v14c P2B 尾盤 0.091、v14e Zarattini 0.092）。原始 OOS PSR p ≤ 0.01 需要約 0.142；多重檢定扣減後要 0.15 左右。差距不是調參能補的。</li>
+<li>累計試驗數：v14 系列 <strong>732,705</strong>（主輪 684,300＋補正 47,304＋v14b 864 組態＋v14c 48（另 5 個敏感度）＋v14d 168＋v14e 16）。加上 v14 以前的 10,440，總計 <strong>743,145</strong>。</li>
+<li>全部結果為探索性、非獨立盲測。後三年（2023-09-29～2026-09-28）在 v14 主輪與補正輪的 tick 驗收用過，補正輪的診斷（reports/diag_remedy_v14_20261113_1905.json）也看過後三年、用來選機制（已揭露）；v14b 起不讀。</li>
+<li>本次封存不移動、不刪任何檔；各檔 sha1 見 <code>SHA1LIST.txt</code>。</li>
+</ul>
+<h2>各輪</h2>
+<table>
+<thead>
+<tr>
+<th>輪</th>
+<th>做法</th>
+<th>規模</th>
+<th>結果</th>
+<th>根本原因</th>
+<th>主要證據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v14 主輪（E001–E043）</td>
+<td>D1、M15 兩頻率 ML 格點（logistic／histgb／HMM／meta 等，54 格）；前七年 CV 選每格前 100 名，tick 驗後三年／十年，唯讀 check.py 判</td>
+<td>684,300 試驗；凍結 7,884（D1 3,950、M15 3,934）</td>
+<td><strong>合格 0</strong>。D1：A 219、B 135、Fail 3,149、紅線 4 447。M15：A 240、B 140、Fail 3,175、紅線 4 379</td>
+<td>PSR 不足（每筆 SR 約 0.116，優勢薄）；二考筆數／淨利不足；&gt; $10k 單筆虧損 87,717 筆、95.9% 跨夜；CPCV PBO 中位數 0.50–0.53</td>
+<td>PLAN_v14.md、PLAN_v14_ADDENDUM.md、trials/TRIAL_LOG_v14.csv、trials/TICK_EVAL_LOG_v14.csv、freeze/frozen_top100_{d1,m15}.json、reports/cpcv_pbo_{d1,m15}_v14.json、reports/eligibility_m15_v14_20261113_1859.md</td>
+</tr>
+<tr>
+<td>補正（E042–E044）</td>
+<td>停損上限 {無,0.5%,1%} × 持有 {原,短} 疊層</td>
+<td>47,304 試驗；凍結 63、評分 59</td>
+<td><strong>合格 0</strong>（研究層 A 10、B 4）；最接近 M15 f05696c7 過 5/6 關，十年 218 &lt; 300 筆</td>
+<td>停損降低單筆虧損，但 PSR 只有 2 列 ≤ 0.01、二考筆數／淨利不足</td>
+<td>PLAN_v14_REMEDY.md、reports/remedy_frozen_v14.json、trials/TICK_EVAL_LOG_v14_remedy.csv、reports/eligibility_remedy_v14_20261114_0027.md</td>
+</tr>
+<tr>
+<td>v14b（E045–E047）</td>
+<td>弱訊號共識集成＋bagging＋meta 棄權＋HMM／波動閘＋短持有，只用前七年 CPCV</td>
+<td>432 格 × 2 框架（15 切分×5 路徑）</td>
+<td><strong>凍結 0</strong>；PBO D1 0.667、M15 0.467；沒有任何格 ≥ 2 條路徑全過</td>
+<td>集成日 SR 約 0.03–0.07；Trim PF ≤ 1.03 與 PSR 是主要失敗</td>
+<td>PLAN_v14b.md、reports/plan_v14b_final_20261114_0325.json、reports/plan_v14b_audit_20261114_0334.md</td>
+</tr>
+<tr>
+<td>v14c（E048）</td>
+<td>訊號存在性：48 個方向假設，RW＋SR0</td>
+<td>48（＋5 敏感度）</td>
+<td><strong>通過 0</strong>；只 P2B @13:30–16:00 被 RW 拒絕（SR 0.091），校正後 0.038</td>
+<td>最強訊號也只有 0.09</td>
+<td>PLAN_v14c.md、reports/plan_v14c/signal_test_20261114_0341.json</td>
+</tr>
+<tr>
+<td>v14d（E049）</td>
+<td>非方向目標：棄權、波動目標化／過濾、停損</td>
+<td>168</td>
+<td><strong>通過 0</strong>；RW 拒絕 0</td>
+<td>波動預測準（R² 0.70–0.75），但不轉成可交易 SR；骨幹本身負 SR</td>
+<td>PLAN_v14d.md、reports/plan_v14d_result_20261114_0506.md、reports/plan_v14d/nondir_test_20261114_0501.json</td>
+</tr>
+<tr>
+<td>v14e（E050）</td>
+<td>文獻新訊號源：ROD 尾盤、Zarattini 雜訊區間、收盤賣壓隔夜、FOMC／TOM／公布日、VPIN 閘</td>
+<td>16</td>
+<td><strong>通過 0</strong>；RW 拒絕 H2a、H3b、H4b；最強 H2a SR 0.092、校正後 0.044、Trim PF 0.78</td>
+<td>文獻效果在 NQ 前七年都在 0.02–0.09；有效的 FOMC 前漂移只有 55 筆</td>
+<td>PLAN_v14e.md、reports/plan_v14e_result_20261114_1530.md、reports/plan_v14e/lit_test_20261114_1523.json、reports/plan_v14e/audit_20261114_1525.json</td>
+</tr>
+</tbody>
+</table>
+<h2>若要重啟（建議，不在本次執行）</h2>
+<ul>
+<li>單一 NQ 方向訊號已窮盡到文獻層級。要過門檻，需要日 SR 翻倍的東西：多市場分散（同訊號跨 ES／RTY／YM／國際指數的組合）、真正的訂單流資料（L1 報價、主動買賣方向），或放寬「單一 NQ 1 口」的框架。這些都需要新資料與 Charles 的決定。</li>
+<li>文獻訊號中值得留檔的：Zarattini 雜訊區間（前七年每年都賺，但偏態使 Trim PF &lt; 1）、FOMC 前 24 小時漂移（Trim PF 2.24，但筆數太少）。</li>
+</ul>
+<h2>實驗紀錄</h2>
+<ul>
+<li>EXPERIMENT_LOG.md（E001～E050，最新在上）；備份 EXPERIMENT_LOG.md.bak_*（最新 bak_20261114_1529）。</li>
+</ul></div>
+
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。</p>
+    </footer>
+  </div>
+</body>
+</html>
