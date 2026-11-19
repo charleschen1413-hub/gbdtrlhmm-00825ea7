@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" role="img" aria-label="v14i 與 v14h 各三族依用途分色，皆已完成，各 0／17 通過">
+<style>text{font-family:"Noto Sans CJK TC", "Noto Sans TC", "Source Han Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;}</style>
+<rect width="960" height="400" rx="12" fill="#fffdf8" stroke="#d9d2c5"/>
+<text x="16" y="28" font-size="15" font-weight="700" fill="#1c1915">新嘗試｜依用途分色（方向 vs 何時別交易）　上：v14i　下：v14h</text>
+<text x="944" y="28" font-size="11" text-anchor="end" fill="#5c564c">狀態燈：完成＝深灰（0 通過）　探索性、非獨立盲測</text>
+<rect x="16.0" y="44" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="16.0" y="44" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="36.0" y="72" font-size="14" font-weight="700" fill="#1c1915">v14i-1</text>
+<text x="36.0" y="96" font-size="13" fill="#1c1915">卡爾曼局部趨勢／速度</text>
+<text x="36.0" y="114" font-size="11" fill="#1c1915">（只用前向濾波 ν_{t|t}，不用平滑器）</text>
+<text x="36.0" y="136" font-size="12" fill="#5c564c">方向（K1、K2），或 H2a／H1a 同…</text>
+<circle cx="42.0" cy="176" r="6" fill="#5c564c"/>
+<text x="56.0" y="180" font-size="12" fill="#1c1915">完成：0／5 通過</text>
+<rect x="330.7" y="44" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="330.7" y="44" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="350.7" y="72" font-size="14" font-weight="700" fill="#1c1915">v14i-2</text>
+<text x="350.7" y="96" font-size="13" fill="#1c1915">AR／ARMA 滾動因果預測</text>
+<text x="350.7" y="114" font-size="11" fill="#1c1915">（每個決策點只用前 1,560 根報酬重擬合）</text>
+<text x="350.7" y="136" font-size="12" fill="#5c564c">方向（R1–R3），或 H2a／H1a 同…</text>
+<circle cx="356.7" cy="176" r="6" fill="#5c564c"/>
+<text x="370.7" y="180" font-size="12" fill="#1c1915">完成：0／6 通過</text>
+<rect x="645.4" y="44" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="645.4" y="44" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="665.4" y="72" font-size="14" font-weight="700" fill="#1c1915">v14i-3</text>
+<text x="665.4" y="96" font-size="13" fill="#1c1915">因果 Haar à trous 小波</text>
+<text x="665.4" y="114" font-size="11" fill="#1c1915">（每個值只用當下以前資料；去噪門檻只用前 39…</text>
+<text x="665.4" y="136" font-size="12" fill="#5c564c">方向（W1、W2）、H2a 同向閘（W3、…</text>
+<circle cx="671.4" cy="176" r="6" fill="#5c564c"/>
+<text x="685.4" y="180" font-size="12" fill="#1c1915">完成：0／6 通過</text>
+<rect x="16.0" y="220" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="16.0" y="220" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="36.0" y="248" font-size="14" font-weight="700" fill="#1c1915">v14h-1</text>
+<text x="36.0" y="272" font-size="13" fill="#1c1915">相空間／複雜度閘</text>
+<text x="36.0" y="290" font-size="11" fill="#1c1915">（關聯維數；樣本熵、排列熵為對照）</text>
+<text x="36.0" y="312" font-size="12" fill="#5c564c">何時別交易（閘）</text>
+<circle cx="42.0" cy="352" r="6" fill="#5c564c"/>
+<text x="56.0" y="356" font-size="12" fill="#1c1915">完成：0／6 通過</text>
+<rect x="330.7" y="220" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="330.7" y="220" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="350.7" y="248" font-size="14" font-weight="700" fill="#1c1915">v14h-2</text>
+<text x="350.7" y="272" font-size="13" fill="#1c1915">循環平穩時段閘</text>
+<text x="350.7" y="290" font-size="11" fill="#1c1915">（週幾×半點的波動／報酬節奏）</text>
+<text x="350.7" y="312" font-size="12" fill="#5c564c">何時別交易（時段閘）</text>
+<circle cx="356.7" cy="352" r="6" fill="#5c564c"/>
+<text x="370.7" y="356" font-size="12" fill="#1c1915">完成：0／5 通過</text>
+<rect x="645.4" y="220" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="645.4" y="220" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="665.4" y="248" font-size="14" font-weight="700" fill="#1c1915">v14h-3</text>
+<text x="665.4" y="272" font-size="13" fill="#1c1915">SSA／EMD 趨勢</text>
+<text x="665.4" y="290" font-size="11" fill="#1c1915">（滑動視窗，決策時點重算、只取最後一點）</text>
+<text x="665.4" y="312" font-size="12" fill="#5c564c">方向，或 H2a 同向閘</text>
+<circle cx="671.4" cy="352" r="6" fill="#5c564c"/>
+<text x="685.4" y="356" font-size="12" fill="#1c1915">完成：0／6 通過</text>
+</svg>

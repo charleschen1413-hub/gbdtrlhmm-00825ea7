@@ -2,9 +2,9 @@
   "version": 2,
   "title": "新嘗試表",
   "disclaimer": "探索性、非獨立盲測；非官方驗收",
-  "lead": "v14h 三族共 17 個事先寫死的假設（A 相空間／複雜度閘 6、C 循環平穩時段閘 5、S SSA／EMD 趨勢 6）已跑完：0／17 通過，Romano–Wolf 無拒絕（臨界 t 2.71，最大 t 1.68）。之後新方法只往本表上方附加。",
-  "scope": "只用 NQ 前七年 2016-09-29～2023-09-28，門檻與 v14d／e／f 相同。",
-  "updated_taipei": "2026-11-19 22:19",
+  "lead": "v14i 三族 17 個假設（K 卡爾曼 5、R AR／ARMA 6、W 小波 6）已跑完：0／17 通過，RW 無拒絕（臨界 t 2.748，最大 t 1.99）。v14h 三族 17 個假設（A 6、C 5、S 6）：0／17 通過（臨界 t 2.71，最大 t 1.68）。最新在上；之後新方法只往本表上方附加。",
+  "scope": "兩輪都只用 NQ 前七年 2016-09-29～2023-09-28，門檻相同（v14i 與 v14h 同，v14h 與 v14d／e／f 同）。",
+  "updated_taipei": "2026-11-19 22:38",
   "plan": {
     "exists": true,
     "filename": "PLAN_v14h.md",
@@ -15,6 +15,162 @@
     "footnote": ""
   },
   "attempts": [
+    {
+      "id": "v14i-1",
+      "plan_family": "K",
+      "method": "卡爾曼局部趨勢／速度（只用前向濾波 ν_{t|t}，不用平滑器）",
+      "inspiration": "計畫書 L4：Charles 2026-11-19 22:17 同意（t399u）",
+      "use": "方向（K1、K2），或 H2a／H1a 同向閘（K3–K5）",
+      "use_kind": "direction_or_gate",
+      "status": "完成",
+      "status_note": "正式跑 2026-11-19 22:28 台北結束；稽核 22:33；結果報告 22:35",
+      "passed": 0,
+      "hypotheses": 5,
+      "date": "2026-11-19",
+      "result": "0／5 通過。族內最佳 K4（慢速度同向閘 H2a）：日 SR 0.0998（母策略 H2a 0.092）、校正後 0.009、t 1.32、Trim PF 0.83、淨利 $190,436。K3 只擋 1,543 次開倉詢問中的 70 次。方向型 K1 日 SR 0.026、K2 −0.018。 RW 臨界 t 2.748（17 個一起校正），全 17 個最大 t 1.99（W3）；換 seed 20261115 臨界 2.752 仍 0 拒絕；SR0（N＝17）0.0913，累計 N 743,179 的 SR0 0.240 只揭露；稽核 2,560 次比對 0 不一致；pilot 重現 H2a 日 SR 0.0916；後三年未讀。",
+      "report_label": "plan_v14i_result_20261119_2236.md（28cd6d6b）、sp_test_20261119_2228.json（3f28a893）、audit_20261119_2233.json（4f1eb1fb）、EXPERIMENT_LOG.md（E054）（fae54637）、PLAN_v14i.md（1cd53fad）",
+      "report_href": null,
+      "batch": "v14i",
+      "added_taipei": "2026-11-19 22:38",
+      "revised_taipei": "2026-11-19 22:38",
+      "label": "探索性、非獨立盲測；非官方驗收",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "本站編號，比照 v14h；計畫書以 K 族編號"
+        },
+        "method": {
+          "lines": "L19、L38–L48、L85",
+          "source": "PLAN_v14i.md"
+        },
+        "use": {
+          "lines": "L42–L48",
+          "source": "PLAN_v14i.md"
+        },
+        "inspiration": {
+          "lines": [
+            4
+          ],
+          "source": "PLAN_v14i.md"
+        },
+        "hypotheses": {
+          "lines": "L10、L36、L42–L48",
+          "source": "PLAN_v14i.md"
+        },
+        "status": {
+          "lines": [],
+          "source": "sp_test_20261119_2228.json／audit_20261119_2233.json／plan_v14i_result_20261119_2236.md"
+        },
+        "passed": {
+          "lines": "L98",
+          "source": "sp_test_20261119_2228.json（n_pass、各假設 pass／fails）"
+        }
+      }
+    },
+    {
+      "id": "v14i-2",
+      "plan_family": "R",
+      "method": "AR／ARMA 滾動因果預測（每個決策點只用前 1,560 根報酬重擬合）",
+      "inspiration": "計畫書 L4：Charles 2026-11-19 22:17 同意（t399u）",
+      "use": "方向（R1–R3），或 H2a／H1a 同向閘（R4–R6）",
+      "use_kind": "direction_or_gate",
+      "status": "完成",
+      "status_note": "正式跑 2026-11-19 22:28 台北結束；稽核 22:33；結果報告 22:35",
+      "passed": 0,
+      "hypotheses": 6,
+      "date": "2026-11-19",
+      "result": "0／6 通過。H2a 同向閘 R4、R5 分別擋掉 1,609／2,676、1,946／2,926 次開倉詢問，日 SR 降到 0.071、0.076（母策略 0.092）。R6 套 H1a 日 SR 0.031（母策略 H1a 0.035）。方向型 R1–R3 日 SR −0.033～−0.022。 RW 臨界 t 2.748（17 個一起校正），全 17 個最大 t 1.99（W3）；換 seed 20261115 臨界 2.752 仍 0 拒絕；SR0（N＝17）0.0913，累計 N 743,179 的 SR0 0.240 只揭露；稽核 2,560 次比對 0 不一致；pilot 重現 H2a 日 SR 0.0916；後三年未讀。",
+      "report_label": "plan_v14i_result_20261119_2236.md（28cd6d6b）、sp_test_20261119_2228.json（3f28a893）、audit_20261119_2233.json（4f1eb1fb）、EXPERIMENT_LOG.md（E054）（fae54637）、PLAN_v14i.md（1cd53fad）",
+      "report_href": null,
+      "batch": "v14i",
+      "added_taipei": "2026-11-19 22:38",
+      "revised_taipei": "2026-11-19 22:38",
+      "label": "探索性、非獨立盲測；非官方驗收",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "本站編號，比照 v14h；計畫書以 R 族編號"
+        },
+        "method": {
+          "lines": "L20、L50–L63、L86",
+          "source": "PLAN_v14i.md"
+        },
+        "use": {
+          "lines": "L56–L63",
+          "source": "PLAN_v14i.md"
+        },
+        "inspiration": {
+          "lines": [
+            4
+          ],
+          "source": "PLAN_v14i.md"
+        },
+        "hypotheses": {
+          "lines": "L10、L36、L56–L63",
+          "source": "PLAN_v14i.md"
+        },
+        "status": {
+          "lines": [],
+          "source": "sp_test_20261119_2228.json／audit_20261119_2233.json／plan_v14i_result_20261119_2236.md"
+        },
+        "passed": {
+          "lines": "L98",
+          "source": "sp_test_20261119_2228.json（n_pass、各假設 pass／fails）"
+        }
+      }
+    },
+    {
+      "id": "v14i-3",
+      "plan_family": "W",
+      "method": "因果 Haar à trous 小波（每個值只用當下以前資料；去噪門檻只用前 390 根；能量比只用前 20 日）",
+      "inspiration": "計畫書 L4：Charles 2026-11-19 22:17 同意（t399u）",
+      "use": "方向（W1、W2）、H2a 同向閘（W3、W4），或「今天別交易」日閘（W5、W6）",
+      "use_kind": "direction_or_gate",
+      "status": "完成",
+      "status_note": "正式跑 2026-11-19 22:28 台北結束；稽核 22:33；結果報告 22:35",
+      "passed": 0,
+      "hypotheses": 6,
+      "date": "2026-11-19",
+      "result": "0／6 通過。族內最佳 W3（c₄ 斜率同向閘 H2a）：日 SR 0.1034、校正後 0.012、t 1.99、1,398 來回、Trim PF 0.84、淨利 $195,061（高於母策略 $182,461）。W4 去噪同向閘日 SR 0.1013。W5 能量比日閘讓 H2a 變差（t −3.49）；其反向版未事先登記，不可當訊號。方向型 W1 日 SR 0.005、W2 −0.032。 RW 臨界 t 2.748（17 個一起校正），全 17 個最大 t 1.99（W3）；換 seed 20261115 臨界 2.752 仍 0 拒絕；SR0（N＝17）0.0913，累計 N 743,179 的 SR0 0.240 只揭露；稽核 2,560 次比對 0 不一致；pilot 重現 H2a 日 SR 0.0916；後三年未讀。",
+      "report_label": "plan_v14i_result_20261119_2236.md（28cd6d6b）、sp_test_20261119_2228.json（3f28a893）、audit_20261119_2233.json（4f1eb1fb）、EXPERIMENT_LOG.md（E054）（fae54637）、PLAN_v14i.md（1cd53fad）",
+      "report_href": null,
+      "batch": "v14i",
+      "added_taipei": "2026-11-19 22:38",
+      "revised_taipei": "2026-11-19 22:38",
+      "label": "探索性、非獨立盲測；非官方驗收",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "本站編號，比照 v14h；計畫書以 W 族編號"
+        },
+        "method": {
+          "lines": "L21、L65–L77、L87",
+          "source": "PLAN_v14i.md"
+        },
+        "use": {
+          "lines": "L70–L77",
+          "source": "PLAN_v14i.md"
+        },
+        "inspiration": {
+          "lines": [
+            4
+          ],
+          "source": "PLAN_v14i.md"
+        },
+        "hypotheses": {
+          "lines": "L10、L36、L70–L77",
+          "source": "PLAN_v14i.md"
+        },
+        "status": {
+          "lines": [],
+          "source": "sp_test_20261119_2228.json／audit_20261119_2233.json／plan_v14i_result_20261119_2236.md"
+        },
+        "passed": {
+          "lines": "L98",
+          "source": "sp_test_20261119_2228.json（n_pass、各假設 pass／fails）"
+        }
+      }
+    },
     {
       "id": "v14h-1",
       "plan_family": "A",
@@ -95,7 +251,7 @@
         }
       },
       "status_note": "正式跑 2026-11-19 18:26 台北結束；稽核 18:36；結果報告 18:38",
-      "result": "0／6 通過。套 H2a 的 A1–A3、A5、A6 都讓日 SR 下降（0.052–0.066，母策略 H2a 0.092）；套 H1a 的 A4 日 SR 0.040（母策略 H1a 0.035），t 0.35。全族校正後 −0.050～−0.025，Trim PF 0.69–0.76。校正後最高 A5（樣本熵）：日 SR 0.066、校正後 −0.025、t −1.75。 RW 臨界 t 2.71（17 個一起校正）、全 17 個最大 t 1.68（S3）；SR0 0.0907；稽核 1,160 次比對 0 不一致；後三年未讀。"
+      "result": "0／6 通過。套 H2a 的 A1–A3、A5、A6 都讓日 SR 下降（0.052–0.066，母策略 H2a 0.092）；套 H1a 的 A4 日 SR 0.040（母策略 H1a 0.035），t 0.35。全族校正後 −0.050～−0.025，Trim PF 0.69–0.76。校正後最高 A5（樣本熵）：日 SR 0.066、校正後 −0.025、t −1.75。 RW 臨界 t 2.71（17 個一起校正）、全 17 個最大 t 1.68（S3）；SR0 0.0907；稽核 1,160 次比對 0 不一致；後三年未讀。 （A4 措辭與 E053 勘誤一致：A4 套 H1a，非 H2a；勘誤附於 E054 前，見 EXPERIMENT_LOG.md。）"
     },
     {
       "id": "v14h-2",
@@ -314,42 +470,42 @@
     },
     {
       "method": "卡爾曼",
-      "group": "not_tried",
-      "reason": "尚未嘗試",
-      "note": "實驗紀錄與計畫書查無紀錄",
-      "source": "本站查證（GM2 亦稱無紀錄）",
+      "group": "done",
+      "reason": "已做過（已查證）",
+      "note": "v14i K 族（PLAN_v14i L38–L48；E054）：0／5 通過",
+      "source": "本站查證 E054 與 PLAN_v14i",
       "plan_refs": {
         "lines": [],
-        "source": "PLAN_v14h.md"
+        "source": "PLAN_v14i.md／EXPERIMENT_LOG.md E054"
       }
     },
     {
       "method": "AR/ARMA",
-      "group": "not_tried",
-      "reason": "尚未嘗試",
-      "note": "實驗紀錄與計畫書查無紀錄",
-      "source": "本站查證（GM2 亦稱無紀錄）",
+      "group": "done",
+      "reason": "已做過（已查證）",
+      "note": "v14i R 族（PLAN_v14i L50–L63；E054）：0／6 通過",
+      "source": "本站查證 E054 與 PLAN_v14i",
       "plan_refs": {
         "lines": [],
-        "source": "PLAN_v14h.md"
+        "source": "PLAN_v14i.md／EXPERIMENT_LOG.md E054"
       }
     },
     {
       "method": "小波",
-      "group": "not_tried",
-      "reason": "尚未嘗試",
-      "note": "實驗紀錄與計畫書查無紀錄",
-      "source": "本站查證（GM2 亦稱無紀錄）",
+      "group": "done",
+      "reason": "已做過（已查證）",
+      "note": "v14i W 族（PLAN_v14i L65–L77；E054）：0／6 通過",
+      "source": "本站查證 E054 與 PLAN_v14i",
       "plan_refs": {
         "lines": [],
-        "source": "PLAN_v14h.md"
+        "source": "PLAN_v14i.md／EXPERIMENT_LOG.md E054"
       }
     },
     {
       "method": "協整",
       "group": "needs_multi",
       "reason": "需多商品，Charles 已取消多商品",
-      "note": "「多商品已取消」見計畫書 L4；協整本身未出現在計畫書。",
+      "note": "「多商品已取消」見 PLAN_v14h L4；協整本身未出現在計畫書。",
       "source": "GM2 轉達（2026-11-19 18:10）",
       "plan_refs": {
         "lines": [
@@ -363,7 +519,7 @@
       "method": "圖信號",
       "group": "needs_multi",
       "reason": "需多商品，Charles 已取消多商品",
-      "note": "「多商品已取消」見計畫書 L4；圖信號本身未出現在計畫書。",
+      "note": "「多商品已取消」見 PLAN_v14h L4；圖信號本身未出現在計畫書。",
       "source": "GM2 轉達（2026-11-19 18:10）",
       "plan_refs": {
         "lines": [
@@ -377,7 +533,7 @@
       "method": "v14g 多商品",
       "group": "cancelled",
       "reason": "取消",
-      "note": "計畫書 L4、L121：多商品已取消；E052 留給已取消的 v14g，實驗紀錄尚無 E052。勿與 M15 工程續跑（E031）混淆。",
+      "note": "PLAN_v14h L4、L121：多商品已取消；E052 留給已取消的 v14g，實驗紀錄尚無 E052。勿與 M15 工程續跑（E031）混淆。",
       "source": "GM2 轉達（2026-11-19 18:10）",
       "plan_refs": {
         "lines": [
@@ -388,7 +544,7 @@
       }
     }
   ],
-  "excluded_note": "此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA、regime filter 查得到，標「已做過」並附來源（regime filter 字面查無，經 GM2 2026-11-19 說明即 v14b 波動＋HMM 狀態閘門，本站已核對 PLAN_v14b 與 E045–E047）；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。",
+  "excluded_note": "此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證，HMM、GARCH、EWMA、regime filter（經 GM2 2026-11-19 說明即 v14b 波動＋HMM 狀態閘門，本站已核對 PLAN_v14b 與 E045–E047）、卡爾曼、AR/ARMA、小波（v14i，E054）皆標「已做過」並附來源。",
   "history": [
     {
       "time_taipei": "2026-11-19 18:13",
@@ -514,19 +670,19 @@
           "method": "協整",
           "group": "needs_multi",
           "reason": "需多商品，Charles 已取消多商品",
-          "note": "「多商品已取消」見計畫書 L4；協整本身未出現在計畫書。"
+          "note": "「多商品已取消」見 PLAN_v14h L4；協整本身未出現在計畫書。"
         },
         {
           "method": "圖信號",
           "group": "needs_multi",
           "reason": "需多商品，Charles 已取消多商品",
-          "note": "「多商品已取消」見計畫書 L4；圖信號本身未出現在計畫書。"
+          "note": "「多商品已取消」見 PLAN_v14h L4；圖信號本身未出現在計畫書。"
         },
         {
           "method": "v14g 多商品",
           "group": "cancelled",
           "reason": "取消",
-          "note": "計畫書 L4、L121：多商品已取消；E052 留給已取消的 v14g。實驗紀錄尚無 E052／E053。勿與 M15 工程續跑（E031）混淆。"
+          "note": "PLAN_v14h L4、L121：多商品已取消；E052 留給已取消的 v14g。實驗紀錄尚無 E052／E053。勿與 M15 工程續跑（E031）混淆。"
         }
       ],
       "sources": [
@@ -564,6 +720,69 @@
         }
       },
       "previous_excluded_note": "此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA 查得到，標「已做過」並附來源；regime filter 查無此詞，標「轉達、未查證」；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。"
+    },
+    {
+      "time_taipei": "2026-11-19 22:38",
+      "version": 5,
+      "note": "新增 v14i-1／2／3（K、R、W 族，完成，0／17）；數字依 sp_test_20261119_2228.json、audit_20261119_2233.json 原始值核實。排除區卡爾曼、AR/ARMA、小波由「尚未嘗試」改「已做過」（E054＋PLAN_v14i）。v14h-1 加註 E053 勘誤。v4 檔改名存於 archive/new_attempts/。",
+      "previous_excluded": [
+        {
+          "method": "卡爾曼",
+          "group": "not_tried",
+          "reason": "尚未嘗試",
+          "note": "實驗紀錄與計畫書查無紀錄",
+          "source": "本站查證（GM2 亦稱無紀錄）",
+          "plan_refs": {
+            "lines": [],
+            "source": "PLAN_v14h.md"
+          }
+        },
+        {
+          "method": "AR/ARMA",
+          "group": "not_tried",
+          "reason": "尚未嘗試",
+          "note": "實驗紀錄與計畫書查無紀錄",
+          "source": "本站查證（GM2 亦稱無紀錄）",
+          "plan_refs": {
+            "lines": [],
+            "source": "PLAN_v14h.md"
+          }
+        },
+        {
+          "method": "小波",
+          "group": "not_tried",
+          "reason": "尚未嘗試",
+          "note": "實驗紀錄與計畫書查無紀錄",
+          "source": "本站查證（GM2 亦稱無紀錄）",
+          "plan_refs": {
+            "lines": [],
+            "source": "PLAN_v14h.md"
+          }
+        }
+      ],
+      "previous_excluded_note": "此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA、regime filter 查得到，標「已做過」並附來源（regime filter 字面查無，經 GM2 2026-11-19 說明即 v14b 波動＋HMM 狀態閘門，本站已核對 PLAN_v14b 與 E045–E047）；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。",
+      "sources": [
+        {
+          "file": "plan_v14i_result_20261119_2236.md",
+          "sha1": "28cd6d6b457cd2e822876170e0b850b2c73fc453"
+        },
+        {
+          "file": "sp_test_20261119_2228.json",
+          "sha1": "3f28a893b1dc8051889dd161c67eaa7e61979a2b"
+        },
+        {
+          "file": "audit_20261119_2233.json",
+          "sha1": "4f1eb1fb1fddcfa1d02af8ca913e70342324eade"
+        },
+        {
+          "file": "EXPERIMENT_LOG.md（E054）",
+          "sha1": "fae54637aeb6d1f5b444d8d92254502d5dfbbae7"
+        },
+        {
+          "file": "PLAN_v14i.md",
+          "sha1": "1cd53fad594a55cc768638e133dcc3e93a8f5168"
+        }
+      ]
     }
   ],
   "result_sources": [
@@ -584,5 +803,27 @@
       "sha1": "c330bc025d668c5bd98bf1105d435a4ad8bf8412"
     }
   ],
-  "result_common": "RW 臨界 t 2.71（17 個一起校正）、全 17 個最大 t 1.68（S3）；SR0 0.0907；稽核 1,160 次比對 0 不一致；後三年未讀。"
+  "result_common": "RW 臨界 t 2.71（17 個一起校正）、全 17 個最大 t 1.68（S3）；SR0 0.0907；稽核 1,160 次比對 0 不一致；後三年未讀。",
+  "result_sources_v14i": [
+    {
+      "file": "plan_v14i_result_20261119_2236.md",
+      "sha1": "28cd6d6b457cd2e822876170e0b850b2c73fc453"
+    },
+    {
+      "file": "sp_test_20261119_2228.json",
+      "sha1": "3f28a893b1dc8051889dd161c67eaa7e61979a2b"
+    },
+    {
+      "file": "audit_20261119_2233.json",
+      "sha1": "4f1eb1fb1fddcfa1d02af8ca913e70342324eade"
+    },
+    {
+      "file": "EXPERIMENT_LOG.md（E054）",
+      "sha1": "fae54637aeb6d1f5b444d8d92254502d5dfbbae7"
+    },
+    {
+      "file": "PLAN_v14i.md",
+      "sha1": "1cd53fad594a55cc768638e133dcc3e93a8f5168"
+    }
+  ]
 }
