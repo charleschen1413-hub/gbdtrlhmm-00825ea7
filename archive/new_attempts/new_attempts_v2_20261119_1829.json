@@ -1,0 +1,445 @@
+{
+  "version": 2,
+  "title": "新嘗試表",
+  "disclaimer": "探索性、非獨立盲測；非官方驗收",
+  "lead": "v14h 三族共 17 個事先寫死的假設（A 相空間／複雜度閘 6、C 循環平穩時段閘 5、S SSA／EMD 趨勢 6），尚未開跑，故無結果。之後新方法只往本表上方附加。",
+  "scope": "只用 NQ 前七年 2016-09-29～2023-09-28，門檻與 v14d／e／f 相同。",
+  "updated_taipei": "2026-11-19 18:22",
+  "plan": {
+    "exists": true,
+    "filename": "PLAN_v14h.md",
+    "sha1": "de849e8cfad7f9eb8647430d1754df73b269d569",
+    "written_taipei": "2026-11-19 18:11",
+    "public_report": "尚無公開報告頁",
+    "log_id_note": "預定於實驗紀錄頂部附加 E053（E052 保留給已取消的 v14g），見計畫書 L121。實驗紀錄目前尚無這兩條。",
+    "footnote": ""
+  },
+  "attempts": [
+    {
+      "id": "v14h-1",
+      "plan_family": "A",
+      "method": "相空間／複雜度閘（關聯維數；樣本熵、排列熵為對照）",
+      "inspiration": "GM2 轉達（2026-11-19 18:10）",
+      "use": "何時別交易（閘）",
+      "use_kind": "when_not_trade",
+      "status": "計畫已寫死，尚未開跑",
+      "passed": null,
+      "hypotheses": 6,
+      "date": "2026-11-19",
+      "report_label": "尚無公開報告頁",
+      "report_href": null,
+      "batch": "v14h",
+      "added_taipei": "2026-11-19 18:15",
+      "revised_taipei": "2026-11-19 18:22",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "GM2 轉達（2026-11-19 18:10）",
+          "note": "計畫書以 A 族編號（A1–A6），無 v14h-1 字樣；對應關係見 L10、L40–L52"
+        },
+        "method": {
+          "lines": [
+            4,
+            10,
+            19,
+            "40-52"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "inspiration": {
+          "lines": [],
+          "source": "GM2 轉達（2026-11-19 18:10）",
+          "note": "計畫書未寫靈感來源；公開頁只標轉達來源"
+        },
+        "use": {
+          "lines": [
+            4,
+            10,
+            20,
+            42,
+            "40-52"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "status": {
+          "lines": [
+            3,
+            36,
+            121
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "計畫書寫「pilot 之前」「寫死後不改」；未寫「待核准」"
+        },
+        "hypotheses": {
+          "lines": [
+            10,
+            36,
+            40,
+            "46-51"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "passed": {
+          "lines": [
+            3,
+            121
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "尚未開跑，通過數為 —"
+        },
+        "date": {
+          "lines": [
+            3
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "取計畫書寫作日；正文為 18:11 台北"
+        },
+        "report": {
+          "lines": [],
+          "source": "尚無公開報告頁",
+          "note": "計畫書已存在，不再寫「計畫書撰寫中」"
+        }
+      }
+    },
+    {
+      "id": "v14h-2",
+      "plan_family": "C",
+      "method": "循環平穩時段閘（週幾×半點的波動／報酬節奏）",
+      "inspiration": "GM2 轉達（2026-11-19 18:10）",
+      "use": "何時別交易（時段閘）",
+      "use_kind": "when_not_trade",
+      "status": "計畫已寫死，尚未開跑",
+      "passed": null,
+      "hypotheses": 5,
+      "date": "2026-11-19",
+      "report_label": "尚無公開報告頁",
+      "report_href": null,
+      "batch": "v14h",
+      "added_taipei": "2026-11-19 18:15",
+      "revised_taipei": "2026-11-19 18:22",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "GM2 轉達（2026-11-19 18:10）",
+          "note": "計畫書以 C 族編號（C1–C5），無 v14h-2 字樣；對應關係見 L10、L53–L62"
+        },
+        "method": {
+          "lines": [
+            4,
+            10,
+            20,
+            "53-62"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "inspiration": {
+          "lines": [],
+          "source": "GM2 轉達（2026-11-19 18:10）",
+          "note": "計畫書未寫靈感來源；公開頁只標轉達來源"
+        },
+        "use": {
+          "lines": [
+            4,
+            10,
+            20,
+            "53-62"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "status": {
+          "lines": [
+            3,
+            36,
+            121
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "計畫書寫「pilot 之前」「寫死後不改」；未寫「待核准」"
+        },
+        "hypotheses": {
+          "lines": [
+            10,
+            36,
+            53,
+            "58-62"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "passed": {
+          "lines": [
+            3,
+            121
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "尚未開跑，通過數為 —"
+        },
+        "date": {
+          "lines": [
+            3
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "取計畫書寫作日；正文為 18:11 台北"
+        },
+        "report": {
+          "lines": [],
+          "source": "尚無公開報告頁",
+          "note": "計畫書已存在，不再寫「計畫書撰寫中」"
+        }
+      }
+    },
+    {
+      "id": "v14h-3",
+      "plan_family": "S",
+      "method": "SSA／EMD 趨勢（滑動視窗，決策時點重算、只取最後一點）",
+      "inspiration": "GM2 轉達（2026-11-19 18:10）",
+      "use": "方向，或 H2a 同向閘",
+      "use_kind": "direction_or_gate",
+      "status": "計畫已寫死，尚未開跑",
+      "passed": null,
+      "hypotheses": 6,
+      "date": "2026-11-19",
+      "report_label": "尚無公開報告頁",
+      "report_href": null,
+      "batch": "v14h",
+      "added_taipei": "2026-11-19 18:15",
+      "revised_taipei": "2026-11-19 18:22",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "GM2 轉達（2026-11-19 18:10）",
+          "note": "計畫書以 S 族編號（S1–S6），無 v14h-3 字樣；對應關係見 L10、L64–L78"
+        },
+        "method": {
+          "lines": [
+            4,
+            10,
+            22,
+            "64-78",
+            65,
+            "86-87"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "inspiration": {
+          "lines": [],
+          "source": "GM2 轉達（2026-11-19 18:10）",
+          "note": "計畫書未寫靈感來源；公開頁只標轉達來源"
+        },
+        "use": {
+          "lines": [
+            22,
+            "71-78"
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "L10 簡稱「趨勢方向 6」；細表 S1／S2／S4／S5 為方向，S3／S6 為 H2a 同向閘"
+        },
+        "status": {
+          "lines": [
+            3,
+            36,
+            121
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "計畫書寫「pilot 之前」「寫死後不改」；未寫「待核准」"
+        },
+        "hypotheses": {
+          "lines": [
+            10,
+            36,
+            64,
+            "73-78"
+          ],
+          "source": "PLAN_v14h.md"
+        },
+        "passed": {
+          "lines": [
+            3,
+            121
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "尚未開跑，通過數為 —"
+        },
+        "date": {
+          "lines": [
+            3
+          ],
+          "source": "PLAN_v14h.md",
+          "note": "取計畫書寫作日；正文為 18:11 台北"
+        },
+        "report": {
+          "lines": [],
+          "source": "尚無公開報告頁",
+          "note": "計畫書已存在，不再寫「計畫書撰寫中」"
+        }
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "method": "HMM",
+      "group": "done",
+      "reason": "已涵蓋（做過）",
+      "note": "v14 主輪（E001–E043，RAW hmm）、v14b（E045–E047，HMM 閘門）、v14d（E049，A_R_HMM）",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [],
+        "source": "PLAN_v14h.md"
+      }
+    },
+    {
+      "method": "regime filter",
+      "group": "done",
+      "reason": "已涵蓋（做過）",
+      "note": "實驗紀錄與計畫書未出現此詞；狀態／波動閘見 v14b（E045–E047）、v14d（E049）",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [],
+        "source": "PLAN_v14h.md"
+      }
+    },
+    {
+      "method": "卡爾曼",
+      "group": "done",
+      "reason": "已涵蓋（做過，轉達）",
+      "note": "實驗紀錄與計畫書未找到對應紀錄；僅為轉達，本站未查證",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [],
+        "source": "PLAN_v14h.md"
+      }
+    },
+    {
+      "method": "GARCH",
+      "group": "done",
+      "reason": "已涵蓋（做過）",
+      "note": "v14d（E049，V7 GARCH(1,1)）",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [],
+        "source": "PLAN_v14h.md"
+      }
+    },
+    {
+      "method": "AR/ARMA",
+      "group": "done",
+      "reason": "已涵蓋（做過，轉達）",
+      "note": "實驗紀錄與計畫書未找到對應紀錄；僅為轉達，本站未查證",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [],
+        "source": "PLAN_v14h.md"
+      }
+    },
+    {
+      "method": "小波",
+      "group": "done",
+      "reason": "已涵蓋（做過，轉達）",
+      "note": "實驗紀錄與計畫書未找到對應紀錄；僅為轉達，本站未查證",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [],
+        "source": "PLAN_v14h.md"
+      }
+    },
+    {
+      "method": "協整",
+      "group": "needs_multi",
+      "reason": "需多商品，Charles 已取消多商品",
+      "note": "「多商品已取消」見計畫書 L4；協整本身未出現在計畫書。",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [
+          4
+        ],
+        "source": "PLAN_v14h.md",
+        "note": "僅「多商品已由 Charles 取消」；未寫協整"
+      }
+    },
+    {
+      "method": "圖信號",
+      "group": "needs_multi",
+      "reason": "需多商品，Charles 已取消多商品",
+      "note": "「多商品已取消」見計畫書 L4；圖信號本身未出現在計畫書。",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [
+          4
+        ],
+        "source": "PLAN_v14h.md",
+        "note": "僅「多商品已由 Charles 取消」；未寫圖信號"
+      }
+    },
+    {
+      "method": "v14g 多商品",
+      "group": "cancelled",
+      "reason": "取消",
+      "note": "計畫書 L4、L121：多商品已取消；E052 留給已取消的 v14g。實驗紀錄尚無 E052／E053。勿與 M15 工程續跑（E031）混淆。",
+      "source": "GM2 轉達（2026-11-19 18:10）",
+      "plan_refs": {
+        "lines": [
+          4,
+          121
+        ],
+        "source": "PLAN_v14h.md"
+      }
+    }
+  ],
+  "excluded_note": "此區方法清單與「已涵蓋（做過）」判定為 GM2 轉達（2026-11-19 18:10） 內容，本站未逐項查證；附實驗紀錄編號者為本站已對到的紀錄。",
+  "history": [
+    {
+      "time_taipei": "2026-11-19 18:13",
+      "version": 1,
+      "file": "archive/new_attempts/new_attempts_v1_20261119_1813.json",
+      "sha1": "c14e2a09931892652f1bac54e107061814f62722",
+      "note": "首版：v14h 合成一列（特助簡表，commit 142e718）。舊列原文保留於下。",
+      "rows": [
+        {
+          "id": "v14h",
+          "added_taipei": "2026-11-19 18:13",
+          "title": "訊號處理三族（相空間／循環平穩／SSA·EMD），NQ 前七年先驗訊號",
+          "method": "17 個事先寫死的假設（不增減）：A 相空間／複雜度閘 6 個（關聯維數 D2，m＝4／6／8；樣本熵、排列熵為對照）；C 循環平穩時段閘 5 個（週幾×半點的波動／報酬節奏）；S SSA／EMD 趨勢 6 個（滑動視窗，每個決策時點重算、只取最後一點；直接定方向或當 H2a 同向閘）。閘只擋新開倉，套在母策略 H2a（主）、H1a（副）。",
+          "data_window": "只用 NQ 1 分 K（Databento），不用 tick、不用外部日資料。前七年 2016-09-29～2023-09-28（1,826 營業日），後三年 2023-09-29～2026-09-28 不讀、不調參。特徵窗口：A 族前 20 個完整交易日的 RTH 5 分報酬；C 族只用 d 日以前、擴張視窗 60～250 日；S 族 5 分取前 390 根、15 分取前 520 根。",
+          "threshold": "與 v14d／e／f 相同，不放寬。全部成立才算通過：Romano–Wolf 拒絕（FWER 5%，17 個一起校正）、校正後日 SR ≥ 0.10、來回 ≥ 210、Trim PF > 1.03、單筆最大虧 ≤ $10,000、2017–2022 最差年 ≥ −$5,000；閘族另需淨利 > 母策略淨利。SR0 官方 N＝17。",
+          "scale": "17 個假設；CPCV 6 組 k＝2（15 切分）；bootstrap B＝2,000；pilot 只跑 A1、C1、S1、S4（B＝200）。程序最多 2 個（主程序＋量測），上限 14。預估：pilot 約 2 分鐘、正式跑約 10～15 分鐘、audit 約 3 分鐘。",
+          "decision": "有通過：只凍結並寫驗收計畫草稿，不讀後三年。0 通過：回報根本原因，不再擴族。計畫書自估通過機率低（< 5%）。",
+          "status": "計畫中",
+          "status_note": "計畫書寫於 pilot 之前；尚無開跑紀錄、正式腳本與 log（只有合成資料微基準）。",
+          "result": "尚無",
+          "label": "探索性、非獨立盲測（前七年內部，不能當官方驗收）",
+          "source": {
+            "file": "PLAN_v14h.md",
+            "sha1": "de849e8cfad7f9eb8647430d1754df73b269d569",
+            "mtime_taipei": "2026-11-19 18:11"
+          },
+          "plan_lines": {
+            "title": "1",
+            "method": "10, 19–22, 36–78",
+            "data_window": "11, 17, 28, 41, 54, 66",
+            "threshold": "12, 95–100",
+            "scale": "36, 96, 98, 115–116",
+            "decision": "14, 123",
+            "status": "3",
+            "label": "5"
+          },
+          "updated_taipei": "2026-11-19 18:13",
+          "history": [
+            {
+              "time_taipei": "2026-11-19 18:13",
+              "status": "計畫中",
+              "note": "首次列入；依 PLAN_v14h.md（sha1 de849e8c）"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "time_taipei": "2026-11-19 18:28",
+      "version": 2,
+      "note": "改用美編 stamp 20261119_1825 版面：v14h 拆為 v14h-1／2／3（A 6、C 5、S 6，合計 17）。特助依 PLAN_v14h.md（sha1 de849e8c）逐欄核對；轉達來源改標「GM2 轉達（2026-11-19 18:10）」，移除計畫書未記載的靈感來源字樣，未查證之排除項加註。",
+      "designer_src": {
+        "new_attempts.json": "54439085a1469f7c7e4da06e0b4ea1a7d6fae85a",
+        "new_attempts_20261119_1825.html": "3e1773a52fd3cf22424032cd1da415050b949382",
+        "new_attempts_cards_20261119_1825.svg": "1bbb1f981e6b37b8e2897f87a9def3e8ace029e5"
+      }
+    }
+  ]
+}
