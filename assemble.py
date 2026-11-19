@@ -1238,6 +1238,10 @@ def render_new_attempts_page() -> bool:
     """Render new_attempts.html from the append-only new_attempts.json. Newest row on top.
     Only reads the json; never removes rows. Returns True if the page changed."""
     data = load_json(NEW_ATTEMPTS_JSON, {"rows": []})
+    if data.get("attempts") is not None:
+        # v2 (designer layout, stamp 20261119_1825): new_attempts.html is a hand-vetted import
+        # checked against the plan; do not regenerate or overwrite it here.
+        return False
     rows = list(data.get("rows") or [])
     rows.sort(key=lambda r: r.get("added_taipei") or "", reverse=True)
     body_rows = []

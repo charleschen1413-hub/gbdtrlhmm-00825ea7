@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 220" width="960" height="220" role="img" aria-label="v14h 三方法依用途分色，狀態均為未開跑">
+<style>text{font-family:"Noto Sans CJK TC", "Noto Sans TC", "Source Han Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;}</style>
+<rect width="960" height="220" rx="12" fill="#fffdf8" stroke="#d9d2c5"/>
+<text x="16" y="28" font-size="15" font-weight="700" fill="#1c1915">新嘗試｜依用途分色（方向 vs 何時別交易）</text>
+<text x="944" y="28" font-size="11" text-anchor="end" fill="#5c564c">狀態燈：未開跑＝灰色　探索性、非獨立盲測</text>
+<rect x="16.0" y="44" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="16.0" y="44" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="36.0" y="72" font-size="14" font-weight="700" fill="#1c1915">v14h-1</text>
+<text x="36.0" y="96" font-size="13" fill="#1c1915">相空間／複雜度閘</text>
+<text x="36.0" y="114" font-size="13" fill="#1c1915">（關聯維數；樣本熵、排列熵為對照）</text>
+<text x="36.0" y="136" font-size="12" fill="#5c564c">何時別交易（閘）</text>
+<circle cx="42.0" cy="176.0" r="6" fill="#9a948a"/>
+<text x="56.0" y="180.0" font-size="12" fill="#5c564c">未開跑</text>
+<rect x="330.7" y="44" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="330.7" y="44" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="350.7" y="72" font-size="14" font-weight="700" fill="#1c1915">v14h-2</text>
+<text x="350.7" y="96" font-size="13" fill="#1c1915">循環平穩時段閘</text>
+<text x="350.7" y="114" font-size="13" fill="#1c1915">（週幾×半點的波動／報酬節奏）</text>
+<text x="350.7" y="136" font-size="12" fill="#5c564c">何時別交易（時段閘）</text>
+<circle cx="356.7" cy="176.0" r="6" fill="#9a948a"/>
+<text x="370.7" y="180.0" font-size="12" fill="#5c564c">未開跑</text>
+<rect x="645.3" y="44" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="645.3" y="44" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="665.3" y="72" font-size="14" font-weight="700" fill="#1c1915">v14h-3</text>
+<text x="665.3" y="96" font-size="13" fill="#1c1915">SSA／EMD 趨勢</text>
+<text x="665.3" y="114" font-size="13" fill="#1c1915">（滑動視窗，決策時點重算、只取最後一點）</text>
+<text x="665.3" y="136" font-size="12" fill="#5c564c">方向，或 H2a 同向閘</text>
+<circle cx="671.3" cy="176.0" r="6" fill="#9a948a"/>
+<text x="685.3" y="180.0" font-size="12" fill="#5c564c">未開跑</text>
+</svg>
