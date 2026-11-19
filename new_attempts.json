@@ -4,7 +4,7 @@
   "disclaimer": "探索性、非獨立盲測；非官方驗收",
   "lead": "v14h 三族共 17 個事先寫死的假設（A 相空間／複雜度閘 6、C 循環平穩時段閘 5、S SSA／EMD 趨勢 6）已跑完：0／17 通過，Romano–Wolf 無拒絕（臨界 t 2.71，最大 t 1.68）。之後新方法只往本表上方附加。",
   "scope": "只用 NQ 前七年 2016-09-29～2023-09-28，門檻與 v14d／e／f 相同。",
-  "updated_taipei": "2026-11-19 18:40",
+  "updated_taipei": "2026-11-19 22:19",
   "plan": {
     "exists": true,
     "filename": "PLAN_v14h.md",
@@ -300,13 +300,16 @@
     },
     {
       "method": "regime filter",
-      "group": "relayed",
-      "reason": "轉達、未查證",
-      "note": "實驗紀錄與 v14 計畫書群查無「regime filter」一詞；最接近的是 v14b 的波動與 HMM 狀態閘門（PLAN_v14b L12、L60；E045–E047），是否等同未經確認",
-      "source": "GM2 轉達；本站未查證",
+      "group": "done",
+      "reason": "已做過（已查證）",
+      "note": "PLAN_v14b L12、L60；E045–E047；對應 v14b 波動＋HMM 狀態閘門（此對應由 GM2 2026-11-19 說明）",
+      "source": "GM2 說明對應；本站已查證 PLAN_v14b 與 E045–E047 內容",
       "plan_refs": {
-        "lines": [],
-        "source": "PLAN_v14h.md"
+        "lines": [
+          12,
+          60
+        ],
+        "source": "PLAN_v14b.md"
       }
     },
     {
@@ -385,7 +388,7 @@
       }
     }
   ],
-  "excluded_note": "此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA 查得到，標「已做過」並附來源；regime filter 查無此詞，標「轉達、未查證」；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。",
+  "excluded_note": "此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA、regime filter 查得到，標「已做過」並附來源（regime filter 字面查無，經 GM2 2026-11-19 說明即 v14b 波動＋HMM 狀態閘門，本站已核對 PLAN_v14b 與 E045–E047）；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。",
   "history": [
     {
       "time_taipei": "2026-11-19 18:13",
@@ -544,6 +547,23 @@
           "sha1": "c330bc025d668c5bd98bf1105d435a4ad8bf8412"
         }
       ]
+    },
+    {
+      "time_taipei": "2026-11-19 22:19",
+      "version": 4,
+      "note": "排除區 regime filter 由「轉達、未查證」改為「已做過（已查證）」：GM2 2026-11-19 說明即 v14b 波動＋HMM 狀態閘門；本站重讀 PLAN_v14b L12、L60 與實驗紀錄 E045–E047 確認。",
+      "previous_regime_filter": {
+        "method": "regime filter",
+        "group": "relayed",
+        "reason": "轉達、未查證",
+        "note": "實驗紀錄與 v14 計畫書群查無「regime filter」一詞；最接近的是 v14b 的波動與 HMM 狀態閘門（PLAN_v14b L12、L60；E045–E047），是否等同未經確認",
+        "source": "GM2 轉達；本站未查證",
+        "plan_refs": {
+          "lines": [],
+          "source": "PLAN_v14h.md"
+        }
+      },
+      "previous_excluded_note": "此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA 查得到，標「已做過」並附來源；regime filter 查無此詞，標「轉達、未查證」；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。"
     }
   ],
   "result_sources": [

@@ -271,16 +271,13 @@ table.attempts td.status { min-width: 8.5rem; }
 </div>
   <div class="excluded">
     <h3 class="section-h" style="margin-top:18px">參考：做過、尚未嘗試或已排除的方法</h3>
-    <p class="meta">此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA 查得到，標「已做過」並附來源；regime filter 查無此詞，標「轉達、未查證」；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。「多商品已取消」見計畫書 L4；E052／v14g 見 L121。</p>
+    <p class="meta">此區清單來自 GM2 轉達；本站已在實驗紀錄與 v14 計畫書群逐項查證：HMM、GARCH、EWMA、regime filter 查得到，標「已做過」並附來源（regime filter 字面查無，經 GM2 2026-11-19 說明即 v14b 波動＋HMM 狀態閘門，本站已核對 PLAN_v14b 與 E045–E047）；卡爾曼、AR/ARMA、小波查無紀錄，標「尚未嘗試」。「多商品已取消」見計畫書 L4；E052／v14g 見 L121。</p>
     <p class="meta">已做過（本站已查證，附來源）</p>
 <ul class="ex-list">
 <li><strong>HMM</strong>　已做過 <span class="ex-note">v14 主輪 E001（實驗紀錄 RAW 模型格點含 hmm 72）；v14b 狀態 HMM 閘門（PLAN_v14b L60，E045–E047）；v14d A_R_HMM（E049）</span></li>
 <li><strong>GARCH</strong>　已做過 <span class="ex-note">v14d V7 GARCH(1,1)（PLAN_v14d L57；E049）</span></li>
 <li><strong>EWMA</strong>　已做過 <span class="ex-note">v14d V6 EWMA（RiskMetrics λ＝0.94）與 EWMA 停損（PLAN_v14d L56、L64；E049；v14d 結果報告 L45）</span></li>
-</ul>
-    <p class="meta">轉達、未查證</p>
-<ul class="ex-list">
-<li><strong>regime filter</strong>　轉達、未查證 <span class="ex-note">實驗紀錄與 v14 計畫書群查無「regime filter」一詞；最接近的是 v14b 的波動與 HMM 狀態閘門（PLAN_v14b L12、L60；E045–E047），是否等同未經確認</span></li>
+<li><strong>regime filter</strong>　已做過（已查證） <span class="ex-note">PLAN_v14b L12、L60；E045–E047；對應 v14b 波動＋HMM 狀態閘門（此對應由 GM2 2026-11-19 說明）</span></li>
 </ul>
     <p class="meta">尚未嘗試（實驗紀錄與計畫書查無紀錄）</p>
 <ul class="ex-list">
@@ -302,7 +299,7 @@ table.attempts td.status { min-width: 8.5rem; }
 v14h-1（對應A族）：方法 L4、L10、L19、L40–L52；用途 L4、L10、L20、L42、L40–L52；假設數 L10、L36、L40、L46–L51；日期 L3。編號：GM2 轉達（2026-11-19 18:10）；靈感來源：GM2 轉達（2026-11-19 18:10）；狀態與結果：sp_test_20261119_1826.json、audit_20261119_1836.json、plan_v14h_result_20261119_1838.md（非計畫書內容）<br>
 v14h-2（對應C族）：方法 L4、L10、L20、L53–L62；用途 L4、L10、L20、L53–L62；假設數 L10、L36、L53、L58–L62；日期 L3。編號：GM2 轉達（2026-11-19 18:10）；靈感來源：GM2 轉達（2026-11-19 18:10）；狀態與結果：sp_test_20261119_1826.json、audit_20261119_1836.json、plan_v14h_result_20261119_1838.md（非計畫書內容）<br>
 v14h-3（對應S族）：方法 L4、L10、L22、L64–L78、L65、L86–L87；用途 L22、L71–L78；假設數 L10、L36、L64、L73–L78；日期 L3。編號：GM2 轉達（2026-11-19 18:10）；靈感來源：GM2 轉達（2026-11-19 18:10）；狀態與結果：sp_test_20261119_1826.json、audit_20261119_1836.json、plan_v14h_result_20261119_1838.md（非計畫書內容）<br>
-實驗紀錄頂部已附加 E053（v14h 結果）；E052 保留給已取消的 v14g，實驗紀錄尚無 E052。見計畫書 L121。<br>結果來源（只列檔名與 sha1，原檔不公開）：plan_v14h_result_20261119_1838.md 13a64fdc683da0a2135a211e42a1af87a66f3cc2；sp_test_20261119_1826.json 274a94dfa6ab307f5cabaf757129390c840a03d7；audit_20261119_1836.json b0a7f6ddbf8d64f2863795caea7cc7177ff0c638；EXPERIMENT_LOG.md（E053） c330bc025d668c5bd98bf1105d435a4ad8bf8412。更新 2026-11-19 18:40 台北。</p>
+實驗紀錄頂部已附加 E053（v14h 結果）；E052 保留給已取消的 v14g，實驗紀錄尚無 E052。見計畫書 L121。<br>結果來源（只列檔名與 sha1，原檔不公開）：plan_v14h_result_20261119_1838.md 13a64fdc683da0a2135a211e42a1af87a66f3cc2；sp_test_20261119_1826.json 274a94dfa6ab307f5cabaf757129390c840a03d7；audit_20261119_1836.json b0a7f6ddbf8d64f2863795caea7cc7177ff0c638；EXPERIMENT_LOG.md（E053） c330bc025d668c5bd98bf1105d435a4ad8bf8412。更新 2026-11-19 22:19 台北。</p>
 </section>
 
     <footer>
