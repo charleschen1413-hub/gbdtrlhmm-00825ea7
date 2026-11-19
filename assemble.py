@@ -453,6 +453,11 @@ def import_web_assets(stamp: str) -> dict:
     for p in sorted(WEB_ASSETS.rglob("*")):
         if not p.is_file():
             continue
+        # new_attempts/ is the designer's staging dir for the 新嘗試表 page; it is reviewed
+        # by hand against new_attempts.json and never auto-imported as a chart preview.
+        if "new_attempts" in p.relative_to(WEB_ASSETS).parts:
+            report["skipped_nonvisual"].append(str(p))
+            continue
         if p.suffix.lower() not in {".svg", ".html", ".css"}:
             report["skipped_nonvisual"].append(str(p))
             continue
@@ -1106,6 +1111,7 @@ def rewrite_archived_index(html_text: str) -> str:
     html_text = html_text.replace('href="entries/', 'href="../entries/')
     html_text = html_text.replace("href='entries/", "href='../entries/")
     html_text = html_text.replace('href="sources.html"', 'href="../sources.html"')
+    html_text = html_text.replace('href="new_attempts.html"', 'href="../new_attempts.html"')
     return html_text
 
 
@@ -1217,6 +1223,67 @@ def chart_groups_newest_first(facts: dict, mismatches: list[str]) -> list[str]:
     return out
 
 
+
+# ---------- new attempts table (Charles 2026-11-19 18:10) ----------
+NEW_ATTEMPTS_JSON = ROOT / "new_attempts.json"
+NEW_ATTEMPTS_HTML = ROOT / "new_attempts.html"
+NEW_ATTEMPTS_COLS = [
+    ("id", "代號"), ("method", "方法"), ("data_window", "資料與窗口"), ("threshold", "門檻"),
+    ("scale", "試驗數與程序"), ("decision", "判定規則"), ("status", "狀態"), ("result", "結果"),
+    ("label", "標註"), ("source", "來源檔與 sha1"), ("updated_taipei", "更新時間（台北）"),
+]
+
+
+def render_new_attempts_page() -> bool:
+    """Render new_attempts.html from the append-only new_attempts.json. Newest row on top.
+    Only reads the json; never removes rows. Returns True if the page changed."""
+    data = load_json(NEW_ATTEMPTS_JSON, {"rows": []})
+    rows = list(data.get("rows") or [])
+    rows.sort(key=lambda r: r.get("added_taipei") or "", reverse=True)
+    body_rows = []
+    for r in rows:
+        cells = []
+        for key, _ in NEW_ATTEMPTS_COLS:
+            v = r.get(key)
+            if key == "source":
+                src = v or {}
+                v = f'{src.get("file") or "未取得"}\nsha1 {src.get("sha1") or "未取得"}\n檔案時間 {src.get("mtime_taipei") or "未取得"}（台北）'
+            elif key == "status" and r.get("status_note"):
+                v = f'{v}\n{r["status_note"]}'
+            elif key == "id" and r.get("title"):
+                v = f'{v}\n{r["title"]}'
+            txt = esc(v if v not in (None, "") else "未取得").replace("\n", "<br>")
+            if key == "id":
+                txt = f"<strong>{txt}</strong>"
+            cells.append(f'<td class="na-{key}">{txt}</td>')
+        body_rows.append("<tr>" + "".join(cells) + "</tr>")
+    head = "".join(f"<th>{esc(t)}</th>" for _, t in NEW_ATTEMPTS_COLS)
+    tbody = "\n".join(body_rows) or f'<tr><td colspan="{len(NEW_ATTEMPTS_COLS)}">尚無新嘗試。</td></tr>'
+    body = f"""
+    <header class="site">
+      <h1>新嘗試表</h1>
+      <p class="sub"><a href="index.html">← 回到實驗紀錄</a>　所有新方法集中在本頁查，最新在上。每格只放來源檔查得到的事實；未開跑的結果填「尚無」。{esc(visuals.DISCLAIMER)}</p>
+    </header>
+    <section class="card">
+      <h2>新嘗試（最新在上）</h2>
+      <p class="meta">資料檔 new_attempts.json：只附加新列、舊列不刪；狀態與結果可原地更新。所有列皆為探索性、非獨立盲測，不是官方驗收。</p>
+      <div class="scroll">
+      <table class="sources-table new-attempts">
+        <thead><tr>{head}</tr></thead>
+        <tbody>
+{tbody}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    """
+    page = visuals.page_shell("GBDTRLHMM 新嘗試表（探索性、非獨立盲測；非官方驗收）", body, "")
+    changed = (not NEW_ATTEMPTS_HTML.is_file()) or NEW_ATTEMPTS_HTML.read_text(encoding="utf-8") != page
+    if changed:
+        NEW_ATTEMPTS_HTML.write_text(page, encoding="utf-8")
+    return changed
+
+
 def assemble_site(when: datetime, existing, missing, history, added, skipped, stamp: str, human: str) -> dict:
     facts = facts_bundle()
     placeholders = placeholder_charts(facts)
@@ -1290,6 +1357,7 @@ def assemble_site(when: datetime, existing, missing, history, added, skipped, st
     sources_changed = (not sources_path.is_file()) or sources_path.read_text(encoding="utf-8") != sources_page
     if sources_changed:
         sources_path.write_text(sources_page, encoding="utf-8")
+    new_attempts_changed = render_new_attempts_page()
 
     index_path = ROOT / "index.html"
     # footer lists archives including the one we are about to add
@@ -1307,6 +1375,7 @@ def assemble_site(when: datetime, existing, missing, history, added, skipped, st
     return {
         "index_changed": index_changed,
         "sources_changed": sources_changed,
+        "new_attempts_changed": new_attempts_changed,
         "archived": str(archived_path) if archived_path else None,
         "assets": assets,
         "log_found": log_found,

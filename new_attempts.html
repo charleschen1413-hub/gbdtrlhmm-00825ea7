@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>GBDTRLHMM 新嘗試表（探索性、非獨立盲測；非官方驗收）</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="banner">探索性、非獨立盲測；非官方驗收</div>
+    
+    <header class="site">
+      <h1>新嘗試表</h1>
+      <p class="sub"><a href="index.html">← 回到實驗紀錄</a>　所有新方法集中在本頁查，最新在上。每格只放來源檔查得到的事實；未開跑的結果填「尚無」。探索性、非獨立盲測；非官方驗收</p>
+    </header>
+    <section class="card">
+      <h2>新嘗試（最新在上）</h2>
+      <p class="meta">資料檔 new_attempts.json：只附加新列、舊列不刪；狀態與結果可原地更新。所有列皆為探索性、非獨立盲測，不是官方驗收。</p>
+      <div class="scroll">
+      <table class="sources-table new-attempts">
+        <thead><tr><th>代號</th><th>方法</th><th>資料與窗口</th><th>門檻</th><th>試驗數與程序</th><th>判定規則</th><th>狀態</th><th>結果</th><th>標註</th><th>來源檔與 sha1</th><th>更新時間（台北）</th></tr></thead>
+        <tbody>
+<tr><td class="na-id"><strong>v14h<br>訊號處理三族（相空間／循環平穩／SSA·EMD），NQ 前七年先驗訊號</strong></td><td class="na-method">17 個事先寫死的假設（不增減）：A 相空間／複雜度閘 6 個（關聯維數 D2，m＝4／6／8；樣本熵、排列熵為對照）；C 循環平穩時段閘 5 個（週幾×半點的波動／報酬節奏）；S SSA／EMD 趨勢 6 個（滑動視窗，每個決策時點重算、只取最後一點；直接定方向或當 H2a 同向閘）。閘只擋新開倉，套在母策略 H2a（主）、H1a（副）。</td><td class="na-data_window">只用 NQ 1 分 K（Databento），不用 tick、不用外部日資料。前七年 2016-09-29～2023-09-28（1,826 營業日），後三年 2023-09-29～2026-09-28 不讀、不調參。特徵窗口：A 族前 20 個完整交易日的 RTH 5 分報酬；C 族只用 d 日以前、擴張視窗 60～250 日；S 族 5 分取前 390 根、15 分取前 520 根。</td><td class="na-threshold">與 v14d／e／f 相同，不放寬。全部成立才算通過：Romano–Wolf 拒絕（FWER 5%，17 個一起校正）、校正後日 SR ≥ 0.10、來回 ≥ 210、Trim PF &gt; 1.03、單筆最大虧 ≤ $10,000、2017–2022 最差年 ≥ −$5,000；閘族另需淨利 &gt; 母策略淨利。SR0 官方 N＝17。</td><td class="na-scale">17 個假設；CPCV 6 組 k＝2（15 切分）；bootstrap B＝2,000；pilot 只跑 A1、C1、S1、S4（B＝200）。程序最多 2 個（主程序＋量測），上限 14。預估：pilot 約 2 分鐘、正式跑約 10～15 分鐘、audit 約 3 分鐘。</td><td class="na-decision">有通過：只凍結並寫驗收計畫草稿，不讀後三年。0 通過：回報根本原因，不再擴族。計畫書自估通過機率低（&lt; 5%）。</td><td class="na-status">計畫中<br>計畫書寫於 pilot 之前；尚無開跑紀錄、正式腳本與 log（只有合成資料微基準）。</td><td class="na-result">尚無</td><td class="na-label">探索性、非獨立盲測（前七年內部，不能當官方驗收）</td><td class="na-source">PLAN_v14h.md<br>sha1 de849e8cfad7f9eb8647430d1754df73b269d569<br>檔案時間 2026-11-19 18:11（台北）</td><td class="na-updated_taipei">2026-11-19 18:13</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+    
+    <footer>
+      <p>探索性、非獨立盲測；非官方驗收　本站只刊登彙總結果與檔名／sha1，不刊登原始資料、tick、帳本 CSV 或憑證。缺資料標「未取得／未開始」，不編時間、不猜數字。</p>
+      
+    </footer>
+  </div>
+</body>
+</html>

@@ -368,6 +368,8 @@ def render_index(ctx: dict) -> str:
       <p class="sub">嘗試、規模、耗時、成敗與改善思路。文不如表、表不如圖。{esc(DISCLAIMER)}</p>
     </header>
 
+    <p class="na-link card"><a href="new_attempts.html"><strong>→ 新嘗試表</strong></a>　所有新方法（自 v14h 起）集中在此頁查，最新在上；皆為探索性、非獨立盲測。</p>
+
     {status_html}
 
     <section class="charts" id="charts">
