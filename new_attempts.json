@@ -2,9 +2,9 @@
   "version": 2,
   "title": "新嘗試表",
   "disclaimer": "探索性、非獨立盲測；非官方驗收",
-  "lead": "v14i 三族 17 個假設（K 卡爾曼 5、R AR／ARMA 6、W 小波 6）已跑完：0／17 通過，RW 無拒絕（臨界 t 2.748，最大 t 1.99）。v14h 三族 17 個假設（A 6、C 5、S 6）：0／17 通過（臨界 t 2.71，最大 t 1.68）。最新在上；之後新方法只往本表上方附加。",
-  "scope": "兩輪都只用 NQ 前七年 2016-09-29～2023-09-28，門檻相同（v14i 與 v14h 同，v14h 與 v14d／e／f 同）。",
-  "updated_taipei": "2026-11-19 22:38",
+  "lead": "v14j 三族 22 個假設（F 分形／長記憶 9、L 流動性／訂單流 6、E 熵／資訊 7）已跑完：0／22 通過，RW 無拒絕（臨界 t 2.725，最大 t −0.52），22 個閘全部讓 H2a 變差。v14i 三族 17 個假設（K 卡爾曼 5、R AR／ARMA 6、W 小波 6）已跑完：0／17 通過，RW 無拒絕（臨界 t 2.748，最大 t 1.99）。v14h 三族 17 個假設（A 6、C 5、S 6）：0／17 通過（臨界 t 2.71，最大 t 1.68）。最新在上；之後新方法只往本表上方附加。",
+  "scope": "三輪都只用 NQ 前七年 2016-09-29～2023-09-28，門檻相同（v14j 與 v14i 同，v14i 與 v14h 同，v14h 與 v14d／e／f 同）；v14j 另用前七年 tick（只讀到 2023-09-29 之前）。",
+  "updated_taipei": "2026-11-20 08:16",
   "plan": {
     "exists": true,
     "filename": "PLAN_v14h.md",
@@ -15,6 +15,276 @@
     "footnote": ""
   },
   "attempts": [
+    {
+      "id": "v14j-1",
+      "plan_family": "F",
+      "method": "分形／長記憶 9 個（DFA α、MF-DFA h(4)、聚合方差 Hurst、多分形譜寬 Δα、ARFIMA d、Higuchi FD、Katz FD、盒計數 FD、Korčák κ），都是前 20 日 5 分報酬的日層級 Q50 閘",
+      "inspiration": "Charles 2026-11-20 07:45 傳來 27 個新點子，GM2 篩出 22 個未做過的因子；核准時間依計畫書 L4 為 07:47（GM2 轉述，本站未見原話）",
+      "use": "何時別交易：H2a 日層級 Q50 閘（只擋新開倉）",
+      "use_kind": "when_not_trade",
+      "status": "完成",
+      "status_note": "正式跑 2026-11-20 08:05:43–08:07:21 台北；稽核 08:08；結果報告 08:10",
+      "passed": 0,
+      "hypotheses": 9,
+      "date": "2026-11-20",
+      "result": "0／9 通過。族內最佳 F7 Katz FD ≤ Q50：日 SR 0.0744、校正後 0.029、t −1.17、Trim PF 0.81、淨 $104,085、約 752 來回（擬合型 5 路徑平均）。最差 F8 盒計數 0.0400、t −3.61。F6 Higuchi 最差年 −$9,156，也沒過年度門檻。文獻：Korčák 1938 原文找不到；盒計數沒有單一原始論文（依 E055 記載）。 RW 臨界 t 2.725（22 個一起校正），全 22 個最大 t −0.52（L4）；22 個 ΔSR 全為負（全部讓 H2a 變差）；13 個 t ≤ −2，反向版沒有事先登記、不算數；換 seed 20261115 臨界 2.741 仍 0 拒絕；SR0（N＝22）0.0455，累計 N 743,201 的 SR0 0.113 只揭露；White RC p 0.997、SPA_c p 1.000；稽核 1,280 次比對 0 不一致；母策略 H2a 前七年日 SR 0.0916、淨 $182,461、1,513 來回；資料為 NQ 前七年 1 分 K＋前七年 tick（只讀到 2023-09-29 之前，共 5.11 億筆，tick／分 K 量比 1.000）；後三年未讀。",
+      "report_label": "PLAN_v14j.md（e1551ac8）、PLAN_v14j_sha1.txt（d87ec827）、sp_test_20261120_0807.json（9793d585）、audit_20261120_0808.json（134b9d30）、plan_v14j_result_20261120_0810.md（ef9bffa4）、EXPERIMENT_LOG.md（E055）（b19a8e2e）",
+      "report_href": null,
+      "batch": "v14j",
+      "added_taipei": "2026-11-20 08:16",
+      "revised_taipei": "2026-11-20 08:16",
+      "label": "探索性、非獨立盲測；非官方驗收",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "本站編號，比照 v14i；計畫書以 F 族編號"
+        },
+        "method": {
+          "lines": "L10、L21、L36、L41–L49",
+          "source": "PLAN_v14j.md"
+        },
+        "use": {
+          "lines": "L21、L41–L49",
+          "source": "PLAN_v14j.md"
+        },
+        "inspiration": {
+          "lines": [
+            4
+          ],
+          "source": "PLAN_v14j.md"
+        },
+        "hypotheses": {
+          "lines": "L10、L41–L49",
+          "source": "PLAN_v14j.md"
+        },
+        "data": {
+          "lines": "L28",
+          "source": "PLAN_v14j.md"
+        },
+        "parent": {
+          "lines": "L33",
+          "source": "PLAN_v14j.md"
+        },
+        "thresholds": {
+          "lines": "L85–L89",
+          "source": "PLAN_v14j.md"
+        },
+        "status": {
+          "lines": [],
+          "source": "sp_test_20261120_0807.json／audit_20261120_0808.json／plan_v14j_result_20261120_0810.md"
+        },
+        "passed": {
+          "lines": "L89、L101",
+          "source": "sp_test_20261120_0807.json（n_pass、各假設 pass／fails）"
+        }
+      },
+      "sources": [
+        {
+          "file": "PLAN_v14j.md",
+          "sha1": "e1551ac81d9c9ec131b9544f943c304f5a14eab1"
+        },
+        {
+          "file": "PLAN_v14j_sha1.txt",
+          "sha1": "d87ec82716031c4a2f66c35d59d4b9157ed524b0"
+        },
+        {
+          "file": "sp_test_20261120_0807.json",
+          "sha1": "9793d58591077673302fbd59462d26342c6a589e"
+        },
+        {
+          "file": "audit_20261120_0808.json",
+          "sha1": "134b9d30dbd41b1958747beb0e58fb46311bc095"
+        },
+        {
+          "file": "plan_v14j_result_20261120_0810.md",
+          "sha1": "ef9bffa435ebfe293d866d7345958351bf46a4d7"
+        },
+        {
+          "file": "EXPERIMENT_LOG.md（E055）",
+          "sha1": "b19a8e2e775aa5d245ff414d05d1c6bc1b0c1679"
+        }
+      ]
+    },
+    {
+      "id": "v14j-2",
+      "plan_family": "L",
+      "method": "流動性／訂單流 6 個（Kyle λ（推估）、Amihud、Roll 價差、OFI（推估）、VWAP 重心、量價互信息）；買賣方向為 tick rule 推估，OFI 不是 Cont 等 2014 的原定義（原定義要掛單資料）",
+      "inspiration": "Charles 2026-11-20 07:45 傳來 27 個新點子，GM2 篩出 22 個未做過的因子；核准時間依計畫書 L4 為 07:47（GM2 轉述，本站未見原話）",
+      "use": "何時別交易：H2a 閘（L1–L3、L6 日層級 Q50 閘；L4、L5 盤中同向閘；只擋新開倉）",
+      "use_kind": "when_not_trade",
+      "status": "完成",
+      "status_note": "正式跑 2026-11-20 08:05:43–08:07:21 台北；稽核 08:08；結果報告 08:10",
+      "passed": 0,
+      "hypotheses": 6,
+      "date": "2026-11-20",
+      "result": "0／6 通過。族內最佳也是全輪最佳 L4 OFI 同向閘：日 SR 0.0885、校正後 0.043、t −0.52、1,418 來回、淨 $172,391、Trim PF 0.79，只擋 1,666 次開倉詢問中的 248 次。L5 VWAP 重心同向閘 0.0812、t −0.76，擋 1,298／2,421。L2 Amihud、L3 Roll 的水準逐年漂移，Q50 閘等於挑年份，最差年＝0 是因為整年被擋。L6 量價互信息 0.0406、t −3.36。 RW 臨界 t 2.725（22 個一起校正），全 22 個最大 t −0.52（L4）；22 個 ΔSR 全為負（全部讓 H2a 變差）；13 個 t ≤ −2，反向版沒有事先登記、不算數；換 seed 20261115 臨界 2.741 仍 0 拒絕；SR0（N＝22）0.0455，累計 N 743,201 的 SR0 0.113 只揭露；White RC p 0.997、SPA_c p 1.000；稽核 1,280 次比對 0 不一致；母策略 H2a 前七年日 SR 0.0916、淨 $182,461、1,513 來回；資料為 NQ 前七年 1 分 K＋前七年 tick（只讀到 2023-09-29 之前，共 5.11 億筆，tick／分 K 量比 1.000）；後三年未讀。",
+      "report_label": "PLAN_v14j.md（e1551ac8）、PLAN_v14j_sha1.txt（d87ec827）、sp_test_20261120_0807.json（9793d585）、audit_20261120_0808.json（134b9d30）、plan_v14j_result_20261120_0810.md（ef9bffa4）、EXPERIMENT_LOG.md（E055）（b19a8e2e）",
+      "report_href": null,
+      "batch": "v14j",
+      "added_taipei": "2026-11-20 08:16",
+      "revised_taipei": "2026-11-20 08:16",
+      "label": "探索性、非獨立盲測；非官方驗收",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "本站編號，比照 v14i；計畫書以 L 族編號"
+        },
+        "method": {
+          "lines": "L10、L21、L36、L54–L59",
+          "source": "PLAN_v14j.md"
+        },
+        "use": {
+          "lines": "L21、L54–L59",
+          "source": "PLAN_v14j.md"
+        },
+        "inspiration": {
+          "lines": [
+            4
+          ],
+          "source": "PLAN_v14j.md"
+        },
+        "hypotheses": {
+          "lines": "L10、L54–L59",
+          "source": "PLAN_v14j.md"
+        },
+        "data": {
+          "lines": "L28",
+          "source": "PLAN_v14j.md"
+        },
+        "parent": {
+          "lines": "L33",
+          "source": "PLAN_v14j.md"
+        },
+        "thresholds": {
+          "lines": "L85–L89",
+          "source": "PLAN_v14j.md"
+        },
+        "status": {
+          "lines": [],
+          "source": "sp_test_20261120_0807.json／audit_20261120_0808.json／plan_v14j_result_20261120_0810.md"
+        },
+        "passed": {
+          "lines": "L89、L101",
+          "source": "sp_test_20261120_0807.json（n_pass、各假設 pass／fails）"
+        }
+      },
+      "sources": [
+        {
+          "file": "PLAN_v14j.md",
+          "sha1": "e1551ac81d9c9ec131b9544f943c304f5a14eab1"
+        },
+        {
+          "file": "PLAN_v14j_sha1.txt",
+          "sha1": "d87ec82716031c4a2f66c35d59d4b9157ed524b0"
+        },
+        {
+          "file": "sp_test_20261120_0807.json",
+          "sha1": "9793d58591077673302fbd59462d26342c6a589e"
+        },
+        {
+          "file": "audit_20261120_0808.json",
+          "sha1": "134b9d30dbd41b1958747beb0e58fb46311bc095"
+        },
+        {
+          "file": "plan_v14j_result_20261120_0810.md",
+          "sha1": "ef9bffa435ebfe293d866d7345958351bf46a4d7"
+        },
+        {
+          "file": "EXPERIMENT_LOG.md（E055）",
+          "sha1": "b19a8e2e775aa5d245ff414d05d1c6bc1b0c1679"
+        }
+      ]
+    },
+    {
+      "id": "v14j-3",
+      "plan_family": "E",
+      "method": "熵／資訊 7 個（Fisher 信息、轉移熵 量→價、JS 散度、多尺度熵、Lempel–Ziv、近似熵、Shannon 熵），都是前 20 日 5 分報酬的日層級 Q50 閘",
+      "inspiration": "Charles 2026-11-20 07:45 傳來 27 個新點子，GM2 篩出 22 個未做過的因子；核准時間依計畫書 L4 為 07:47（GM2 轉述，本站未見原話）",
+      "use": "何時別交易：H2a 日層級 Q50 閘（只擋新開倉）",
+      "use_kind": "when_not_trade",
+      "status": "完成",
+      "status_note": "正式跑 2026-11-20 08:05:43–08:07:21 台北；稽核 08:08；結果報告 08:10",
+      "passed": 0,
+      "hypotheses": 7,
+      "date": "2026-11-20",
+      "result": "0／7 通過。族內最佳 E6 ApEn ≤ Q50：日 SR 0.0706、校正後 0.025、t −1.40、Trim PF 0.79、淨 $87,073。最差 E1 Fisher 0.0352、t −3.61。E5 LZ 最差年 −$8,057，沒過年度門檻；E5 放行 64.8% 的日子（其餘日層級閘約放行一半）。 RW 臨界 t 2.725（22 個一起校正），全 22 個最大 t −0.52（L4）；22 個 ΔSR 全為負（全部讓 H2a 變差）；13 個 t ≤ −2，反向版沒有事先登記、不算數；換 seed 20261115 臨界 2.741 仍 0 拒絕；SR0（N＝22）0.0455，累計 N 743,201 的 SR0 0.113 只揭露；White RC p 0.997、SPA_c p 1.000；稽核 1,280 次比對 0 不一致；母策略 H2a 前七年日 SR 0.0916、淨 $182,461、1,513 來回；資料為 NQ 前七年 1 分 K＋前七年 tick（只讀到 2023-09-29 之前，共 5.11 億筆，tick／分 K 量比 1.000）；後三年未讀。",
+      "report_label": "PLAN_v14j.md（e1551ac8）、PLAN_v14j_sha1.txt（d87ec827）、sp_test_20261120_0807.json（9793d585）、audit_20261120_0808.json（134b9d30）、plan_v14j_result_20261120_0810.md（ef9bffa4）、EXPERIMENT_LOG.md（E055）（b19a8e2e）",
+      "report_href": null,
+      "batch": "v14j",
+      "added_taipei": "2026-11-20 08:16",
+      "revised_taipei": "2026-11-20 08:16",
+      "label": "探索性、非獨立盲測；非官方驗收",
+      "plan_refs": {
+        "id": {
+          "lines": [],
+          "source": "本站編號，比照 v14i；計畫書以 E 族編號"
+        },
+        "method": {
+          "lines": "L10、L21、L36、L64–L70",
+          "source": "PLAN_v14j.md"
+        },
+        "use": {
+          "lines": "L21、L64–L70",
+          "source": "PLAN_v14j.md"
+        },
+        "inspiration": {
+          "lines": [
+            4
+          ],
+          "source": "PLAN_v14j.md"
+        },
+        "hypotheses": {
+          "lines": "L10、L64–L70",
+          "source": "PLAN_v14j.md"
+        },
+        "data": {
+          "lines": "L28",
+          "source": "PLAN_v14j.md"
+        },
+        "parent": {
+          "lines": "L33",
+          "source": "PLAN_v14j.md"
+        },
+        "thresholds": {
+          "lines": "L85–L89",
+          "source": "PLAN_v14j.md"
+        },
+        "status": {
+          "lines": [],
+          "source": "sp_test_20261120_0807.json／audit_20261120_0808.json／plan_v14j_result_20261120_0810.md"
+        },
+        "passed": {
+          "lines": "L89、L101",
+          "source": "sp_test_20261120_0807.json（n_pass、各假設 pass／fails）"
+        }
+      },
+      "sources": [
+        {
+          "file": "PLAN_v14j.md",
+          "sha1": "e1551ac81d9c9ec131b9544f943c304f5a14eab1"
+        },
+        {
+          "file": "PLAN_v14j_sha1.txt",
+          "sha1": "d87ec82716031c4a2f66c35d59d4b9157ed524b0"
+        },
+        {
+          "file": "sp_test_20261120_0807.json",
+          "sha1": "9793d58591077673302fbd59462d26342c6a589e"
+        },
+        {
+          "file": "audit_20261120_0808.json",
+          "sha1": "134b9d30dbd41b1958747beb0e58fb46311bc095"
+        },
+        {
+          "file": "plan_v14j_result_20261120_0810.md",
+          "sha1": "ef9bffa435ebfe293d866d7345958351bf46a4d7"
+        },
+        {
+          "file": "EXPERIMENT_LOG.md（E055）",
+          "sha1": "b19a8e2e775aa5d245ff414d05d1c6bc1b0c1679"
+        }
+      ]
+    },
     {
       "id": "v14i-1",
       "plan_family": "K",
@@ -783,6 +1053,44 @@
           "sha1": "1cd53fad594a55cc768638e133dcc3e93a8f5168"
         }
       ]
+    },
+    {
+      "time_taipei": "2026-11-20 08:16",
+      "version": 6,
+      "file": "archive/new_attempts/new_attempts_v5_20261119_2239.json",
+      "sha1": "a96136ce8a24e82dde891dad7a5c94f9473f902d",
+      "html_file": "archive/new_attempts/new_attempts_v5_20261119_2239.html",
+      "html_sha1": "d0c51693549c60ad0cdeb25d0c838ce77770d007",
+      "note": "新增 v14j-1／2／3（F、L、E 族，完成，0／22）於表最上方；數字依 sp_test_20261120_0807.json、audit_20261120_0808.json 原始值核實。lead 前加 v14j 總結、scope 改為三輪；舊列與舊 history 不動；排除區未動。v5 檔存於 archive/new_attempts/。",
+      "previous_lead": "v14i 三族 17 個假設（K 卡爾曼 5、R AR／ARMA 6、W 小波 6）已跑完：0／17 通過，RW 無拒絕（臨界 t 2.748，最大 t 1.99）。v14h 三族 17 個假設（A 6、C 5、S 6）：0／17 通過（臨界 t 2.71，最大 t 1.68）。最新在上；之後新方法只往本表上方附加。",
+      "previous_scope": "兩輪都只用 NQ 前七年 2016-09-29～2023-09-28，門檻相同（v14i 與 v14h 同，v14h 與 v14d／e／f 同）。",
+      "previous_updated_taipei": "2026-11-19 22:38",
+      "sources": [
+        {
+          "file": "PLAN_v14j.md",
+          "sha1": "e1551ac81d9c9ec131b9544f943c304f5a14eab1"
+        },
+        {
+          "file": "PLAN_v14j_sha1.txt",
+          "sha1": "d87ec82716031c4a2f66c35d59d4b9157ed524b0"
+        },
+        {
+          "file": "sp_test_20261120_0807.json",
+          "sha1": "9793d58591077673302fbd59462d26342c6a589e"
+        },
+        {
+          "file": "audit_20261120_0808.json",
+          "sha1": "134b9d30dbd41b1958747beb0e58fb46311bc095"
+        },
+        {
+          "file": "plan_v14j_result_20261120_0810.md",
+          "sha1": "ef9bffa435ebfe293d866d7345958351bf46a4d7"
+        },
+        {
+          "file": "EXPERIMENT_LOG.md（E055）",
+          "sha1": "b19a8e2e775aa5d245ff414d05d1c6bc1b0c1679"
+        }
+      ]
     }
   ],
   "result_sources": [
@@ -825,5 +1133,32 @@
       "file": "PLAN_v14i.md",
       "sha1": "1cd53fad594a55cc768638e133dcc3e93a8f5168"
     }
-  ]
+  ],
+  "result_sources_v14j": [
+    {
+      "file": "PLAN_v14j.md",
+      "sha1": "e1551ac81d9c9ec131b9544f943c304f5a14eab1"
+    },
+    {
+      "file": "PLAN_v14j_sha1.txt",
+      "sha1": "d87ec82716031c4a2f66c35d59d4b9157ed524b0"
+    },
+    {
+      "file": "sp_test_20261120_0807.json",
+      "sha1": "9793d58591077673302fbd59462d26342c6a589e"
+    },
+    {
+      "file": "audit_20261120_0808.json",
+      "sha1": "134b9d30dbd41b1958747beb0e58fb46311bc095"
+    },
+    {
+      "file": "plan_v14j_result_20261120_0810.md",
+      "sha1": "ef9bffa435ebfe293d866d7345958351bf46a4d7"
+    },
+    {
+      "file": "EXPERIMENT_LOG.md（E055）",
+      "sha1": "b19a8e2e775aa5d245ff414d05d1c6bc1b0c1679"
+    }
+  ],
+  "result_common_v14j": "RW 臨界 t 2.725（22 個一起校正），全 22 個最大 t −0.52（L4）；22 個 ΔSR 全為負（全部讓 H2a 變差）；13 個 t ≤ −2，反向版沒有事先登記、不算數；換 seed 20261115 臨界 2.741 仍 0 拒絕；SR0（N＝22）0.0455，累計 N 743,201 的 SR0 0.113 只揭露；White RC p 0.997、SPA_c p 1.000；稽核 1,280 次比對 0 不一致；母策略 H2a 前七年日 SR 0.0916、淨 $182,461、1,513 來回；資料為 NQ 前七年 1 分 K＋前七年 tick（只讀到 2023-09-29 之前，共 5.11 億筆，tick／分 K 量比 1.000）；後三年未讀。"
 }

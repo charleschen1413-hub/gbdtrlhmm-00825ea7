@@ -218,66 +218,93 @@ table.attempts td.status { min-width: 8.5rem; }
 }
   </style>
   <h2>新嘗試表</h2>
-  <p class="one-liner">v14i 三族 17 個假設（K 卡爾曼 5、R AR／ARMA 6、W 小波 6）已跑完：0／17 通過，RW 無拒絕（臨界 t 2.748，最大 t 1.99）。v14h 三族 17 個假設（A 6、C 5、S 6）：0／17 通過（臨界 t 2.71，最大 t 1.68）。最新在上；之後新方法只往本表上方附加。</p>
-  <p class="meta">兩輪都只用 NQ 前七年 2016-09-29～2023-09-28，門檻相同（v14i 與 v14h 同，v14h 與 v14d／e／f 同）。　探索性、非獨立盲測；非官方驗收</p>
+  <p class="one-liner">v14j 三族 22 個假設（F 分形／長記憶 9、L 流動性／訂單流 6、E 熵／資訊 7）已跑完：0／22 通過，RW 無拒絕（臨界 t 2.725，最大 t −0.52），22 個閘全部讓 H2a 變差。v14i 三族 17 個假設（K 卡爾曼 5、R AR／ARMA 6、W 小波 6）已跑完：0／17 通過，RW 無拒絕（臨界 t 2.748，最大 t 1.99）。v14h 三族 17 個假設（A 6、C 5、S 6）：0／17 通過（臨界 t 2.71，最大 t 1.68）。最新在上；之後新方法只往本表上方附加。</p>
+  <p class="meta">三輪都只用 NQ 前七年 2016-09-29～2023-09-28，門檻相同（v14j 與 v14i 同，v14i 與 v14h 同，v14h 與 v14d／e／f 同）；v14j 另用前七年 tick（只讀到 2023-09-29 之前）。　探索性、非獨立盲測；非官方驗收</p>
   <figure class="fig">
-    <div class="fig-title">v14i 與 v14h 各三族依用途分色，皆已完成（各 0／17 通過）</div>
-    <div class="chart chart-cards-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" role="img" aria-label="v14i 與 v14h 各三族依用途分色，皆已完成，各 0／17 通過">
+    <div class="fig-title">v14j、v14i 與 v14h 各三族依用途分色，皆已完成（v14j 0／22；v14i、v14h 各 0／17 通過）</div>
+    <div class="chart chart-cards-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 576" width="960" height="576" role="img" aria-label="v14j、v14i 與 v14h 各三族依用途分色，皆已完成：v14j 0／22、v14i 0／17、v14h 0／17 通過">
 <style>text{font-family:"Noto Sans CJK TC", "Noto Sans TC", "Source Han Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;}</style>
-<rect width="960" height="400" rx="12" fill="#fffdf8" stroke="#d9d2c5"/>
-<text x="16" y="28" font-size="15" font-weight="700" fill="#1c1915">新嘗試｜依用途分色（方向 vs 何時別交易）　上：v14i　下：v14h</text>
+<rect width="960" height="576" rx="12" fill="#fffdf8" stroke="#d9d2c5"/>
+<text x="16" y="28" font-size="15" font-weight="700" fill="#1c1915">新嘗試｜依用途分色（方向 vs 何時別交易）　上：v14j　中：v14i　下：v14h</text>
 <text x="944" y="28" font-size="11" text-anchor="end" fill="#5c564c">狀態燈：完成＝深灰（0 通過）　探索性、非獨立盲測</text>
-<rect x="16.0" y="44" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
-<rect x="16.0" y="44" width="8" height="160" rx="4" fill="#c45c26"/>
-<text x="36.0" y="72" font-size="14" font-weight="700" fill="#1c1915">v14i-1</text>
-<text x="36.0" y="96" font-size="13" fill="#1c1915">卡爾曼局部趨勢／速度</text>
-<text x="36.0" y="114" font-size="11" fill="#1c1915">（只用前向濾波 ν_{t|t}，不用平滑器）</text>
-<text x="36.0" y="136" font-size="12" fill="#5c564c">方向（K1、K2），或 H2a／H1a 同…</text>
+<rect x="16.0" y="44" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="16.0" y="44" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="36.0" y="72" font-size="14" font-weight="700" fill="#1c1915">v14j-1</text>
+<text x="36.0" y="96" font-size="13" fill="#1c1915">分形／長記憶 9 因子</text>
+<text x="36.0" y="114" font-size="11" fill="#1c1915">（DFA、MF-DFA、Hurst、Δα、ARFIMA d…）</text>
+<text x="36.0" y="136" font-size="12" fill="#5c564c">H2a 日層級 Q50 閘</text>
 <circle cx="42.0" cy="176" r="6" fill="#5c564c"/>
-<text x="56.0" y="180" font-size="12" fill="#1c1915">完成：0／5 通過</text>
-<rect x="330.7" y="44" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
-<rect x="330.7" y="44" width="8" height="160" rx="4" fill="#c45c26"/>
-<text x="350.7" y="72" font-size="14" font-weight="700" fill="#1c1915">v14i-2</text>
-<text x="350.7" y="96" font-size="13" fill="#1c1915">AR／ARMA 滾動因果預測</text>
-<text x="350.7" y="114" font-size="11" fill="#1c1915">（每個決策點只用前 1,560 根報酬重擬合）</text>
-<text x="350.7" y="136" font-size="12" fill="#5c564c">方向（R1–R3），或 H2a／H1a 同…</text>
+<text x="56.0" y="180" font-size="12" fill="#1c1915">完成：0／9 通過</text>
+<rect x="330.7" y="44" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="330.7" y="44" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="350.7" y="72" font-size="14" font-weight="700" fill="#1c1915">v14j-2</text>
+<text x="350.7" y="96" font-size="13" fill="#1c1915">流動性／訂單流 6 因子</text>
+<text x="350.7" y="114" font-size="11" fill="#1c1915">（Kyle λ、OFI 為 tick rule 推估）</text>
+<text x="350.7" y="136" font-size="12" fill="#5c564c">H2a 閘（Q50 閘；L4、L5 同向閘）</text>
 <circle cx="356.7" cy="176" r="6" fill="#5c564c"/>
 <text x="370.7" y="180" font-size="12" fill="#1c1915">完成：0／6 通過</text>
-<rect x="645.4" y="44" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
-<rect x="645.4" y="44" width="8" height="160" rx="4" fill="#c45c26"/>
-<text x="665.4" y="72" font-size="14" font-weight="700" fill="#1c1915">v14i-3</text>
-<text x="665.4" y="96" font-size="13" fill="#1c1915">因果 Haar à trous 小波</text>
-<text x="665.4" y="114" font-size="11" fill="#1c1915">（每個值只用當下以前資料；去噪門檻只用前 39…</text>
-<text x="665.4" y="136" font-size="12" fill="#5c564c">方向（W1、W2）、H2a 同向閘（W3、…</text>
+<rect x="645.4" y="44" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="645.4" y="44" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="665.4" y="72" font-size="14" font-weight="700" fill="#1c1915">v14j-3</text>
+<text x="665.4" y="96" font-size="13" fill="#1c1915">熵／資訊 7 因子</text>
+<text x="665.4" y="114" font-size="11" fill="#1c1915">（Fisher、轉移熵、JS、MSE、LZ、ApEn…）</text>
+<text x="665.4" y="136" font-size="12" fill="#5c564c">H2a 日層級 Q50 閘</text>
 <circle cx="671.4" cy="176" r="6" fill="#5c564c"/>
-<text x="685.4" y="180" font-size="12" fill="#1c1915">完成：0／6 通過</text>
-<rect x="16.0" y="220" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
-<rect x="16.0" y="220" width="8" height="160" rx="4" fill="#2f6f4e"/>
-<text x="36.0" y="248" font-size="14" font-weight="700" fill="#1c1915">v14h-1</text>
-<text x="36.0" y="272" font-size="13" fill="#1c1915">相空間／複雜度閘</text>
-<text x="36.0" y="290" font-size="11" fill="#1c1915">（關聯維數；樣本熵、排列熵為對照）</text>
-<text x="36.0" y="312" font-size="12" fill="#5c564c">何時別交易（閘）</text>
+<text x="685.4" y="180" font-size="12" fill="#1c1915">完成：0／7 通過</text>
+<rect x="16.0" y="220" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="16.0" y="220" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="36.0" y="248" font-size="14" font-weight="700" fill="#1c1915">v14i-1</text>
+<text x="36.0" y="272" font-size="13" fill="#1c1915">卡爾曼局部趨勢／速度</text>
+<text x="36.0" y="290" font-size="11" fill="#1c1915">（只用前向濾波 ν_{t|t}，不用平滑器）</text>
+<text x="36.0" y="312" font-size="12" fill="#5c564c">方向（K1、K2），或 H2a／H1a 同…</text>
 <circle cx="42.0" cy="352" r="6" fill="#5c564c"/>
-<text x="56.0" y="356" font-size="12" fill="#1c1915">完成：0／6 通過</text>
-<rect x="330.7" y="220" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
-<rect x="330.7" y="220" width="8" height="160" rx="4" fill="#2f6f4e"/>
-<text x="350.7" y="248" font-size="14" font-weight="700" fill="#1c1915">v14h-2</text>
-<text x="350.7" y="272" font-size="13" fill="#1c1915">循環平穩時段閘</text>
-<text x="350.7" y="290" font-size="11" fill="#1c1915">（週幾×半點的波動／報酬節奏）</text>
-<text x="350.7" y="312" font-size="12" fill="#5c564c">何時別交易（時段閘）</text>
+<text x="56.0" y="356" font-size="12" fill="#1c1915">完成：0／5 通過</text>
+<rect x="330.7" y="220" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="330.7" y="220" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="350.7" y="248" font-size="14" font-weight="700" fill="#1c1915">v14i-2</text>
+<text x="350.7" y="272" font-size="13" fill="#1c1915">AR／ARMA 滾動因果預測</text>
+<text x="350.7" y="290" font-size="11" fill="#1c1915">（每個決策點只用前 1,560 根報酬重擬合）</text>
+<text x="350.7" y="312" font-size="12" fill="#5c564c">方向（R1–R3），或 H2a／H1a 同…</text>
 <circle cx="356.7" cy="352" r="6" fill="#5c564c"/>
-<text x="370.7" y="356" font-size="12" fill="#1c1915">完成：0／5 通過</text>
+<text x="370.7" y="356" font-size="12" fill="#1c1915">完成：0／6 通過</text>
 <rect x="645.4" y="220" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
 <rect x="645.4" y="220" width="8" height="160" rx="4" fill="#c45c26"/>
-<text x="665.4" y="248" font-size="14" font-weight="700" fill="#1c1915">v14h-3</text>
-<text x="665.4" y="272" font-size="13" fill="#1c1915">SSA／EMD 趨勢</text>
-<text x="665.4" y="290" font-size="11" fill="#1c1915">（滑動視窗，決策時點重算、只取最後一點）</text>
-<text x="665.4" y="312" font-size="12" fill="#5c564c">方向，或 H2a 同向閘</text>
+<text x="665.4" y="248" font-size="14" font-weight="700" fill="#1c1915">v14i-3</text>
+<text x="665.4" y="272" font-size="13" fill="#1c1915">因果 Haar à trous 小波</text>
+<text x="665.4" y="290" font-size="11" fill="#1c1915">（每個值只用當下以前資料；去噪門檻只用前 39…</text>
+<text x="665.4" y="312" font-size="12" fill="#5c564c">方向（W1、W2）、H2a 同向閘（W3、…</text>
 <circle cx="671.4" cy="352" r="6" fill="#5c564c"/>
 <text x="685.4" y="356" font-size="12" fill="#1c1915">完成：0／6 通過</text>
+<rect x="16.0" y="396" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="16.0" y="396" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="36.0" y="424" font-size="14" font-weight="700" fill="#1c1915">v14h-1</text>
+<text x="36.0" y="448" font-size="13" fill="#1c1915">相空間／複雜度閘</text>
+<text x="36.0" y="466" font-size="11" fill="#1c1915">（關聯維數；樣本熵、排列熵為對照）</text>
+<text x="36.0" y="488" font-size="12" fill="#5c564c">何時別交易（閘）</text>
+<circle cx="42.0" cy="528" r="6" fill="#5c564c"/>
+<text x="56.0" y="532" font-size="12" fill="#1c1915">完成：0／6 通過</text>
+<rect x="330.7" y="396" width="298.7" height="160" rx="10" fill="#e8eee8" stroke="#d9d2c5"/>
+<rect x="330.7" y="396" width="8" height="160" rx="4" fill="#2f6f4e"/>
+<text x="350.7" y="424" font-size="14" font-weight="700" fill="#1c1915">v14h-2</text>
+<text x="350.7" y="448" font-size="13" fill="#1c1915">循環平穩時段閘</text>
+<text x="350.7" y="466" font-size="11" fill="#1c1915">（週幾×半點的波動／報酬節奏）</text>
+<text x="350.7" y="488" font-size="12" fill="#5c564c">何時別交易（時段閘）</text>
+<circle cx="356.7" cy="528" r="6" fill="#5c564c"/>
+<text x="370.7" y="532" font-size="12" fill="#1c1915">完成：0／5 通過</text>
+<rect x="645.4" y="396" width="298.7" height="160" rx="10" fill="#f6ebe3" stroke="#d9d2c5"/>
+<rect x="645.4" y="396" width="8" height="160" rx="4" fill="#c45c26"/>
+<text x="665.4" y="424" font-size="14" font-weight="700" fill="#1c1915">v14h-3</text>
+<text x="665.4" y="448" font-size="13" fill="#1c1915">SSA／EMD 趨勢</text>
+<text x="665.4" y="466" font-size="11" fill="#1c1915">（滑動視窗，決策時點重算、只取最後一點）</text>
+<text x="665.4" y="488" font-size="12" fill="#5c564c">方向，或 H2a 同向閘</text>
+<circle cx="671.4" cy="528" r="6" fill="#5c564c"/>
+<text x="685.4" y="532" font-size="12" fill="#1c1915">完成：0／6 通過</text>
 </svg>
 </div>
     <div class="use-cards" aria-label="用途卡片（窄螢幕）">
+<div class="use-card when_not_trade"><div class="cid">v14j-1</div><div class="cmethod">分形／長記憶 9 個（DFA α、MF-DFA h(4)、聚合方差 Hurst、多分形譜寬 Δα、ARFIMA d、Higuchi FD、Katz FD、盒計數 FD、Korčák κ），都是前 20 日 5 分報酬的日層級 Q50 閘</div><div class="cuse">何時別交易：H2a 日層級 Q50 閘（只擋新開倉）</div><div class="lamp-row"><span class="lamp" aria-hidden="true"></span>完成：0／9 通過</div></div>
+<div class="use-card when_not_trade"><div class="cid">v14j-2</div><div class="cmethod">流動性／訂單流 6 個（Kyle λ（推估）、Amihud、Roll 價差、OFI（推估）、VWAP 重心、量價互信息）；買賣方向為 tick rule 推估，OFI 不是 Cont 等 2014 的原定義（原定義要掛單資料）</div><div class="cuse">何時別交易：H2a 閘（L1–L3、L6 日層級 Q50 閘；L4、L5 盤中同向閘；只擋新開倉）</div><div class="lamp-row"><span class="lamp" aria-hidden="true"></span>完成：0／6 通過</div></div>
+<div class="use-card when_not_trade"><div class="cid">v14j-3</div><div class="cmethod">熵／資訊 7 個（Fisher 信息、轉移熵 量→價、JS 散度、多尺度熵、Lempel–Ziv、近似熵、Shannon 熵），都是前 20 日 5 分報酬的日層級 Q50 閘</div><div class="cuse">何時別交易：H2a 日層級 Q50 閘（只擋新開倉）</div><div class="lamp-row"><span class="lamp" aria-hidden="true"></span>完成：0／7 通過</div></div>
 <div class="use-card direction_or_gate"><div class="cid">v14i-1</div><div class="cmethod">卡爾曼局部趨勢／速度（只用前向濾波 ν_{t|t}，不用平滑器）</div><div class="cuse">方向（K1、K2），或 H2a／H1a 同向閘（K3–K5）</div><div class="lamp-row"><span class="lamp" aria-hidden="true"></span>完成：0／5 通過</div></div>
 <div class="use-card direction_or_gate"><div class="cid">v14i-2</div><div class="cmethod">AR／ARMA 滾動因果預測（每個決策點只用前 1,560 根報酬重擬合）</div><div class="cuse">方向（R1–R3），或 H2a／H1a 同向閘（R4–R6）</div><div class="lamp-row"><span class="lamp" aria-hidden="true"></span>完成：0／6 通過</div></div>
 <div class="use-card direction_or_gate"><div class="cid">v14i-3</div><div class="cmethod">因果 Haar à trous 小波（每個值只用當下以前資料；去噪門檻只用前 390 根；能量比只用前 20 日）</div><div class="cuse">方向（W1、W2）、H2a 同向閘（W3、W4），或「今天別交易」日閘（W5、W6）</div><div class="lamp-row"><span class="lamp" aria-hidden="true"></span>完成：0／6 通過</div></div>
@@ -290,6 +317,9 @@ table.attempts td.status { min-width: 8.5rem; }
 <table class="attempts">
 <thead><tr><th>編號</th><th>方法</th><th>靈感來源</th><th>用途（方向／何時別交易）</th><th>狀態</th><th>通過數／假設數</th><th>結果（已核實）</th><th>日期</th><th>來源檔（sha1 前 8 碼）</th></tr></thead>
 <tbody>
+<tr><td class="id" data-th="編號">v14j-1<br><span class="ex-note">對應F族</span></td><td class="method" data-th="方法">分形／長記憶 9 個（DFA α、MF-DFA h(4)、聚合方差 Hurst、多分形譜寬 Δα、ARFIMA d、Higuchi FD、Katz FD、盒計數 FD、Korčák κ），都是前 20 日 5 分報酬的日層級 Q50 閘</td><td class="inspiration" data-th="靈感來源">Charles 2026-11-20 07:45 傳來 27 個新點子，GM2 篩出 22 個未做過的因子；核准時間依計畫書 L4 為 07:47（GM2 轉述，本站未見原話）</td><td class="use" data-th="用途（方向／何時別交易）">何時別交易：H2a 日層級 Q50 閘（只擋新開倉）</td><td class="status" data-th="狀態">完成<br><span class="ex-note">正式跑 2026-11-20 08:05:43–08:07:21 台北；稽核 08:08；結果報告 08:10</span></td><td class="ratio" data-th="通過數／假設數">0／9</td><td class="result" data-th="結果（已核實）">0／9 通過。族內最佳 F7 Katz FD ≤ Q50：日 SR 0.0744、校正後 0.029、t −1.17、Trim PF 0.81、淨 $104,085、約 752 來回（擬合型 5 路徑平均）。最差 F8 盒計數 0.0400、t −3.61。F6 Higuchi 最差年 −$9,156，也沒過年度門檻。文獻：Korčák 1938 原文找不到；盒計數沒有單一原始論文（依 E055 記載）。<br><span class="ex-note">RW 臨界 t 2.725（22 個一起校正），全 22 個最大 t −0.52（L4）；22 個 ΔSR 全為負（全部讓 H2a 變差）；13 個 t ≤ −2，反向版沒有事先登記、不算數；換 seed 20261115 臨界 2.741 仍 0 拒絕；SR0（N＝22）0.0455，累計 N 743,201 的 SR0 0.113 只揭露；White RC p 0.997、SPA_c p 1.000；稽核 1,280 次比對 0 不一致；母策略 H2a 前七年日 SR 0.0916、淨 $182,461、1,513 來回；資料為 NQ 前七年 1 分 K＋前七年 tick（只讀到 2023-09-29 之前，共 5.11 億筆，tick／分 K 量比 1.000）；後三年未讀。　探索性、非獨立盲測；非官方驗收</span></td><td class="date" data-th="日期">2026-11-20</td><td class="report" data-th="來源檔">PLAN_v14j.md（e1551ac8）<br>PLAN_v14j_sha1.txt（d87ec827）<br>sp_test_20261120_0807.json（9793d585）<br>audit_20261120_0808.json（134b9d30）<br>plan_v14j_result_20261120_0810.md（ef9bffa4）<br>EXPERIMENT_LOG.md（E055）（b19a8e2e）</td></tr>
+<tr><td class="id" data-th="編號">v14j-2<br><span class="ex-note">對應L族</span></td><td class="method" data-th="方法">流動性／訂單流 6 個（Kyle λ（推估）、Amihud、Roll 價差、OFI（推估）、VWAP 重心、量價互信息）；買賣方向為 tick rule 推估，OFI 不是 Cont 等 2014 的原定義（原定義要掛單資料）</td><td class="inspiration" data-th="靈感來源">Charles 2026-11-20 07:45 傳來 27 個新點子，GM2 篩出 22 個未做過的因子；核准時間依計畫書 L4 為 07:47（GM2 轉述，本站未見原話）</td><td class="use" data-th="用途（方向／何時別交易）">何時別交易：H2a 閘（L1–L3、L6 日層級 Q50 閘；L4、L5 盤中同向閘；只擋新開倉）</td><td class="status" data-th="狀態">完成<br><span class="ex-note">正式跑 2026-11-20 08:05:43–08:07:21 台北；稽核 08:08；結果報告 08:10</span></td><td class="ratio" data-th="通過數／假設數">0／6</td><td class="result" data-th="結果（已核實）">0／6 通過。族內最佳也是全輪最佳 L4 OFI 同向閘：日 SR 0.0885、校正後 0.043、t −0.52、1,418 來回、淨 $172,391、Trim PF 0.79，只擋 1,666 次開倉詢問中的 248 次。L5 VWAP 重心同向閘 0.0812、t −0.76，擋 1,298／2,421。L2 Amihud、L3 Roll 的水準逐年漂移，Q50 閘等於挑年份，最差年＝0 是因為整年被擋。L6 量價互信息 0.0406、t −3.36。<br><span class="ex-note">RW 臨界 t 2.725（22 個一起校正），全 22 個最大 t −0.52（L4）；22 個 ΔSR 全為負（全部讓 H2a 變差）；13 個 t ≤ −2，反向版沒有事先登記、不算數；換 seed 20261115 臨界 2.741 仍 0 拒絕；SR0（N＝22）0.0455，累計 N 743,201 的 SR0 0.113 只揭露；White RC p 0.997、SPA_c p 1.000；稽核 1,280 次比對 0 不一致；母策略 H2a 前七年日 SR 0.0916、淨 $182,461、1,513 來回；資料為 NQ 前七年 1 分 K＋前七年 tick（只讀到 2023-09-29 之前，共 5.11 億筆，tick／分 K 量比 1.000）；後三年未讀。　探索性、非獨立盲測；非官方驗收</span></td><td class="date" data-th="日期">2026-11-20</td><td class="report" data-th="來源檔">PLAN_v14j.md（e1551ac8）<br>PLAN_v14j_sha1.txt（d87ec827）<br>sp_test_20261120_0807.json（9793d585）<br>audit_20261120_0808.json（134b9d30）<br>plan_v14j_result_20261120_0810.md（ef9bffa4）<br>EXPERIMENT_LOG.md（E055）（b19a8e2e）</td></tr>
+<tr><td class="id" data-th="編號">v14j-3<br><span class="ex-note">對應E族</span></td><td class="method" data-th="方法">熵／資訊 7 個（Fisher 信息、轉移熵 量→價、JS 散度、多尺度熵、Lempel–Ziv、近似熵、Shannon 熵），都是前 20 日 5 分報酬的日層級 Q50 閘</td><td class="inspiration" data-th="靈感來源">Charles 2026-11-20 07:45 傳來 27 個新點子，GM2 篩出 22 個未做過的因子；核准時間依計畫書 L4 為 07:47（GM2 轉述，本站未見原話）</td><td class="use" data-th="用途（方向／何時別交易）">何時別交易：H2a 日層級 Q50 閘（只擋新開倉）</td><td class="status" data-th="狀態">完成<br><span class="ex-note">正式跑 2026-11-20 08:05:43–08:07:21 台北；稽核 08:08；結果報告 08:10</span></td><td class="ratio" data-th="通過數／假設數">0／7</td><td class="result" data-th="結果（已核實）">0／7 通過。族內最佳 E6 ApEn ≤ Q50：日 SR 0.0706、校正後 0.025、t −1.40、Trim PF 0.79、淨 $87,073。最差 E1 Fisher 0.0352、t −3.61。E5 LZ 最差年 −$8,057，沒過年度門檻；E5 放行 64.8% 的日子（其餘日層級閘約放行一半）。<br><span class="ex-note">RW 臨界 t 2.725（22 個一起校正），全 22 個最大 t −0.52（L4）；22 個 ΔSR 全為負（全部讓 H2a 變差）；13 個 t ≤ −2，反向版沒有事先登記、不算數；換 seed 20261115 臨界 2.741 仍 0 拒絕；SR0（N＝22）0.0455，累計 N 743,201 的 SR0 0.113 只揭露；White RC p 0.997、SPA_c p 1.000；稽核 1,280 次比對 0 不一致；母策略 H2a 前七年日 SR 0.0916、淨 $182,461、1,513 來回；資料為 NQ 前七年 1 分 K＋前七年 tick（只讀到 2023-09-29 之前，共 5.11 億筆，tick／分 K 量比 1.000）；後三年未讀。　探索性、非獨立盲測；非官方驗收</span></td><td class="date" data-th="日期">2026-11-20</td><td class="report" data-th="來源檔">PLAN_v14j.md（e1551ac8）<br>PLAN_v14j_sha1.txt（d87ec827）<br>sp_test_20261120_0807.json（9793d585）<br>audit_20261120_0808.json（134b9d30）<br>plan_v14j_result_20261120_0810.md（ef9bffa4）<br>EXPERIMENT_LOG.md（E055）（b19a8e2e）</td></tr>
 <tr><td class="id" data-th="編號">v14i-1<br><span class="ex-note">對應K族</span></td><td class="method" data-th="方法">卡爾曼局部趨勢／速度（只用前向濾波 ν_{t|t}，不用平滑器）</td><td class="inspiration" data-th="靈感來源">計畫書 L4：Charles 2026-11-19 22:17 同意（t399u）</td><td class="use" data-th="用途（方向／何時別交易）">方向（K1、K2），或 H2a／H1a 同向閘（K3–K5）</td><td class="status" data-th="狀態">完成<br><span class="ex-note">正式跑 2026-11-19 22:28 台北結束；稽核 22:33；結果報告 22:35</span></td><td class="ratio" data-th="通過數／假設數">0／5</td><td class="result" data-th="結果（已核實）">0／5 通過。族內最佳 K4（慢速度同向閘 H2a）：日 SR 0.0998（母策略 H2a 0.092）、校正後 0.009、t 1.32、Trim PF 0.83、淨利 $190,436。K3 只擋 1,543 次開倉詢問中的 70 次。方向型 K1 日 SR 0.026、K2 −0.018。<br><span class="ex-note">RW 臨界 t 2.748（17 個一起校正），全 17 個最大 t 1.99（W3）；換 seed 20261115 臨界 2.752 仍 0 拒絕；SR0（N＝17）0.0913，累計 N 743,179 的 SR0 0.240 只揭露；稽核 2,560 次比對 0 不一致；pilot 重現 H2a 日 SR 0.0916；後三年未讀。</span></td><td class="date" data-th="日期">2026-11-19</td><td class="report" data-th="來源檔">plan_v14i_result_20261119_2236.md（28cd6d6b）<br>sp_test_20261119_2228.json（3f28a893）<br>audit_20261119_2233.json（4f1eb1fb）<br>EXPERIMENT_LOG.md（E054）（fae54637）<br>PLAN_v14i.md（1cd53fad）</td></tr>
 <tr><td class="id" data-th="編號">v14i-2<br><span class="ex-note">對應R族</span></td><td class="method" data-th="方法">AR／ARMA 滾動因果預測（每個決策點只用前 1,560 根報酬重擬合）</td><td class="inspiration" data-th="靈感來源">計畫書 L4：Charles 2026-11-19 22:17 同意（t399u）</td><td class="use" data-th="用途（方向／何時別交易）">方向（R1–R3），或 H2a／H1a 同向閘（R4–R6）</td><td class="status" data-th="狀態">完成<br><span class="ex-note">正式跑 2026-11-19 22:28 台北結束；稽核 22:33；結果報告 22:35</span></td><td class="ratio" data-th="通過數／假設數">0／6</td><td class="result" data-th="結果（已核實）">0／6 通過。H2a 同向閘 R4、R5 分別擋掉 1,609／2,676、1,946／2,926 次開倉詢問，日 SR 降到 0.071、0.076（母策略 0.092）。R6 套 H1a 日 SR 0.031（母策略 H1a 0.035）。方向型 R1–R3 日 SR −0.033～−0.022。<br><span class="ex-note">RW 臨界 t 2.748（17 個一起校正），全 17 個最大 t 1.99（W3）；換 seed 20261115 臨界 2.752 仍 0 拒絕；SR0（N＝17）0.0913，累計 N 743,179 的 SR0 0.240 只揭露；稽核 2,560 次比對 0 不一致；pilot 重現 H2a 日 SR 0.0916；後三年未讀。</span></td><td class="date" data-th="日期">2026-11-19</td><td class="report" data-th="來源檔">plan_v14i_result_20261119_2236.md（28cd6d6b）<br>sp_test_20261119_2228.json（3f28a893）<br>audit_20261119_2233.json（4f1eb1fb）<br>EXPERIMENT_LOG.md（E054）（fae54637）<br>PLAN_v14i.md（1cd53fad）</td></tr>
 <tr><td class="id" data-th="編號">v14i-3<br><span class="ex-note">對應W族</span></td><td class="method" data-th="方法">因果 Haar à trous 小波（每個值只用當下以前資料；去噪門檻只用前 390 根；能量比只用前 20 日）</td><td class="inspiration" data-th="靈感來源">計畫書 L4：Charles 2026-11-19 22:17 同意（t399u）</td><td class="use" data-th="用途（方向／何時別交易）">方向（W1、W2）、H2a 同向閘（W3、W4），或「今天別交易」日閘（W5、W6）</td><td class="status" data-th="狀態">完成<br><span class="ex-note">正式跑 2026-11-19 22:28 台北結束；稽核 22:33；結果報告 22:35</span></td><td class="ratio" data-th="通過數／假設數">0／6</td><td class="result" data-th="結果（已核實）">0／6 通過。族內最佳 W3（c₄ 斜率同向閘 H2a）：日 SR 0.1034、校正後 0.012、t 1.99、1,398 來回、Trim PF 0.84、淨利 $195,061（高於母策略 $182,461）。W4 去噪同向閘日 SR 0.1013。W5 能量比日閘讓 H2a 變差（t −3.49）；其反向版未事先登記，不可當訊號。方向型 W1 日 SR 0.005、W2 −0.032。<br><span class="ex-note">RW 臨界 t 2.748（17 個一起校正），全 17 個最大 t 1.99（W3）；換 seed 20261115 臨界 2.752 仍 0 拒絕；SR0（N＝17）0.0913，累計 N 743,179 的 SR0 0.240 只揭露；稽核 2,560 次比對 0 不一致；pilot 重現 H2a 日 SR 0.0916；後三年未讀。</span></td><td class="date" data-th="日期">2026-11-19</td><td class="report" data-th="來源檔">plan_v14i_result_20261119_2236.md（28cd6d6b）<br>sp_test_20261119_2228.json（3f28a893）<br>audit_20261119_2233.json（4f1eb1fb）<br>EXPERIMENT_LOG.md（E054）（fae54637）<br>PLAN_v14i.md（1cd53fad）</td></tr>
@@ -323,10 +353,10 @@ table.attempts td.status { min-width: 8.5rem; }
 </ul>
   </div>
   <p class="fn">版面：美編 stamp 20261119_1825（結果欄與排除區由特助依核實結果更新）；特助依計畫書逐欄核對後上架，轉達來源改標「GM2 轉達」。<br>PLAN_v14h.md（sha1 de849e8cfad7f9eb8647430d1754df73b269d569，寫於 2026-11-19 18:11 台北）。只寫檔名，不寫路徑。<br>
-v14i（對應 K／R／W 族）：方法 K L38–L48、R L50–L63、W L65–L77；假設數 L10、L36；門檻 L93–L98（同 v14h）；靈感來源 L4。PLAN_v14i.md（sha1 1cd53fad594a55cc768638e133dcc3e93a8f5168，寫於 2026-11-19 22:24 台北，早於 pilot 22:25 與正式跑 22:28）。結果來源：plan_v14i_result_20261119_2236.md 28cd6d6b457cd2e822876170e0b850b2c73fc453；sp_test_20261119_2228.json 3f28a893b1dc8051889dd161c67eaa7e61979a2b；audit_20261119_2233.json 4f1eb1fb1fddcfa1d02af8ca913e70342324eade；EXPERIMENT_LOG.md（E054） fae54637aeb6d1f5b444d8d92254502d5dfbbae7。<br>v14h-1（對應A族）：方法 L4、L10、L19、L40–L52；用途 L4、L10、L20、L42、L40–L52；假設數 L10、L36、L40、L46–L51；日期 L3。編號：GM2 轉達（2026-11-19 18:10）；靈感來源：GM2 轉達（2026-11-19 18:10）；狀態與結果：sp_test_20261119_1826.json、audit_20261119_1836.json、plan_v14h_result_20261119_1838.md（非計畫書內容）<br>
+v14j（對應 F／L／E 族）：方法 L10、L21、L36，F L41–L49、L L54–L59、E L64–L70；資料窗 L28；母策略 L33；門檻 L85–L89（同 v14i、不放寬）；決策 L101；靈感／核准 L4。PLAN_v14j.md（sha1 e1551ac81d9c9ec131b9544f943c304f5a14eab1，寫於 2026-11-20 08:01 台北，早於 pilot；N＝22 事先寫死）。計畫、6 支腳本與 tick 彙總檔的 sha1 定稿時凍結於 PLAN_v14j_sha1.txt（d87ec82716031c4a2f66c35d59d4b9157ed524b0）。OFI、Kyle λ 的買賣方向為 tick rule 推估；OFI 不是 Cont 等 2014 的原定義（原定義要掛單資料）。結果來源：sp_test_20261120_0807.json 9793d58591077673302fbd59462d26342c6a589e；audit_20261120_0808.json 134b9d30dbd41b1958747beb0e58fb46311bc095；plan_v14j_result_20261120_0810.md ef9bffa435ebfe293d866d7345958351bf46a4d7；EXPERIMENT_LOG.md（E055） b19a8e2e775aa5d245ff414d05d1c6bc1b0c1679。&lt;br&gt;v14i（對應 K／R／W 族）：方法 K L38–L48、R L50–L63、W L65–L77；假設數 L10、L36；門檻 L93–L98（同 v14h）；靈感來源 L4。PLAN_v14i.md（sha1 1cd53fad594a55cc768638e133dcc3e93a8f5168，寫於 2026-11-19 22:24 台北，早於 pilot 22:25 與正式跑 22:28）。結果來源：plan_v14i_result_20261119_2236.md 28cd6d6b457cd2e822876170e0b850b2c73fc453；sp_test_20261119_2228.json 3f28a893b1dc8051889dd161c67eaa7e61979a2b；audit_20261119_2233.json 4f1eb1fb1fddcfa1d02af8ca913e70342324eade；EXPERIMENT_LOG.md（E054） fae54637aeb6d1f5b444d8d92254502d5dfbbae7。<br>v14h-1（對應A族）：方法 L4、L10、L19、L40–L52；用途 L4、L10、L20、L42、L40–L52；假設數 L10、L36、L40、L46–L51；日期 L3。編號：GM2 轉達（2026-11-19 18:10）；靈感來源：GM2 轉達（2026-11-19 18:10）；狀態與結果：sp_test_20261119_1826.json、audit_20261119_1836.json、plan_v14h_result_20261119_1838.md（非計畫書內容）<br>
 v14h-2（對應C族）：方法 L4、L10、L20、L53–L62；用途 L4、L10、L20、L53–L62；假設數 L10、L36、L53、L58–L62；日期 L3。編號：GM2 轉達（2026-11-19 18:10）；靈感來源：GM2 轉達（2026-11-19 18:10）；狀態與結果：sp_test_20261119_1826.json、audit_20261119_1836.json、plan_v14h_result_20261119_1838.md（非計畫書內容）<br>
 v14h-3（對應S族）：方法 L4、L10、L22、L64–L78、L65、L86–L87；用途 L22、L71–L78；假設數 L10、L36、L64、L73–L78；日期 L3。編號：GM2 轉達（2026-11-19 18:10）；靈感來源：GM2 轉達（2026-11-19 18:10）；狀態與結果：sp_test_20261119_1826.json、audit_20261119_1836.json、plan_v14h_result_20261119_1838.md（非計畫書內容）<br>
-實驗紀錄頂部已附加 E053（v14h 結果）；E052 保留給已取消的 v14g，實驗紀錄尚無 E052。見計畫書 L121。<br>結果來源（只列檔名與 sha1，原檔不公開）：plan_v14h_result_20261119_1838.md 13a64fdc683da0a2135a211e42a1af87a66f3cc2；sp_test_20261119_1826.json 274a94dfa6ab307f5cabaf757129390c840a03d7；audit_20261119_1836.json b0a7f6ddbf8d64f2863795caea7cc7177ff0c638；EXPERIMENT_LOG.md（E053） c330bc025d668c5bd98bf1105d435a4ad8bf8412。更新 2026-11-19 22:38 台北。</p>
+實驗紀錄頂部已附加 E053（v14h 結果）；E052 保留給已取消的 v14g，實驗紀錄尚無 E052。見計畫書 L121。<br>結果來源（只列檔名與 sha1，原檔不公開）：plan_v14h_result_20261119_1838.md 13a64fdc683da0a2135a211e42a1af87a66f3cc2；sp_test_20261119_1826.json 274a94dfa6ab307f5cabaf757129390c840a03d7；audit_20261119_1836.json b0a7f6ddbf8d64f2863795caea7cc7177ff0c638；EXPERIMENT_LOG.md（E053） c330bc025d668c5bd98bf1105d435a4ad8bf8412。更新 2026-11-20 08:16 台北。</p>
 </section>
 
     <footer>
