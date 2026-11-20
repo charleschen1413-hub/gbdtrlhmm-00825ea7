@@ -750,5 +750,13 @@
     "filename": "entries/20261119_2239_v14_EXPERIMENT_LOG.md",
     "html": "entries/20261119_2239_v14_EXPERIMENT_LOG.html",
     "bytes": 103704
+  },
+  {
+    "time_taipei": "2026-11-20 10:13（台北時間）",
+    "source_path": "/workspace/ml_meta/v14/EXPERIMENT_LOG.md",
+    "sha1": "db860a65b38a4c47bb4458146eb30480c2938bdd",
+    "filename": "entries/20261120_1013_v14_EXPERIMENT_LOG.md",
+    "html": "entries/20261120_1013_v14_EXPERIMENT_LOG.html",
+    "bytes": 107033
   }
 ]
